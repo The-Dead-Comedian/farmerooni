@@ -10,8 +10,8 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
-@Mod(value = Farmerooni.MODID, dist = Dist.CLIENT)
-@EventBusSubscriber(modid = Farmerooni.MODID, value = Dist.CLIENT)
+@Mod(value = Farmerooni.MOD_ID, dist = Dist.CLIENT)
+@EventBusSubscriber(modid = Farmerooni.MOD_ID, value = Dist.CLIENT)
 public class FarmerooniClient {
     public FarmerooniClient(ModContainer container) {
         // Allows NeoForge to create a config screen for this mod's configs.

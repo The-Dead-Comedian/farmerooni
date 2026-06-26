@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "farmerooni:block/stripped_putrid_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "farmerooni:block/stripped_putrid_log"
+    },
+    "axis=z": {
+      "model": "farmerooni:block/stripped_putrid_log_horizontal",
+      "x": 90
+    }
+  }
+}

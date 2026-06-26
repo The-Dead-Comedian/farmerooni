@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "farmerooni:block/putrid_wood_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "farmerooni:block/putrid_wood"
+    },
+    "axis=z": {
+      "model": "farmerooni:block/putrid_wood_horizontal",
+      "x": 90
+    }
+  }
+}

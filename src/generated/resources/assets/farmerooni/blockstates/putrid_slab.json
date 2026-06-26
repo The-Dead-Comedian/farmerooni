@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "farmerooni:block/putrid_slab"
+    },
+    "type=double": {
+      "model": "farmerooni:block/putrid_planks"
+    },
+    "type=top": {
+      "model": "farmerooni:block/putrid_slab_top"
+    }
+  }
+}

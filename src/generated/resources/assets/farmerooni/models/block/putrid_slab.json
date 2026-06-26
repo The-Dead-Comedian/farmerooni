@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "farmerooni:block/putrid_planks",
+    "side": "farmerooni:block/putrid_planks",
+    "top": "farmerooni:block/putrid_planks"
+  }
+}

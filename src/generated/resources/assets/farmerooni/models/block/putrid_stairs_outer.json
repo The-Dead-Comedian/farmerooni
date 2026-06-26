@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "farmerooni:block/putrid_planks",
+    "side": "farmerooni:block/putrid_planks",
+    "top": "farmerooni:block/putrid_planks"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "farmerooni:block/stripped_putrid_log",
+    "side": "farmerooni:block/stripped_putrid_log"
+  }
+}

@@ -1,5 +1,8 @@
 package com.dead_comedian.farmerooni;
 
+import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
+import com.dead_comedian.farmerooni.registries.FarmerooniItems;
+import com.dead_comedian.farmerooni.registries.FarmerooniTabs;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -11,14 +14,18 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
 
-@Mod(Farmerooni.MODID)
+@Mod(Farmerooni.MOD_ID)
 public class Farmerooni {
-    public static final String MODID = "farmerooni";
+    public static final String MOD_ID = "farmerooni";
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public Farmerooni(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
         NeoForge.EVENT_BUS.register(this);
+
+        FarmerooniBlocks.init(modEventBus);
+        FarmerooniItems.init(modEventBus);
+        FarmerooniTabs.init(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
