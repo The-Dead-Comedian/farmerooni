@@ -1,3 +1,6 @@
 {
-  "parent": "farmerooni:block/putrid_button"
+  "parent": "minecraft:block/button_inventory",
+  "textures": {
+    "texture": "farmerooni:block/putrid_planks"
+  }
 }

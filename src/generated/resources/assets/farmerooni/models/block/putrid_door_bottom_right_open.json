@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_right_open",
+  "textures": {
+    "bottom": "farmerooni:block/putrid_door_bottom",
+    "top": "farmerooni:block/putrid_door_top"
+  }
+}

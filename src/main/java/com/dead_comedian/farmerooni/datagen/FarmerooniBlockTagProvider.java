@@ -28,7 +28,7 @@ public class FarmerooniBlockTagProvider extends BlockTagsProvider {
         pressurePlates();
         buttons();
         logs();
-
+        signs();
         mineableAxe();
     }
 
@@ -87,13 +87,13 @@ public class FarmerooniBlockTagProvider extends BlockTagsProvider {
     }
 
     private void doors() {
-//        this.tag(BlockTags.WOODEN_DOORS)
-//                .add(FarmerooniBlocks.);
+        this.tag(BlockTags.WOODEN_DOORS)
+                .add(FarmerooniBlocks.PUTRID_DOOR.get());
     }
 
     private void trapdoors() {
-//        this.tag(BlockTags.WOODEN_TRAPDOORS)
-//                .add(FarmerooniBlocks.PUTRID_TRAPDOOR.get());
+        this.tag(BlockTags.WOODEN_TRAPDOORS)
+                .add(FarmerooniBlocks.PUTRID_TRAPDOOR.get());
     }
 
     private void pressurePlates() {
@@ -105,17 +105,17 @@ public class FarmerooniBlockTagProvider extends BlockTagsProvider {
         this.tag(BlockTags.WOODEN_BUTTONS)
                 .add(FarmerooniBlocks.PUTRID_BUTTON.get());
     }
-//
-//    private void signs() {
-//        this.tag(BlockTags.STANDING_SIGNS)
-//                .add(FarmerooniBlocks.PUTRID_SIGN.get());
-//        this.tag(BlockTags.WALL_SIGNS)
-//                .add(FarmerooniBlocks.PUTRID_WALL_SIGN.get());
-//        this.tag(BlockTags.CEILING_HANGING_SIGNS)
-//                .add(FarmerooniBlocks.PUTRID_HANGING_SIGN.get());
-//        this.tag(BlockTags.WALL_HANGING_SIGNS)
-//                .add(FarmerooniBlocks.PUTRID_WALL_HANGING_SIGN.get());
-//    }
+
+    private void signs() {
+        this.tag(BlockTags.STANDING_SIGNS)
+                .add(FarmerooniBlocks.PUTRID_SIGN.get());
+        this.tag(BlockTags.WALL_SIGNS)
+                .add(FarmerooniBlocks.PUTRID_WALL_SIGN.get());
+        this.tag(BlockTags.CEILING_HANGING_SIGNS)
+                .add(FarmerooniBlocks.PUTRID_HANGING_SIGN.get());
+        this.tag(BlockTags.WALL_HANGING_SIGNS)
+                .add(FarmerooniBlocks.PUTRID_WALL_HANGING_SIGN.get());
+    }
 
     private void logs() {
 

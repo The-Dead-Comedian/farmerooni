@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    {
+      "tag": "farmerooni:putrid_logs"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "farmerooni:putrid_planks"
+  }
+}

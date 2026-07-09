@@ -1,14 +1,28 @@
 {
-  "itemGroup.examplemod": "Example Mod Tab",
-  "block.examplemod.example_block": "Example Block",
-  "item.examplemod.example_item": "Example Item",
 
-  "examplemod.configuration.title": "Example Mod Configs",
-  "examplemod.configuration.section.examplemod.common.toml": "Example Mod Configs",
-  "examplemod.configuration.section.examplemod.common.toml.title": "Example Mod Configs",
-  "examplemod.configuration.items": "Item List",
-  "examplemod.configuration.logDirtBlock": "Log Dirt Block",
-  "examplemod.configuration.magicNumberIntroduction": "Magic Number Text",
-  "examplemod.configuration.magicNumber": "Magic Number",
+  "item.farmerooni.putrid_boat": "Putrid Boat",
+  "item.farmerooni.putrid_chest_boat": "Putrid Boat with Chest",
+
+  "block.farmerooni.termite_eggs": "Termite Eggs",
+  "block.farmerooni.termite_nest": "Termite Nest",
+
+  "block.farmerooni.putrid_button": "Putrid Button",
+  "block.farmerooni.putrid_door": "Putrid Door",
+  "block.farmerooni.putrid_fence": "Putrid Fence",
+  "block.farmerooni.putrid_fence_gate": "Putrid Fence Gate",
+  "block.farmerooni.putrid_wall_sign": "Putrid Wall Sign",
+  "block.farmerooni.putrid_log": "Putrid Log",
+  "block.farmerooni.stripped_putrid_log": "Stripped Putrid Log",
+  "block.farmerooni.putrid_planks": "Putrid Planks",
+  "block.farmerooni.putrid_pressure_plate": "Putrid Pressure Plate",
+  "block.farmerooni.putrid_sign": "Putrid Sign",
+  "block.farmerooni.putrid_slab": "Putrid Slab",
+  "block.farmerooni.putrid_stairs": "Putrid Stairs",
+  "block.farmerooni.putrid_trapdoor": "Putrid Trapdoor",
+  "block.farmerooni.putrid_wall_hanging_sign": "Putrid Wall Hanging Sign",
+  "block.farmerooni.putrid_hanging_sign": "Putrid Hanging Sign",
+  "block.farmerooni.putrid_wood": "Putrid Wood",
+  "block.farmerooni.stripped_putrid_wood": "Stripped Putrid Wood",
+  "block.farmerooni.putrid_crown": "Putrid Crown",
   "creativetab.farmerooni_tab": "Farmerooni"
 }

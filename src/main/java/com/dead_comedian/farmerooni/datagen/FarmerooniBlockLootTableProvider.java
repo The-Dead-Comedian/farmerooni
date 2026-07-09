@@ -31,6 +31,12 @@ public class FarmerooniBlockLootTableProvider extends BlockLootSubProvider {
         dropSelf(FarmerooniBlocks.TERMITE_EGGS.get());
         dropSelf(FarmerooniBlocks.PUTRID_CROWN.get());
         dropSelf(FarmerooniBlocks.TERMITE_NEST.get());
+        dropSelf(FarmerooniBlocks.PUTRID_HANGING_SIGN.get());
+        dropSelf(FarmerooniBlocks.PUTRID_SIGN.get());
+        dropSelf(FarmerooniBlocks.PUTRID_WALL_HANGING_SIGN.get());
+        dropSelf(FarmerooniBlocks.PUTRID_WALL_SIGN.get());
+        dropSelf(FarmerooniBlocks.PUTRID_TRAPDOOR.get());
+        add(FarmerooniBlocks.PUTRID_DOOR.get(), this::createDoorTable);
     }
 
 

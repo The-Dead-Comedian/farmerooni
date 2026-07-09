@@ -30,6 +30,12 @@ public class FarmerooniTabs {
                         pOutput.accept(FarmerooniBlocks.PUTRID_FENCE);
                         pOutput.accept(FarmerooniBlocks.PUTRID_FENCE_GATE);
                         pOutput.accept(FarmerooniBlocks.PUTRID_PRESSURE_PLATE.get());
+                        pOutput.accept(FarmerooniBlocks.PUTRID_DOOR.get());
+                        pOutput.accept(FarmerooniBlocks.PUTRID_TRAPDOOR.get());
+                        pOutput.accept(FarmerooniItems.PUTRID_SIGN.get());
+                        pOutput.accept(FarmerooniItems.PUTRID_HANGING_SIGN.get());
+                        pOutput.accept(FarmerooniItems.PUTRID_BOAT.get());
+                        pOutput.accept(FarmerooniItems.PUTRID_CHEST_BOAT.get());
                         pOutput.accept(FarmerooniBlocks.TERMITE_NEST);
                         pOutput.accept(FarmerooniBlocks.TERMITE_EGGS);
                     })

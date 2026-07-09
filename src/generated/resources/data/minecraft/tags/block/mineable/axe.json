@@ -1,0 +1,16 @@
+{
+  "values": [
+    "farmerooni:putrid_log",
+    "farmerooni:stripped_putrid_log",
+    "farmerooni:putrid_wood",
+    "farmerooni:stripped_putrid_wood",
+    "farmerooni:putrid_planks",
+    "farmerooni:putrid_slab",
+    "farmerooni:putrid_stairs",
+    "farmerooni:putrid_button",
+    "farmerooni:putrid_pressure_plate",
+    "farmerooni:putrid_crown",
+    "farmerooni:termite_nest",
+    "farmerooni:termite_eggs"
+  ]
+}

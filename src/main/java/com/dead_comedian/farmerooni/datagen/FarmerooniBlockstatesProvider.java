@@ -18,6 +18,7 @@ public class FarmerooniBlockstatesProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
 
+        ResourceLocation planksTexture = this.blockTexture(FarmerooniBlocks.PUTRID_PLANKS.get());
 
 //         Blocks
         simpleBlockWithItem(FarmerooniBlocks.TERMITE_NEST.get(), (ModelFile) this.models().cubeColumn(
@@ -34,11 +35,26 @@ public class FarmerooniBlockstatesProvider extends BlockStateProvider {
         createLog(FarmerooniBlocks.STRIPPED_PUTRID_LOG.get());
 
         createButtonWithItem(FarmerooniBlocks.PUTRID_BUTTON.get(), ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, "block/putrid_planks"));
-        createFenceGatesWithItem(FarmerooniBlocks.PUTRID_FENCE_GATE.get(), ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID,"block/putrid_planks"));
-        createFenceWithItem(FarmerooniBlocks.PUTRID_FENCE.get(), ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID,"block/putrid_planks"));
-        createPressurePlateWithItem(FarmerooniBlocks.PUTRID_PRESSURE_PLATE.get(), ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID,"block/putrid_planks"));
-        createSlabWithItem(FarmerooniBlocks.PUTRID_SLAB.get(), ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID,"block/putrid_planks"));
-        createStairsWithItem(FarmerooniBlocks.PUTRID_STAIRS.get(), ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID,"block/putrid_planks"));
+        createFenceGatesWithItem(FarmerooniBlocks.PUTRID_FENCE_GATE.get(), ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, "block/putrid_planks"));
+        createFenceWithItem(FarmerooniBlocks.PUTRID_FENCE.get(), ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, "block/putrid_planks"));
+        createPressurePlateWithItem(FarmerooniBlocks.PUTRID_PRESSURE_PLATE.get(), ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, "block/putrid_planks"));
+        createSlabWithItem(FarmerooniBlocks.PUTRID_SLAB.get(), ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, "block/putrid_planks"));
+        createStairsWithItem(FarmerooniBlocks.PUTRID_STAIRS.get(), ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, "block/putrid_planks"));
+
+        this.signBlock(
+                FarmerooniBlocks.PUTRID_SIGN.get(),
+                FarmerooniBlocks.PUTRID_WALL_SIGN.get(),
+                planksTexture
+        );
+        this.hangingSignBlock(
+                FarmerooniBlocks.PUTRID_HANGING_SIGN.get(),
+                FarmerooniBlocks.PUTRID_WALL_HANGING_SIGN.get(),
+                planksTexture
+        );
+        createTrapdoorWithItem(FarmerooniBlocks.PUTRID_TRAPDOOR.get());
+        doorBlock(FarmerooniBlocks.PUTRID_DOOR.get(),
+                ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID,"block/putrid_door_bottom"),
+                ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID,"block/putrid_door_top"));
     }
 
 

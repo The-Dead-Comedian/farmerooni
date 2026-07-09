@@ -25,11 +25,24 @@ public class DataGenerators {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
+        var blockTagProvider = new FarmerooniBlockTagProvider(
+                generator.getPackOutput(),
+                event.getLookupProvider(),
+                event.getExistingFileHelper()
+        );
         generator.addProvider(event.includeServer(), new FarmerooniBlockstatesProvider(packOutput, existingFileHelper));
-//        generator.addProvider(event.includeServer(), new HolyhellBlockTagProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), blockTagProvider);
+        generator.addProvider(
+                event.includeServer(),
+                new FarmerooniItemTagProvider(
+                        generator.getPackOutput(),
+                        event.getLookupProvider(),
+                        blockTagProvider.contentsGetter()
+                )
+        );
+        generator.addProvider(event.includeClient(), new FarmerooniRecipeProvider(packOutput, lookupProvider));
+        generator.addProvider(event.includeClient(), new FarmerooniItemModelProvider(packOutput, Farmerooni.MOD_ID, existingFileHelper));
 
-//
-//
         generator.addProvider(true, new LootTableProvider(packOutput, Collections.emptySet(),
                 List.of(new LootTableProvider.SubProviderEntry(FarmerooniBlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
 

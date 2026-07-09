@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "FARMEROONI_PUTRID",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "com/dead_comedian/farmerooni/registries/FarmerooniBoatTypes",
+        "field": "PUTRID_BOAT_PROXY"
+      }
+    }
+  ]
+}

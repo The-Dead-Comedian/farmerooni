@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": {
+    "farmerooni:putrid_log": {
+      "stripped_block": "farmerooni:stripped_putrid_log"
+    },
+    "farmerooni:putrid_wood": {
+      "stripped_block": "farmerooni:stripped_putrid_wood"
+    }
+  }
+}
