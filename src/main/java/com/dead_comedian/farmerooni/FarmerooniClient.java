@@ -1,6 +1,10 @@
 package com.dead_comedian.farmerooni;
 
+import com.dead_comedian.farmerooni.client.renderers.TermiteRenderer;
+import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.registries.FarmerooniEntities;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -22,7 +26,9 @@ public class FarmerooniClient {
 
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
-        // Some client setup code
+        EntityRenderers.register(FarmerooniEntities.TERMITE.get(), TermiteRenderer::new);
+
+
         Farmerooni.LOGGER.info("HELLO FROM CLIENT SETUP");
         Farmerooni.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
     }

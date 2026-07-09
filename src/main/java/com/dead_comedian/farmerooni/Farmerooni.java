@@ -1,6 +1,7 @@
 package com.dead_comedian.farmerooni;
 
 import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
+import com.dead_comedian.farmerooni.registries.FarmerooniEntities;
 import com.dead_comedian.farmerooni.registries.FarmerooniItems;
 import com.dead_comedian.farmerooni.registries.FarmerooniTabs;
 import com.mojang.logging.LogUtils;
@@ -26,6 +27,7 @@ public class Farmerooni {
         FarmerooniBlocks.init(modEventBus);
         FarmerooniItems.init(modEventBus);
         FarmerooniTabs.init(modEventBus);
+        FarmerooniEntities.init(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

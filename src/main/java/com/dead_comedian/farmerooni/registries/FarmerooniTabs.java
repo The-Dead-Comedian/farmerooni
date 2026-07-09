@@ -38,6 +38,7 @@ public class FarmerooniTabs {
                         pOutput.accept(FarmerooniItems.PUTRID_CHEST_BOAT.get());
                         pOutput.accept(FarmerooniBlocks.TERMITE_NEST);
                         pOutput.accept(FarmerooniBlocks.TERMITE_EGGS);
+                        pOutput.accept(FarmerooniItems.TERMITE_SPAWN_EGG);
                     })
                     .build());
 
