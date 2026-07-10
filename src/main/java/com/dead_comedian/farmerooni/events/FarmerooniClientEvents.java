@@ -13,8 +13,6 @@ public class FarmerooniClientEvents {
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(TermiteModel.LAYER_LOCATION, TermiteModel::createBodyLayer);
-
-
-
     }
+
 }

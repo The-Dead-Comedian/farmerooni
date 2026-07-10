@@ -1,9 +1,6 @@
 package com.dead_comedian.farmerooni;
 
-import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
-import com.dead_comedian.farmerooni.registries.FarmerooniEntities;
-import com.dead_comedian.farmerooni.registries.FarmerooniItems;
-import com.dead_comedian.farmerooni.registries.FarmerooniTabs;
+import com.dead_comedian.farmerooni.registries.*;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -27,6 +24,7 @@ public class Farmerooni {
         FarmerooniBlocks.init(modEventBus);
         FarmerooniItems.init(modEventBus);
         FarmerooniTabs.init(modEventBus);
+        FarmerooniBlockEntities.init(modEventBus);
         FarmerooniEntities.init(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

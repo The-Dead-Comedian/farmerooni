@@ -2,9 +2,13 @@ package com.dead_comedian.farmerooni;
 
 import com.dead_comedian.farmerooni.client.renderers.TermiteRenderer;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
 import com.dead_comedian.farmerooni.registries.FarmerooniEntities;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -27,6 +31,9 @@ public class FarmerooniClient {
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
         EntityRenderers.register(FarmerooniEntities.TERMITE.get(), TermiteRenderer::new);
+
+        ItemBlockRenderTypes.setRenderLayer(FarmerooniBlocks.PUTRID_DOOR.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(FarmerooniBlocks.PUTRID_TRAPDOOR.get(), RenderType.cutoutMipped());
 
 
         Farmerooni.LOGGER.info("HELLO FROM CLIENT SETUP");

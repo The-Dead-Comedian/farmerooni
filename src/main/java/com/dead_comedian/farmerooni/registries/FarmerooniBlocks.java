@@ -1,6 +1,7 @@
 package com.dead_comedian.farmerooni.registries;
 
 import com.dead_comedian.farmerooni.Farmerooni;
+import com.dead_comedian.farmerooni.blocks.TermiteNestBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
@@ -129,8 +130,8 @@ public class FarmerooniBlocks {
                     .ignitedByLava()), true
     );
 
-    public static final DeferredBlock<Block> TERMITE_NEST = register("termite_nest",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(FarmerooniBlocks.PUTRID_PLANKS.get()))
+    public static final DeferredBlock<TermiteNestBlock> TERMITE_NEST = register("termite_nest",
+            () -> new TermiteNestBlock(BlockBehaviour.Properties.ofFullCopy(FarmerooniBlocks.PUTRID_PLANKS.get()))
             , true);
 
     public static final DeferredBlock<GlowLichenBlock> TERMITE_EGGS = register("termite_eggs",

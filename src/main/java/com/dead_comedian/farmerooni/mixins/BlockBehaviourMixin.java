@@ -20,7 +20,7 @@ public class BlockBehaviourMixin {
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, CallbackInfo ci) {
         if (entity instanceof TermiteEntity termiteEntity && state.getBlock() instanceof MushroomBlock) {
             if (termiteEntity.hasEffect(MobEffects.WITHER)) return;
-            termiteEntity.addEffect(new MobEffectInstance(MobEffects.WITHER, 100));
+            termiteEntity.addEffect(new MobEffectInstance(MobEffects.WITHER, 80));
         }
     }
 }
