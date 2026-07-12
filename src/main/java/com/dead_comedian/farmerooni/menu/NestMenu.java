@@ -16,9 +16,8 @@ public class NestMenu extends AbstractContainerMenu {
 
     public static final int MAIN_ROWS = 2;
     public static final int MAIN_COLUMNS = 9;
-//    public static final int MAIN_SLOT_COUNT = MAIN_ROWS * MAIN_COLUMNS; // 54
 
-    private static final int TE_INVENTORY_SLOT_COUNT = 59;
+    private static final int TE_INVENTORY_SLOT_COUNT = 18;
     private static final int VANILLA_SLOT_COUNT = 36;
 
 
@@ -59,7 +58,7 @@ public class NestMenu extends AbstractContainerMenu {
                         container,
                         col + row * MAIN_COLUMNS,
                         8 + col * 18,
-                        row * 18 - 18
+                        row * 18
                 ));
             }
         }
@@ -108,7 +107,7 @@ public class NestMenu extends AbstractContainerMenu {
                         inv,
                         col + row * 9 + 9,
                         8 + col * 18,
-                        102 + row * 18 + offset
+                        84 + row * 18 + offset
                 ));
             }
         }
@@ -116,7 +115,7 @@ public class NestMenu extends AbstractContainerMenu {
 
     private void addPlayerHotbar(Inventory inv) {
         for (int i = 0; i < 9; ++i) {
-            addSlot(new Slot(inv, i, 8 + i * 18, 162));
+            addSlot(new Slot(inv, i, 8 + i * 18, 144));
         }
     }
 }

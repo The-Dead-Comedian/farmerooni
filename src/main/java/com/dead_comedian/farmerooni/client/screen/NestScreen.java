@@ -23,8 +23,8 @@ public class NestScreen extends AbstractContainerScreen<NestMenu> {
     @Override
     protected void init() {
         super.init();
-        this.titleLabelY = -30;
-        this.inventoryLabelY = 92;
+        this.titleLabelY = -11;
+        this.inventoryLabelY = 74;
     }
 
     @Override
@@ -33,9 +33,9 @@ public class NestScreen extends AbstractContainerScreen<NestMenu> {
         RenderSystem.setShaderTexture(0, TEXTURE);
 
         int x = (width - 175) / 2;
-        int y = (height - 238) / 2;
+        int y = (height - 202) / 2;
 
-        g.blit(TEXTURE, x, y, 0, 0, 278, 222, 318, 222);
+        g.blit(TEXTURE, x, y, 0, 0, 175, 184, 256, 256);
     }
 
 }
