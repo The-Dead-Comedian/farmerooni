@@ -24,5 +24,6 @@
   "block.farmerooni.putrid_wood": "Putrid Wood",
   "block.farmerooni.stripped_putrid_wood": "Stripped Putrid Wood",
   "block.farmerooni.putrid_crown": "Putrid Crown",
-  "creativetab.farmerooni_tab": "Farmerooni"
+  "creativetab.farmerooni_tab": "Farmerooni",
+  "gui.farmerooni.termite_nest": "Termite Nest"
 }

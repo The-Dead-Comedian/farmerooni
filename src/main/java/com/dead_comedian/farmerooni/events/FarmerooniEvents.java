@@ -18,6 +18,8 @@ public class FarmerooniEvents {
         event.modify(BlockEntityType.HANGING_SIGN, FarmerooniBlocks.PUTRID_HANGING_SIGN.get(), FarmerooniBlocks.PUTRID_WALL_HANGING_SIGN.get());
     }
 
+
+
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(FarmerooniEntities.TERMITE.get(), TermiteEntity.createAttributes().build());

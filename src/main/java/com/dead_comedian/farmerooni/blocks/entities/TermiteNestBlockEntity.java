@@ -1,16 +1,29 @@
 package com.dead_comedian.farmerooni.blocks.entities;
 
+import com.dead_comedian.farmerooni.menu.NestMenu;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TermiteNestBlockEntity extends BlockEntity {
+public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity implements MenuProvider {
+
+    private NonNullList<ItemStack> items;
+
     public TermiteNestBlockEntity(BlockPos pos, BlockState blockState) {
         super(FarmerooniBlockEntities.TERMITE_NEST_BLOCK_ENTITY.get(), pos, blockState);
+        this.items = NonNullList.withSize(27, ItemStack.EMPTY);
     }
+
 
     public void tick(Level world, BlockPos pos, BlockState state) {
 
@@ -37,4 +50,29 @@ public class TermiteNestBlockEntity extends BlockEntity {
 
     }
 
+    @Override
+    protected Component getDefaultName() {
+        return Component.translatable("gui.farmerooni.termite_nest");
+    }
+
+    @Override
+    protected NonNullList<ItemStack> getItems() {
+        return this.items;
+    }
+
+    @Override
+    protected void setItems(NonNullList<ItemStack> nonNullList) {
+
+    }
+
+    @Override
+    protected AbstractContainerMenu createMenu(int i, Inventory inventory) {
+        System.out.println("AHHHHMABDATUKAM");
+        return new NestMenu(i, inventory, this);
+    }
+
+    @Override
+    public int getContainerSize() {
+        return 0;
+    }
 }
