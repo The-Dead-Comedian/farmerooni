@@ -44,29 +44,6 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
     public void tick(Level world, BlockPos pos, BlockState state) {
 
             this.setData(FarmerooniAttachments.RESIDENT_COUNT, residents.size());
-
-
-        if (world.getRandom().nextInt(5) == 0) {
-            BlockPos blockpos1 = pos.offset(world.getRandom().nextInt(11) - 5,
-                    world.getRandom().nextInt(8) - 2,
-                    world.getRandom().nextInt(11) - 5);
-
-            for (int k = 0; k < 5; ++k) {
-                if (level.isEmptyBlock(blockpos1) && Blocks.BROWN_MUSHROOM.defaultBlockState().canSurvive(level, blockpos1)) {
-                    pos = blockpos1;
-                }
-
-                blockpos1 = pos.offset(world.getRandom().nextInt(11) - 5,
-                        world.getRandom().nextInt(8) - 5,
-                        world.getRandom().nextInt(11) - 5);
-            }
-
-            if (level.isEmptyBlock(blockpos1) && Blocks.BROWN_MUSHROOM.defaultBlockState().canSurvive(level, blockpos1)) {
-                level.setBlock(blockpos1, Blocks.BROWN_MUSHROOM.defaultBlockState(), 2);
-            }
-        }
-
-
     }
 
     @Override
