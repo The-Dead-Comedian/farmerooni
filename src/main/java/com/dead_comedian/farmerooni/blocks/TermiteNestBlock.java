@@ -6,16 +6,38 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jetbrains.annotations.Nullable;
 
 public class TermiteNestBlock extends BaseEntityBlock {
+
+    // TO-DO: Once the Termite Nest has a slot system
+    // ABANDONED state represents whether player can or can not hatch termite eggs nearby
+    // (eggs can only hatch near abandoned nests)
+    // If a not abandoned nest remains unpopulated (no more ants occupy its slot)
+    // it is marked as abandoned
+    // Abandoned nests can not become un abandoned
+    // Mushroom spawning will also depend on being abandoned, but thats once the toggle works
+
+
+
+    public static BooleanProperty ABANDONED= BooleanProperty.create("abandoned");
+
     public TermiteNestBlock(Properties properties) {
         super(properties);
+    }
+
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        pBuilder.add(ABANDONED);
     }
 
     @Override
