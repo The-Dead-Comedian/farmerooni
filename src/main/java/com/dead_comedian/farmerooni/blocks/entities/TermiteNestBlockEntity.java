@@ -73,6 +73,6 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
 
     @Override
     public int getContainerSize() {
-        return 0;
+        return 27;
     }
 }
