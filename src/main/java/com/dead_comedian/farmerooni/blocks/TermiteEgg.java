@@ -8,17 +8,9 @@ import com.dead_comedian.farmerooni.registries.FarmerooniEntities;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.Turtle;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.GlowLichenBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
-
-import java.util.Optional;
 
 public class TermiteEgg extends GlowLichenBlock {
 
@@ -39,7 +31,7 @@ public class TermiteEgg extends GlowLichenBlock {
             for (BlockPos pos : BlockPos.betweenClosed(poss.offset(-15, -2, -15), poss.offset(15, 2, 15))) {
                 Farmerooni.LOGGER.info("finding shi");
                 if (level.getBlockState(pos).is(FarmerooniBlocks.TERMITE_NEST.get())) {
-                    if(!((TermiteNestBlockEntity) level.getBlockEntity(pos)).AddTermiteResident(term)){
+                    if(!((TermiteNestBlockEntity) level.getBlockEntity(pos)).addTermiteResident(term)){
                         term.getBrain().setMemory(FarmerooniMemoryModules.NEST.get(), pos);
                         Farmerooni.LOGGER.info("found shi");
 

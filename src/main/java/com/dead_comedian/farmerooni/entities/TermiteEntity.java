@@ -1,6 +1,5 @@
 package com.dead_comedian.farmerooni.entities;
 
-import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
 import com.dead_comedian.farmerooni.entities.ai.TermiteAi;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
@@ -9,19 +8,17 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.DebugPackets;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.MushroomBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import org.apache.commons.lang3.ObjectUtils;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public class TermiteEntity extends Animal {
     public TermiteEntity(EntityType<? extends Animal> entityType, Level level) {
@@ -67,39 +64,38 @@ public class TermiteEntity extends Animal {
     }
 
 
+    @Override
+    protected void sendDebugPackets() {
+        super.sendDebugPackets();
+        DebugPackets.sendEntityBrain(this);
+    }
 
-        @Override
-        protected void sendDebugPackets() {
-            super.sendDebugPackets();
-            DebugPackets.sendEntityBrain(this);
-        }
+    @Override
+    protected void customServerAiStep() {
+        this.level().getProfiler().push("termiteBrain");
+        ((Brain<TermiteEntity>) this.brain).tick((ServerLevel) this.level(), this);
+        this.level().getProfiler().pop();
+        this.level().getProfiler().push("termiteActivityUpdate");
+        TermiteAi.updateActivity(this);
+        this.level().getProfiler().pop();
 
-        @Override
-        protected void customServerAiStep() {
-            this.level().getProfiler().push("termiteBrain");
-            ((Brain<TermiteEntity>) this.brain).tick((ServerLevel) this.level(), this);
-            this.level().getProfiler().pop();
-            this.level().getProfiler().push("termiteActivityUpdate");
-            TermiteAi.updateActivity(this);
-            this.level().getProfiler().pop();
+        super.customServerAiStep();
+    }
 
-            super.customServerAiStep();
-        }
+    @Override
+    protected Brain<?> makeBrain(Dynamic<?> dynamic) {
+        return TermiteAi.makeBrain(this.brainProvider().makeBrain(dynamic));
+    }
 
-        @Override
-        protected Brain<?> makeBrain(Dynamic<?> dynamic) {
-            return TermiteAi.makeBrain(this.brainProvider().makeBrain(dynamic));
-        }
+    @Override
+    protected Brain.Provider<TermiteEntity> brainProvider() {
+        return Brain.provider(TermiteAi.MEMORY_MODULES, TermiteAi.SENSORS);
+    }
 
-        @Override
-        protected Brain.Provider<TermiteEntity> brainProvider() {
-            return Brain.provider(TermiteAi.MEMORY_MODULES, TermiteAi.SENSORS);
-        }
-
-        @Override
-        public Brain<TermiteEntity> getBrain() {
-            return (Brain<TermiteEntity>) super.getBrain();
-        }
+    @Override
+    public Brain<TermiteEntity> getBrain() {
+        return (Brain<TermiteEntity>) super.getBrain();
+    }
 
 
     @Override
@@ -107,8 +103,8 @@ public class TermiteEntity extends Animal {
         super.defineSynchedData(builder);
     }
 
-    public void updateAnimations(){
-        if(this.getDeltaMovement().horizontalDistance()<0.01F){
+    public void updateAnimations() {
+        if (this.getDeltaMovement().horizontalDistance() < 0.01F) {
             idleAnimationState.startIfStopped(tickCount);
         }
     }
@@ -131,10 +127,11 @@ public class TermiteEntity extends Animal {
     public void remove(RemovalReason reason) {
         //todo dimension checking
 
-        if(this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).isPresent()){
+        if (this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).isPresent() && this.level().getBlockEntity(
+                this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).get()) != null) {
             ((TermiteNestBlockEntity) this.level().getBlockEntity(
                     this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).get()
-            )).RemoveTermiteResident(this);
+            )).removeTermiteResident(this);
         }
 
         super.remove(reason);

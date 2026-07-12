@@ -14,20 +14,26 @@ public class NestMenu extends AbstractContainerMenu {
 
     private final Container container;
 
+    public final TermiteNestBlockEntity blockEntity;
+
     public static final int MAIN_ROWS = 2;
     public static final int MAIN_COLUMNS = 9;
+    public final int residents;
 
     private static final int TE_INVENTORY_SLOT_COUNT = 18;
     private static final int VANILLA_SLOT_COUNT = 36;
 
 
     public NestMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, (TermiteNestBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()));
+        this(containerId, inv, (TermiteNestBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()),0);
     }
 
-    public NestMenu(int id, Inventory inv, Container container) {
+    public NestMenu(int id, Inventory inv,TermiteNestBlockEntity be, int residussy) {
         super(FarmerooniMenus.NEST_MENU.get(), id);
-        this.container = container;
+
+        this.residents=residussy;
+        this.container = be;
+        this.blockEntity = be;
 
         checkContainerSize(container, 18);
         container.startOpen(inv.player);

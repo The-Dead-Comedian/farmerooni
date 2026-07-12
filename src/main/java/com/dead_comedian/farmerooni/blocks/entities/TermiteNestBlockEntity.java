@@ -2,6 +2,7 @@ package com.dead_comedian.farmerooni.blocks.entities;
 
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
 import com.dead_comedian.farmerooni.menu.NestMenu;
+import com.dead_comedian.farmerooni.registries.FarmerooniAttachments;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -11,17 +12,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.attachment.AttachmentType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity implements MenuProvider {
 
@@ -29,13 +30,21 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
     private static int MAX_TERMITES = 8;
     private final List<UUID> residents = new ArrayList<>();
 
+
     public TermiteNestBlockEntity(BlockPos pos, BlockState blockState) {
         super(FarmerooniBlockEntities.TERMITE_NEST_BLOCK_ENTITY.get(), pos, blockState);
         this.items = NonNullList.withSize(27, ItemStack.EMPTY);
     }
 
+    @Override
+    public void syncData(Supplier<? extends AttachmentType<?>> type) {
+        super.syncData(type);
+    }
 
     public void tick(Level world, BlockPos pos, BlockState state) {
+
+            this.setData(FarmerooniAttachments.RESIDENT_COUNT, residents.size());
+
 
         if (world.getRandom().nextInt(5) == 0) {
             BlockPos blockpos1 = pos.offset(world.getRandom().nextInt(11) - 5,
@@ -77,8 +86,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
 
     @Override
     protected AbstractContainerMenu createMenu(int i, Inventory inventory) {
-        System.out.println("AHHHHMABDATUKAM");
-        return new NestMenu(i, inventory, this);
+        return new NestMenu(i, inventory, this, this.getResidents().size());
     }
 
     @Override
@@ -86,21 +94,24 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         return 27;
     }
 
-   public boolean AddTermiteResident(TermiteEntity entity){
-        if(this.residents.size() == MAX_TERMITES){
+    public boolean addTermiteResident(TermiteEntity entity) {
+        if (this.residents.size() == MAX_TERMITES) {
             return true;
         }
         this.residents.add(entity.getUUID());
         return false;
 
-   }
+    }
 
-    public boolean RemoveTermiteResident(TermiteEntity entity){
+    public boolean removeTermiteResident(TermiteEntity entity) {
         this.residents.remove(entity.getUUID());
         return false;
 
     }
 
+    public List<UUID> getResidents() {
+        return residents;
+    }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
@@ -121,7 +132,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         super.saveAdditional(tag, registries);
 
         ListTag residentList = new ListTag();
-        for (UUID uuid: residents) {
+        for (UUID uuid : residents) {
             residentList.add(NbtUtils.createUUID(uuid));
         }
         tag.put("Residents", residentList);
