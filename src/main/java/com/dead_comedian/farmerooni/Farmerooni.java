@@ -27,7 +27,8 @@ public class Farmerooni {
         FarmerooniBlockEntities.init(modEventBus);
         FarmerooniEntities.init(modEventBus);
         FarmerooniMenus.init(modEventBus);
-
+        FarmerooniMemoryModules.init(modEventBus);
+        FarmerooniSensorTypes.init(modEventBus);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
