@@ -1,9 +1,12 @@
 package com.dead_comedian.farmerooni.blocks.entities;
 
+import com.dead_comedian.farmerooni.entities.TermiteEntity;
 import com.dead_comedian.farmerooni.menu.NestMenu;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -12,12 +15,19 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity implements MenuProvider {
 
     private NonNullList<ItemStack> items;
+    private static int MAX_TERMITES = 8;
+    private final List<UUID> residents = new ArrayList<>();
 
     public TermiteNestBlockEntity(BlockPos pos, BlockState blockState) {
         super(FarmerooniBlockEntities.TERMITE_NEST_BLOCK_ENTITY.get(), pos, blockState);
@@ -74,5 +84,47 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
     @Override
     public int getContainerSize() {
         return 27;
+    }
+
+   public boolean AddTermiteResident(TermiteEntity entity){
+        if(this.residents.size() == MAX_TERMITES){
+            return true;
+        }
+        this.residents.add(entity.getUUID());
+        return false;
+
+   }
+
+    public boolean RemoveTermiteResident(TermiteEntity entity){
+        this.residents.remove(entity.getUUID());
+        return false;
+
+    }
+
+
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+
+        this.residents.clear();
+        ListTag uuidList = tag.getList("Residents", Tag.TAG_INT_ARRAY);
+
+        for (Tag tug : uuidList) {
+            if (tug instanceof IntArrayTag) {
+                residents.add(NbtUtils.loadUUID(tug));
+            }
+        }
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+
+        ListTag residentList = new ListTag();
+        for (UUID uuid: residents) {
+            residentList.add(NbtUtils.createUUID(uuid));
+        }
+        tag.put("Residents", residentList);
+
     }
 }

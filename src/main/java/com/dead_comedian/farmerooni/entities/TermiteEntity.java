@@ -1,6 +1,9 @@
 package com.dead_comedian.farmerooni.entities;
 
+import com.dead_comedian.farmerooni.Farmerooni;
+import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
 import com.dead_comedian.farmerooni.entities.ai.TermiteAi;
+import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.DebugPackets;
@@ -15,7 +18,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.MushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class TermiteEntity extends Animal {
     public TermiteEntity(EntityType<? extends Animal> entityType, Level level) {
@@ -119,6 +125,19 @@ public class TermiteEntity extends Animal {
     public void tick() {
         super.tick();
         this.updateAnimations();
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        //todo dimension checking
+
+        if(this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).isPresent()){
+            ((TermiteNestBlockEntity) this.level().getBlockEntity(
+                    this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).get()
+            )).RemoveTermiteResident(this);
+        }
+
+        super.remove(reason);
     }
 
     @Override

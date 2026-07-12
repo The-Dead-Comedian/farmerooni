@@ -1,6 +1,7 @@
 package com.dead_comedian.farmerooni.registries;
 
 import com.dead_comedian.farmerooni.Farmerooni;
+import com.dead_comedian.farmerooni.blocks.TermiteEgg;
 import com.dead_comedian.farmerooni.blocks.TermiteNestBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -135,7 +136,7 @@ public class FarmerooniBlocks {
             , true);
 
     public static final DeferredBlock<GlowLichenBlock> TERMITE_EGGS = register("termite_eggs",
-            () -> new GlowLichenBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.FROGSPAWN))
+            () -> new TermiteEgg(BlockBehaviour.Properties.ofFullCopy(Blocks.FROGSPAWN).randomTicks())
             , true);
 
 

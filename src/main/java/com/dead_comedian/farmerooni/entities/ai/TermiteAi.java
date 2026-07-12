@@ -1,7 +1,9 @@
 package com.dead_comedian.farmerooni.entities.ai;
 
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.google.common.collect.ImmutableList;
+import com.sun.jna.Memory;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
@@ -24,7 +26,8 @@ public class TermiteAi {
             MemoryModuleType.ATTACK_TARGET,
             MemoryModuleType.NEAREST_LIVING_ENTITIES,
             MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
-            MemoryModuleType.PATH
+            MemoryModuleType.PATH,
+            FarmerooniMemoryModules.NEST.get()
     );
 
     public static final ImmutableList<SensorType<? extends Sensor<? super TermiteEntity>>> SENSORS = ImmutableList.of(
