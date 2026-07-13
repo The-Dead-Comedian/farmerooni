@@ -2,9 +2,7 @@ package com.dead_comedian.farmerooni.client.screen;
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.menu.NestMenu;
-import com.dead_comedian.farmerooni.registries.FarmerooniAttachments;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -43,7 +41,7 @@ public class NestScreen extends AbstractContainerScreen<NestMenu> {
         int x1 = (width - 145) / 2;
         int y2 = (height - 58) / 2;
         g.blit(TEXTURE, x, y, 0, 0, 176, 186, 176, 186);
-        g.blitSprite(RESIDENT_SPRITE, 144, 13, 0, 0, x1, y2, 18 * this.getMenu().blockEntity.getData(FarmerooniAttachments.RESIDENT_COUNT), 13);
+        g.blitSprite(RESIDENT_SPRITE, 144, 13, 0, 0, x1, y2, 18 * this.getMenu().getResidentCount(), 13);
     }
 
 }

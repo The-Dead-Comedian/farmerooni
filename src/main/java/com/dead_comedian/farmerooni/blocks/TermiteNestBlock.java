@@ -73,6 +73,7 @@ public class TermiteNestBlock extends BaseEntityBlock {
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         super.randomTick(state, level, pos, random);
+        if (level.isClientSide) return;
         if (level.getRandom().nextInt(30) == 0) {
             BlockPos blockpos1 = pos.offset(level.getRandom().nextInt(11) - 5,
                     level.getRandom().nextInt(8) - 2,

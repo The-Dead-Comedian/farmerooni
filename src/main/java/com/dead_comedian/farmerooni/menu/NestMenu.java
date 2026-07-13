@@ -7,6 +7,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -14,26 +15,25 @@ public class NestMenu extends AbstractContainerMenu {
 
     private final Container container;
 
-    public final TermiteNestBlockEntity blockEntity;
+    public final DataSlot residentCount;
 
     public static final int MAIN_ROWS = 2;
     public static final int MAIN_COLUMNS = 9;
-    public final int residents;
-
     private static final int TE_INVENTORY_SLOT_COUNT = 18;
     private static final int VANILLA_SLOT_COUNT = 36;
 
 
     public NestMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, (TermiteNestBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()),0);
+        this(containerId, inv, (TermiteNestBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()), 0);
     }
 
-    public NestMenu(int id, Inventory inv,TermiteNestBlockEntity be, int residussy) {
+    public NestMenu(int id, Inventory inv, Container be, int residussy) {
         super(FarmerooniMenus.NEST_MENU.get(), id);
 
-        this.residents=residussy;
+        this.residentCount = DataSlot.standalone();
+        this.addDataSlot(this.residentCount);
+        this.residentCount.set(residussy);
         this.container = be;
-        this.blockEntity = be;
 
         checkContainerSize(container, 18);
         container.startOpen(inv.player);
@@ -45,7 +45,9 @@ public class NestMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
     }
-
+    public int getResidentCount() {
+        return this.residentCount.get();
+    }
 
     @Override
     public void removed(Player player) {

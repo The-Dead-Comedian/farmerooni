@@ -2,7 +2,6 @@ package com.dead_comedian.farmerooni.blocks.entities;
 
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
 import com.dead_comedian.farmerooni.menu.NestMenu;
-import com.dead_comedian.farmerooni.registries.FarmerooniAttachments;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -14,7 +13,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -29,6 +27,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
     private NonNullList<ItemStack> items;
     private static int MAX_TERMITES = 8;
     private final List<UUID> residents = new ArrayList<>();
+    int counter = 0;
 
 
     public TermiteNestBlockEntity(BlockPos pos, BlockState blockState) {
@@ -41,9 +40,10 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         super.syncData(type);
     }
 
+
+    //todo remove this if its not needed by the end
     public void tick(Level world, BlockPos pos, BlockState state) {
 
-            this.setData(FarmerooniAttachments.RESIDENT_COUNT, residents.size());
     }
 
     @Override
