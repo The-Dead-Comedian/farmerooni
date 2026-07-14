@@ -68,7 +68,7 @@ public class TermiteAi {
                 Activity.IDLE,
                 0,
                 ImmutableList.of(
-                        RandomStroll.stroll(1),
+                        RandomStrollAroundNest.stroll(1),
                         new RandomLookAround(UniformInt.of(10, 15), 30, 30, 90)
                 )
         );
