@@ -2,6 +2,7 @@ package com.dead_comedian.farmerooni.entities.ai;
 
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.behavior.BehaviorControl;
 import net.minecraft.world.entity.ai.behavior.OneShot;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Optional;
@@ -37,8 +39,10 @@ public class RandomStrollAroundNest {
                         if (pathfinderMob.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).isPresent()) {
                             Optional<Vec3> optional = Optional.ofNullable((Vec3) target.apply(pathfinderMob));
                             if (optional.isPresent()) {
+                                Level level = pathfinderMob.level();
                                 BlockPos blockPos = new BlockPos((int) optional.get().x(), (int) optional.get().y(), (int) optional.get().z());
                                 BlockPos nestPos = pathfinderMob.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).get();
+                                DifficultyInstance difficulty = level.getCurrentDifficultyAt(nestPos);
                                 if (blockPos.distToCenterSqr(nestPos.getX(), nestPos.getY(), nestPos.getZ()) < 10) {
                                     walkTargetMemoryAccessor.setOrErase(optional.map((vec3) -> new WalkTarget(vec3, speedModifier, 0)));
                                 }

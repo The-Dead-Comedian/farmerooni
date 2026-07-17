@@ -5,6 +5,7 @@ import com.dead_comedian.farmerooni.entities.TermiteEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.animal.horse.Horse;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -21,6 +22,10 @@ public class FarmerooniEntities {
     public static final Supplier<EntityType<TermiteEntity>> TERMITE =
             ENTITY_TYPES.register("termite", () -> EntityType.Builder.of(TermiteEntity::new, MobCategory.CREATURE)
                     .sized(0.4f, 0.2f).build("termite"));
+
+    public static final Supplier<EntityType<Horse>> UNICORN =
+            ENTITY_TYPES.register("unicorn", () -> EntityType.Builder.of(Horse::new, MobCategory.CREATURE)
+                    .sized(1.5f, 1.5f).build("unicorn"));
 
 
     public static void init(IEventBus eventBus) {

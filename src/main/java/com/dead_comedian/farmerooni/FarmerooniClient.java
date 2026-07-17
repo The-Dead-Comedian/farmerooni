@@ -1,6 +1,7 @@
 package com.dead_comedian.farmerooni;
 
 import com.dead_comedian.farmerooni.client.renderers.TermiteRenderer;
+import com.dead_comedian.farmerooni.client.renderers.UnicornRenderer;
 import com.dead_comedian.farmerooni.client.screen.NestScreen;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
@@ -34,6 +35,7 @@ public class FarmerooniClient {
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
         EntityRenderers.register(FarmerooniEntities.TERMITE.get(), TermiteRenderer::new);
+        EntityRenderers.register(FarmerooniEntities.UNICORN.get(), UnicornRenderer::new);
 
 
         ItemBlockRenderTypes.setRenderLayer(FarmerooniBlocks.PUTRID_DOOR.get(), RenderType.cutoutMipped());

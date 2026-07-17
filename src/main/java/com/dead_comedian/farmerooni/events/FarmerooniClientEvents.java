@@ -2,9 +2,8 @@ package com.dead_comedian.farmerooni.events;
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.client.models.TermiteModel;
-import com.dead_comedian.farmerooni.client.renderers.TermiteRenderer;
+import com.dead_comedian.farmerooni.client.models.UnicornModel;
 import com.dead_comedian.farmerooni.client.screen.NestScreen;
-import com.dead_comedian.farmerooni.menu.NestMenu;
 import com.dead_comedian.farmerooni.registries.FarmerooniMenus;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -17,7 +16,10 @@ public class FarmerooniClientEvents {
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(TermiteModel.LAYER_LOCATION, TermiteModel::createBodyLayer);
+        event.registerLayerDefinition(UnicornModel.LAYER_LOCATION, UnicornModel::createBodyLayer);
+        event.registerLayerDefinition(UnicornModel.ARMOR_LOCATION, UnicornModel::createBodyLayer);
     }
+
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(FarmerooniMenus.NEST_MENU.get(), NestScreen::new);
