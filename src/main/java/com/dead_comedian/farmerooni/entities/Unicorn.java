@@ -19,6 +19,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AnimalArmorItem;
@@ -32,11 +33,11 @@ import net.minecraft.world.level.block.SoundType;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public class Unicorn extends Horse {
+public class Unicorn extends AbstractHorse {
     private static final EntityDataAccessor<Boolean> SKINNED = SynchedEntityData.defineId(Unicorn.class, EntityDataSerializers.BOOLEAN);
     ;
 
-    public Unicorn(EntityType<? extends Horse> entityType, Level level) {
+    public Unicorn(EntityType<? extends AbstractHorse> entityType, Level level) {
         super(entityType, level);
     }
 
