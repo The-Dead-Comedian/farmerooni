@@ -2,6 +2,7 @@ package com.dead_comedian.farmerooni.registries;
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.Unicorn;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -23,8 +24,8 @@ public class FarmerooniEntities {
             ENTITY_TYPES.register("termite", () -> EntityType.Builder.of(TermiteEntity::new, MobCategory.CREATURE)
                     .sized(0.4f, 0.2f).build("termite"));
 
-    public static final Supplier<EntityType<Horse>> UNICORN =
-            ENTITY_TYPES.register("unicorn", () -> EntityType.Builder.of(Horse::new, MobCategory.CREATURE)
+    public static final Supplier<EntityType<Unicorn>> UNICORN =
+            ENTITY_TYPES.register("unicorn", () -> EntityType.Builder.of(Unicorn::new, MobCategory.CREATURE)
                     .sized(1.5f, 1.5f).build("unicorn"));
 
 

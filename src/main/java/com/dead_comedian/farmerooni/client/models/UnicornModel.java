@@ -4,6 +4,7 @@ package com.dead_comedian.farmerooni.client.models;// Made with Blockbench 5.1.4
 
 
 import com.dead_comedian.farmerooni.Farmerooni;
+import com.dead_comedian.farmerooni.entities.Unicorn;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -11,12 +12,13 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.animal.horse.Horse;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class UnicornModel<T extends Horse> extends HierarchicalModel<T> {
+public class UnicornModel<T extends Unicorn> extends HierarchicalModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, "unicorn"), "main");
     public static final ModelLayerLocation ARMOR_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, "unicorn_armor"), "main");
     private static final float DEG_125 = 2.1816616F;

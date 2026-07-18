@@ -2,6 +2,7 @@ package com.dead_comedian.farmerooni.client.renderers.render_layer;
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.client.models.UnicornModel;
+import com.dead_comedian.farmerooni.entities.Unicorn;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -19,20 +20,20 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
 
-public class UnicornArmorRenderLayer extends RenderLayer<Horse, UnicornModel<Horse>> {
-    private final UnicornModel<Horse> model;
+public class UnicornArmorRenderLayer extends RenderLayer<Unicorn, UnicornModel<Unicorn>> {
+    private final UnicornModel<Unicorn> model;
 
-    public UnicornArmorRenderLayer(RenderLayerParent<Horse, UnicornModel<Horse>> renderer, EntityModelSet modelSet) {
+    public UnicornArmorRenderLayer(RenderLayerParent<Unicorn, UnicornModel<Unicorn>> renderer, EntityModelSet modelSet) {
         super(renderer);
         this.model = new UnicornModel<>(modelSet.bakeLayer(UnicornModel.ARMOR_LOCATION));
     }
 
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Horse livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Unicorn livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         ItemStack itemstack = livingEntity.getBodyArmorItem();
         Item var13 = itemstack.getItem();
         if (var13 instanceof AnimalArmorItem animalarmoritem) {
             if (animalarmoritem.getBodyType() == AnimalArmorItem.BodyType.EQUESTRIAN) {
-                ((UnicornModel<Horse>) this.getParentModel()).copyPropertiesTo(this.model);
+                ((UnicornModel<Unicorn>) this.getParentModel()).copyPropertiesTo(this.model);
                 this.model.prepareMobModel(livingEntity, limbSwing, limbSwingAmount, partialTicks);
                 this.model.setupAnim(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
                 int i;
