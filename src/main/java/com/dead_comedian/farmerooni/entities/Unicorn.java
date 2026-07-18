@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.DifficultyInstance;
@@ -29,6 +30,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.CommonHooks;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -39,6 +42,30 @@ public class Unicorn extends AbstractHorse {
 
     public Unicorn(EntityType<? extends AbstractHorse> entityType, Level level) {
         super(entityType, level);
+    }
+
+    @Override
+    protected void executeRidersJump(float playerJumpPendingScale, Vec3 travelVector) {
+        double d0 = (double)this.getJumpPower(playerJumpPendingScale);
+        System.out.println(d0);
+        System.out.println();
+        Vec3 vec3 = this.getDeltaMovement();
+        this.setDeltaMovement(vec3.x, d0, vec3.z);
+        this.setIsJumping(true);
+        this.hasImpulse = true;
+        CommonHooks.onLivingJump(this);
+        if (travelVector.z > (double)0.0F) {
+            float f = Mth.sin(this.getYRot() * ((float)Math.PI / 180F));
+            float f1 = Mth.cos(this.getYRot() * ((float)Math.PI / 180F));
+            this.setDeltaMovement(this.getDeltaMovement().add((double)(-0.4F * f * playerJumpPendingScale), (double)0.0F, (double)(0.4F * f1 * playerJumpPendingScale)));
+        }
+
+    }
+
+    @Override
+    public void onPlayerJump(int jumpPower) {
+        System.out.println(jumpPower);
+        super.onPlayerJump(jumpPower);
     }
 
     protected void randomizeAttributes(RandomSource random) {

@@ -50,6 +50,10 @@ public class FarmerooniItems {
             "termite_spawn_egg",
             () -> new DeferredSpawnEggItem(FarmerooniEntities.TERMITE,
                   0xdecaa6,0xde864b, new Item.Properties())
+    );    public static final DeferredItem<Item> UNICORN_SPAWN_EGG = register(
+            "unicorn_spawn_egg",
+            () -> new DeferredSpawnEggItem(FarmerooniEntities.UNICORN,
+                  0x3c552a,0xcbc9c9, new Item.Properties())
     );
 
     private static <T extends Item> DeferredItem<T> register(String name, Supplier<T> item) {

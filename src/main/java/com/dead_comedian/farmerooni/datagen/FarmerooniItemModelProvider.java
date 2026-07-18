@@ -19,5 +19,6 @@ public class FarmerooniItemModelProvider extends ItemModelProvider {
         basicItem(FarmerooniItems.PUTRID_BOAT.get().asItem());
         basicItem(FarmerooniItems.PUTRID_CHEST_BOAT.get().asItem());
         spawnEggItem(FarmerooniItems.TERMITE_SPAWN_EGG.get().asItem());
+        spawnEggItem(FarmerooniItems.UNICORN_SPAWN_EGG.get().asItem());
     }
 }

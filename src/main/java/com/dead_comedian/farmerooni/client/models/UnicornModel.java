@@ -29,76 +29,76 @@ public class UnicornModel<T extends Unicorn> extends HierarchicalModel<T> {
 
     private final ModelPart bone2;
     private final ModelPart bone;
-    private final ModelPart body;
-    private final ModelPart front_left_leg;
-    private final ModelPart front_right_leg;
-    private final ModelPart head;
-    private final ModelPart horn;
+    private final ModelPart body2;
+    private final ModelPart front_left_leg2;
+    private final ModelPart front_right_leg2;
+    private final ModelPart neck2;
+    private final ModelPart head2;
+    private final ModelPart horn2;
     private final ModelPart he_saddle;
     private final ModelPart head_saddle;
     private final ModelPart saddle_mouth_line_r;
     private final ModelPart saddle_mouth_line;
     private final ModelPart saddle_mouth_r;
     private final ModelPart saddle_mouth_l;
-    private final ModelPart mouth;
-    private final ModelPart left_ear;
-    private final ModelPart right_ear;
-    private final ModelPart neck;
-    private final ModelPart mane;
-    private final ModelPart tail;
-    private final ModelPart saddle;
-    private final ModelPart back_left_leg;
-    private final ModelPart back_right_leg;
-    private final ModelPart body2;
-    private final ModelPart front_left_leg2;
-    private final ModelPart front_right_leg2;
-    private final ModelPart head2;
-    private final ModelPart horn2;
     private final ModelPart mouth2;
     private final ModelPart left_ear2;
     private final ModelPart right_ear2;
-    private final ModelPart neck2;
     private final ModelPart tail2;
     private final ModelPart back_left_leg2;
     private final ModelPart back_right_leg2;
+    private final ModelPart saddle;
+    private final ModelPart body;
+    private final ModelPart front_left_leg;
+    private final ModelPart front_right_leg;
+    private final ModelPart neck;
+    private final ModelPart head;
+    private final ModelPart horn;
+    private final ModelPart mouth;
+    private final ModelPart left_ear;
+    private final ModelPart right_ear;
+    private final ModelPart mane;
+    private final ModelPart tail;
+    private final ModelPart back_left_leg;
+    private final ModelPart back_right_leg;
 
     private final Map<ModelPart, float[]> restPose = new HashMap<>();
 
     public UnicornModel(ModelPart root) {
         this.bone2 = root.getChild("bone2");
         this.bone = this.bone2.getChild("bone");
-        this.body = this.bone.getChild("body");
-        this.front_left_leg = this.body.getChild("front_left_leg");
-        this.front_right_leg = this.body.getChild("front_right_leg");
-        this.head = this.body.getChild("head");
-        this.horn = this.head.getChild("horn");
-        this.he_saddle = this.head.getChild("he_saddle");
+        this.body2 = this.bone.getChild("body2");
+        this.front_left_leg2 = this.body2.getChild("front_left_leg2");
+        this.front_right_leg2 = this.body2.getChild("front_right_leg2");
+        this.neck2 = this.body2.getChild("neck2");
+        this.head2 = this.neck2.getChild("head2");
+        this.horn2 = this.head2.getChild("horn2");
+        this.he_saddle = this.head2.getChild("he_saddle");
         this.head_saddle = this.he_saddle.getChild("head_saddle");
         this.saddle_mouth_line_r = this.he_saddle.getChild("saddle_mouth_line_r");
         this.saddle_mouth_line = this.he_saddle.getChild("saddle_mouth_line");
         this.saddle_mouth_r = this.he_saddle.getChild("saddle_mouth_r");
         this.saddle_mouth_l = this.he_saddle.getChild("saddle_mouth_l");
-        this.mouth = this.body.getChild("mouth");
-        this.left_ear = this.body.getChild("left_ear");
-        this.right_ear = this.body.getChild("right_ear");
-        this.neck = this.body.getChild("neck");
-        this.mane = this.body.getChild("mane");
-        this.tail = this.body.getChild("tail");
-        this.saddle = this.body.getChild("saddle");
-        this.back_left_leg = this.body.getChild("back_left_leg");
-        this.back_right_leg = this.body.getChild("back_right_leg");
-        this.body2 = this.bone.getChild("body2");
-        this.front_left_leg2 = this.body2.getChild("front_left_leg2");
-        this.front_right_leg2 = this.body2.getChild("front_right_leg2");
-        this.head2 = this.body2.getChild("head2");
-        this.horn2 = this.head2.getChild("horn2");
-        this.mouth2 = this.body2.getChild("mouth2");
-        this.left_ear2 = this.body2.getChild("left_ear2");
-        this.right_ear2 = this.body2.getChild("right_ear2");
-        this.neck2 = this.body2.getChild("neck2");
+        this.mouth2 = this.head2.getChild("mouth2");
+        this.left_ear2 = this.head2.getChild("left_ear2");
+        this.right_ear2 = this.head2.getChild("right_ear2");
         this.tail2 = this.body2.getChild("tail2");
         this.back_left_leg2 = this.body2.getChild("back_left_leg2");
         this.back_right_leg2 = this.body2.getChild("back_right_leg2");
+        this.saddle = this.body2.getChild("saddle");
+        this.body = this.bone.getChild("body");
+        this.front_left_leg = this.body.getChild("front_left_leg");
+        this.front_right_leg = this.body.getChild("front_right_leg");
+        this.neck = this.body.getChild("neck");
+        this.head = this.neck.getChild("head");
+        this.horn = this.head.getChild("horn");
+        this.mouth = this.head.getChild("mouth");
+        this.left_ear = this.head.getChild("left_ear");
+        this.right_ear = this.head.getChild("right_ear");
+        this.mane = this.neck.getChild("mane");
+        this.tail = this.body.getChild("tail");
+        this.back_left_leg = this.body.getChild("back_left_leg");
+        this.back_right_leg = this.body.getChild("back_right_leg");
 
         captureRest(head, mouth, left_ear, right_ear, neck, mane, tail, body,
                 front_left_leg, front_right_leg, back_left_leg, back_right_leg, saddle, saddle_mouth_r, saddle_mouth_l, saddle_mouth_line, saddle_mouth_line_r, head);
@@ -123,70 +123,70 @@ public class UnicornModel<T extends Unicorn> extends HierarchicalModel<T> {
 
         PartDefinition bone = bone2.addOrReplaceChild("bone", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition body = bone.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 32).addBox(-5.0F, -8.0F, -17.0F, 10.0F, 10.0F, 22.0F, new CubeDeformation(0.05F)), PartPose.offset(0.0F, 9.0F, 15.0F));
-
-        PartDefinition front_left_leg = body.addOrReplaceChild("front_left_leg", CubeListBuilder.create().texOffs(48, 21).mirror().addBox(-3.0F, -1.0F, -1.9F, 4.0F, 11.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(4.0F, 3.0F, -15.0F));
-
-        PartDefinition front_right_leg = body.addOrReplaceChild("front_right_leg", CubeListBuilder.create().texOffs(48, 21).addBox(-1.0F, -1.0F, -1.9F, 4.0F, 11.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-4.0F, 3.0F, -15.0F));
-
-        PartDefinition head = body.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 13).addBox(-3.0F, -11.0F, -2.0F, 6.0F, 5.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -9.0F, -15.0F));
-
-        PartDefinition horn = head.addOrReplaceChild("horn", CubeListBuilder.create().texOffs(37, 3).addBox(-1.0F, -17.0F, 0.0F, 2.0F, 6.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-        PartDefinition he_saddle = head.addOrReplaceChild("he_saddle", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-        PartDefinition head_saddle = he_saddle.addOrReplaceChild("head_saddle", CubeListBuilder.create().texOffs(19, 80).addBox(-2.0F, -16.0F, -5.0F, 4.0F, 5.0F, 2.0F, new CubeDeformation(0.25F))
-                .texOffs(0, 80).addBox(-3.0F, -16.0F, -3.0F, 6.0F, 5.0F, 7.0F, new CubeDeformation(0.25F)), PartPose.offset(0.0F, 5.0F, 1.0F));
-
-        PartDefinition saddle_mouth_line_r = he_saddle.addOrReplaceChild("saddle_mouth_line_r", CubeListBuilder.create().texOffs(32, 82).addBox(0.0F, -0.201F, 0.25F, 0.0F, 3.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-3.1F, -8.25F, -4.0F, -0.5236F, 0.0F, 0.0F));
-
-        PartDefinition saddle_mouth_line = he_saddle.addOrReplaceChild("saddle_mouth_line", CubeListBuilder.create().texOffs(32, 82).addBox(0.0F, -0.201F, 0.25F, 0.0F, 3.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.101F, -8.25F, -4.0F, -0.5236F, 0.0F, 0.0F));
-
-        PartDefinition saddle_mouth_r = he_saddle.addOrReplaceChild("saddle_mouth_r", CubeListBuilder.create().texOffs(29, 85).addBox(-3.0F, -14.0F, -6.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 5.0F, 1.0F));
-
-        PartDefinition saddle_mouth_l = he_saddle.addOrReplaceChild("saddle_mouth_l", CubeListBuilder.create().texOffs(29, 85).addBox(2.0F, -14.0F, -6.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 5.0F, 1.0F));
-
-        PartDefinition mouth = body.addOrReplaceChild("mouth", CubeListBuilder.create().texOffs(0, 25).addBox(-2.0F, -11.0F, -7.0F, 4.0F, 5.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -9.0F, -15.0F));
-
-        PartDefinition left_ear = body.addOrReplaceChild("left_ear", CubeListBuilder.create().texOffs(19, 16).addBox(0.55F, -13.0F, 4.0F, 2.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -10.0F, -15.01F));
-
-        PartDefinition right_ear = body.addOrReplaceChild("right_ear", CubeListBuilder.create().texOffs(19, 16).addBox(-2.55F, -13.0F, 4.0F, 2.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -10.0F, -15.01F));
-
-        PartDefinition neck = body.addOrReplaceChild("neck", CubeListBuilder.create().texOffs(0, 35).addBox(-2.05F, -6.0F, -2.0F, 4.0F, 12.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -9.0F, -15.0F));
-
-        PartDefinition mane = body.addOrReplaceChild("mane", CubeListBuilder.create().texOffs(56, 36).addBox(-1.0F, -11.0F, 5.01F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -9.0F, -15.01F));
-
-        PartDefinition tail = body.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(42, 36).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -8.0F, 5.0F));
-
-        PartDefinition saddle = body.addOrReplaceChild("saddle", CubeListBuilder.create().texOffs(26, 81).addBox(-5.0F, 1.0F, -5.5F, 10.0F, 9.0F, 9.0F, new CubeDeformation(0.5F)), PartPose.offset(0.0F, -9.0F, -4.0F));
-
-        PartDefinition back_left_leg = body.addOrReplaceChild("back_left_leg", CubeListBuilder.create().texOffs(48, 21).mirror().addBox(-3.0F, -1.0F, -1.0F, 4.0F, 11.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(4.0F, 3.0F, 2.0F));
-
-        PartDefinition back_right_leg = body.addOrReplaceChild("back_right_leg", CubeListBuilder.create().texOffs(48, 21).addBox(-1.0F, -1.0F, -1.0F, 4.0F, 11.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-4.0F, 3.0F, 2.0F));
-
         PartDefinition body2 = bone.addOrReplaceChild("body2", CubeListBuilder.create().texOffs(64, 32).addBox(-5.0F, -8.0F, -17.0F, 10.0F, 10.0F, 22.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, 9.0F, 15.0F));
 
-        PartDefinition front_left_leg2 = body2.addOrReplaceChild("front_left_leg2", CubeListBuilder.create().texOffs(112, 21).mirror().addBox(-3.0F, -1.0F, -1.9F, 4.0F, 11.0F, 4.0F, new CubeDeformation(-0.1F)).mirror(false), PartPose.offset(4.0F, 3.0F, -15.0F));
+        PartDefinition front_left_leg2 = body2.addOrReplaceChild("front_left_leg2", CubeListBuilder.create().texOffs(112, 21).mirror().addBox(-2.0F, -0.2F, -1.9F, 4.0F, 11.0F, 4.0F, new CubeDeformation(-0.1F)).mirror(false), PartPose.offset(3.0F, 2.0F, -15.0F));
 
-        PartDefinition front_right_leg2 = body2.addOrReplaceChild("front_right_leg2", CubeListBuilder.create().texOffs(112, 21).addBox(-1.0F, -1.0F, -1.9F, 4.0F, 11.0F, 4.0F, new CubeDeformation(-0.1F)), PartPose.offset(-4.0F, 3.0F, -15.0F));
+        PartDefinition front_right_leg2 = body2.addOrReplaceChild("front_right_leg2", CubeListBuilder.create().texOffs(112, 21).addBox(-2.0F, -0.2F, -1.9F, 4.0F, 11.0F, 4.0F, new CubeDeformation(-0.1F)), PartPose.offset(-3.0F, 2.0F, -15.0F));
 
-        PartDefinition head2 = body2.addOrReplaceChild("head2", CubeListBuilder.create().texOffs(64, 13).addBox(-3.0F, -11.0F, -2.0F, 6.0F, 5.0F, 7.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, -9.0F, -15.0F));
+        PartDefinition neck2 = body2.addOrReplaceChild("neck2", CubeListBuilder.create().texOffs(64, 35).addBox(-2.05F, -11.7F, -3.0F, 4.0F, 12.0F, 7.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, -3.5F, -14.0F));
 
-        PartDefinition horn2 = head2.addOrReplaceChild("horn2", CubeListBuilder.create().texOffs(96, 6).addBox(-1.0F, -19.0F, 0.0F, 2.0F, 8.0F, 2.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition head2 = neck2.addOrReplaceChild("head2", CubeListBuilder.create().texOffs(64, 13).addBox(-3.0F, -10.9F, -2.0F, 6.0F, 5.0F, 7.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, -5.5F, -1.0F));
 
-        PartDefinition mouth2 = body2.addOrReplaceChild("mouth2", CubeListBuilder.create().texOffs(64, 25).addBox(-2.0F, -11.0F, -7.0F, 4.0F, 5.0F, 5.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, -9.0F, -15.0F));
+        PartDefinition horn2 = head2.addOrReplaceChild("horn2", CubeListBuilder.create().texOffs(95, 5).addBox(-1.0F, -18.7F, 0.0F, 2.0F, 8.0F, 2.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition left_ear2 = body2.addOrReplaceChild("left_ear2", CubeListBuilder.create().texOffs(83, 16).addBox(0.55F, -13.0F, 4.0F, 2.0F, 3.0F, 1.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, -10.0F, -15.01F));
+        PartDefinition he_saddle = head2.addOrReplaceChild("he_saddle", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 23.75F, -0.5F, -0.5236F, 0.0F, 0.0F));
 
-        PartDefinition right_ear2 = body2.addOrReplaceChild("right_ear2", CubeListBuilder.create().texOffs(83, 16).addBox(-2.55F, -13.0F, 4.0F, 2.0F, 3.0F, 1.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, -10.0F, -15.01F));
+        PartDefinition head_saddle = he_saddle.addOrReplaceChild("head_saddle", CubeListBuilder.create().texOffs(19, 80).addBox(-2.0F, -16.0F, -5.0F, 4.0F, 5.0F, 2.0F, new CubeDeformation(0.25F))
+                .texOffs(0, 80).addBox(-3.0F, -16.0F, -3.0F, 6.0F, 5.0F, 7.0F, new CubeDeformation(0.25F)), PartPose.offsetAndRotation(0.0F, -17.0F, -8.0F, 0.5236F, 0.0F, 0.0F));
 
-        PartDefinition neck2 = body2.addOrReplaceChild("neck2", CubeListBuilder.create().texOffs(64, 35).addBox(-2.05F, -6.0F, -2.0F, 4.0F, 12.0F, 7.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, -9.0F, -15.0F));
+        PartDefinition saddle_mouth_line_r = he_saddle.addOrReplaceChild("saddle_mouth_line_r", CubeListBuilder.create().texOffs(32, 82).addBox(-3.1F, -10.0F, -11.5F, 0.0F, 3.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -17.0F, -8.0F));
+
+        PartDefinition saddle_mouth_line = he_saddle.addOrReplaceChild("saddle_mouth_line", CubeListBuilder.create().texOffs(32, 82).addBox(3.1F, -10.0F, -11.5F, 0.0F, 3.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -17.0F, -8.0F));
+
+        PartDefinition saddle_mouth_r = he_saddle.addOrReplaceChild("saddle_mouth_r", CubeListBuilder.create().texOffs(29, 85).addBox(-3.0F, -14.0F, -6.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -17.0F, -8.0F, 0.5236F, 0.0F, 0.0F));
+
+        PartDefinition saddle_mouth_l = he_saddle.addOrReplaceChild("saddle_mouth_l", CubeListBuilder.create().texOffs(29, 85).addBox(2.0F, -14.0F, -6.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -17.0F, -8.0F, 0.5236F, 0.0F, 0.0F));
+
+        PartDefinition mouth2 = head2.addOrReplaceChild("mouth2", CubeListBuilder.create().texOffs(64, 25).addBox(-2.0F, -10.9F, -6.8F, 4.0F, 5.0F, 5.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        PartDefinition left_ear2 = head2.addOrReplaceChild("left_ear2", CubeListBuilder.create().texOffs(83, 16).addBox(0.55F, -13.0F, 4.0F, 2.0F, 3.0F, 1.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, -1.0F, -0.01F));
+
+        PartDefinition right_ear2 = head2.addOrReplaceChild("right_ear2", CubeListBuilder.create().texOffs(83, 16).addBox(-2.55F, -13.0F, 4.0F, 2.0F, 3.0F, 1.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, -1.0F, -0.01F));
 
         PartDefinition tail2 = body2.addOrReplaceChild("tail2", CubeListBuilder.create().texOffs(106, 36).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 14.0F, 4.0F, new CubeDeformation(-0.1F)), PartPose.offset(0.0F, -8.0F, 5.0F));
 
-        PartDefinition back_left_leg2 = body2.addOrReplaceChild("back_left_leg2", CubeListBuilder.create().texOffs(112, 21).mirror().addBox(-3.0F, -1.0F, -1.0F, 4.0F, 11.0F, 4.0F, new CubeDeformation(-0.1F)).mirror(false), PartPose.offset(4.0F, 3.0F, 2.0F));
+        PartDefinition back_left_leg2 = body2.addOrReplaceChild("back_left_leg2", CubeListBuilder.create().texOffs(112, 21).mirror().addBox(-2.0F, -0.2F, -2.0F, 4.0F, 11.0F, 4.0F, new CubeDeformation(-0.1F)).mirror(false), PartPose.offset(3.0F, 2.0F, 3.0F));
 
-        PartDefinition back_right_leg2 = body2.addOrReplaceChild("back_right_leg2", CubeListBuilder.create().texOffs(112, 21).addBox(-1.0F, -1.0F, -1.0F, 4.0F, 11.0F, 4.0F, new CubeDeformation(-0.1F)), PartPose.offset(-4.0F, 3.0F, 2.0F));
+        PartDefinition back_right_leg2 = body2.addOrReplaceChild("back_right_leg2", CubeListBuilder.create().texOffs(112, 21).addBox(-2.0F, -0.2F, -2.0F, 4.0F, 11.0F, 4.0F, new CubeDeformation(-0.1F)), PartPose.offset(-3.0F, 2.0F, 3.0F));
+
+        PartDefinition saddle = body2.addOrReplaceChild("saddle", CubeListBuilder.create().texOffs(26, 80).addBox(-5.0F, 1.0F, -5.5F, 10.0F, 9.0F, 9.0F, new CubeDeformation(0.5F)), PartPose.offset(0.0F, -9.0F, -4.0F));
+
+        PartDefinition body = bone.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 32).addBox(-5.0F, -8.0F, -17.0F, 10.0F, 10.0F, 22.0F, new CubeDeformation(0.05F)), PartPose.offset(0.0F, 9.0F, 15.0F));
+
+        PartDefinition front_left_leg = body.addOrReplaceChild("front_left_leg", CubeListBuilder.create().texOffs(48, 21).mirror().addBox(-3.0F, 0.0F, -1.9F, 4.0F, 11.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(4.0F, 2.0F, -15.0F));
+
+        PartDefinition front_right_leg = body.addOrReplaceChild("front_right_leg", CubeListBuilder.create().texOffs(48, 21).addBox(-2.0F, 0.0F, -1.9F, 4.0F, 11.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, 2.0F, -15.0F));
+
+        PartDefinition neck = body.addOrReplaceChild("neck", CubeListBuilder.create().texOffs(0, 35).addBox(-2.05F, -11.5F, -3.0F, 4.0F, 12.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -3.5F, -14.0F));
+
+        PartDefinition head = neck.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 13).addBox(-3.0F, 4.0F, -2.0F, 6.0F, 5.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -20.5F, -1.0F));
+
+        PartDefinition horn = head.addOrReplaceChild("horn", CubeListBuilder.create().texOffs(37, 3).addBox(-1.0F, -2.0F, 0.0F, 2.0F, 6.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        PartDefinition mouth = head.addOrReplaceChild("mouth", CubeListBuilder.create().texOffs(0, 25).addBox(-2.0F, 4.0F, -7.0F, 4.0F, 5.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        PartDefinition left_ear = head.addOrReplaceChild("left_ear", CubeListBuilder.create().texOffs(19, 16).addBox(0.55F, 2.0F, 4.0F, 2.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -1.0F, -0.01F));
+
+        PartDefinition right_ear = head.addOrReplaceChild("right_ear", CubeListBuilder.create().texOffs(19, 16).addBox(-2.55F, 2.0F, 4.0F, 2.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -1.0F, -0.01F));
+
+        PartDefinition mane = neck.addOrReplaceChild("mane", CubeListBuilder.create().texOffs(56, 36).addBox(-1.0F, 4.0F, 5.01F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -20.5F, -1.01F));
+
+        PartDefinition tail = body.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(42, 36).addBox(-1.5F, -1.0F, 0.0F, 3.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -7.0F, 5.0F));
+
+        PartDefinition back_left_leg = body.addOrReplaceChild("back_left_leg", CubeListBuilder.create().texOffs(48, 21).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(3.0F, 2.0F, 3.0F));
+
+        PartDefinition back_right_leg = body.addOrReplaceChild("back_right_leg", CubeListBuilder.create().texOffs(48, 21).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, 2.0F, 3.0F));
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
@@ -259,7 +259,7 @@ public class UnicornModel<T extends Unicorn> extends HierarchicalModel<T> {
         float neckYRotDelta = f6 * f3 * ((float) Math.PI / 180F) + (1.0F - Math.max(f6, f5)) * f3 * ((float) Math.PI / 180F); // rest = 0 already
 
 
-        for (ModelPart part : new ModelPart[]{head, mouth, leftEar, rightEar, neck, mane}) {
+        for (ModelPart part : new ModelPart[]{neck}) {
             if (part == null) continue;
             float[] r = restPose.get(part);
             part.xRot = r[3] + neckXRotDelta + 0.5f;
