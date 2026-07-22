@@ -1,23 +1,26 @@
 package com.dead_comedian.farmerooni.entities;
 
+import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
 import com.dead_comedian.farmerooni.entities.ai.TermiteAi;
+import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.mojang.serialization.Dynamic;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.DebugPackets;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 public class TermiteEntity extends Animal {
@@ -123,19 +126,50 @@ public class TermiteEntity extends Animal {
         this.updateAnimations();
     }
 
+    /*
+        look for the nest when summoned, spawn-egged, hatched, natural spawned etc etc
+     */
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
+        BlockPos poss = this.blockPosition();
+        Farmerooni.LOGGER.info("new termite finding nest");
+        for (BlockPos pos : BlockPos.betweenClosed(poss.offset(-15, -2, -15), poss.offset(15, 2, 15))) {
+            if (level.getBlockState(pos).is(FarmerooniBlocks.TERMITE_NEST.get())) {
+                if(!((TermiteNestBlockEntity) level.getBlockEntity(pos)).addTermiteResident(this)){
+                    this.getBrain().setMemory(FarmerooniMemoryModules.NEST.get(), pos);
+                    if(level instanceof ServerLevel slevel) slevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY() + 1.0, this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+
+                    Farmerooni.LOGGER.info("new termite linked to existing nest");
+                    break;
+                }
+            }
+        }
+
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+    }
+
     @Override
     public void remove(RemovalReason reason) {
         //todo dimension checking
 
-        if (this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).isPresent() && this.level().getBlockEntity(
-                this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).get()) != null) {
+        if (
+                this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).isPresent() &&
+                this.level().getBlockEntity(
+                     this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).get()
+                ) != null
+        ) {
             ((TermiteNestBlockEntity) this.level().getBlockEntity(
                     this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).get()
             )).removeTermiteResident(this);
+
+            if(this.level() instanceof ServerLevel slevel) slevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, this.getX(), this.getY() + 1.0, this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+
+            Farmerooni.LOGGER.info("killed termite unlinked to nest");
         }
 
         super.remove(reason);
     }
+
 
     @Override
     public boolean isPersistenceRequired() {
