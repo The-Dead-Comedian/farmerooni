@@ -12,8 +12,6 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.animal.horse.Horse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +20,7 @@ public class UnicornModel<T extends Unicorn> extends HierarchicalModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, "unicorn"), "main");
     public static final ModelLayerLocation ARMOR_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, "unicorn_armor"), "main");
     private static final float DEG_125 = 2.1816616F;
-     private static final float DEG_30 = ((float) Math.PI / 6F);
+    private static final float DEG_30 = ((float) Math.PI / 6F);
     private static final float DEG_15 = 0.2617994F;
 
     private final ModelPart[] ridingParts;
@@ -262,7 +260,8 @@ public class UnicornModel<T extends Unicorn> extends HierarchicalModel<T> {
         for (ModelPart part : new ModelPart[]{neck}) {
             if (part == null) continue;
             float[] r = restPose.get(part);
-            part.xRot = r[3] + neckXRotDelta + 0.5f;
+            float headTilt = !entity.getPoke() ? 0.5f : 0.8f;
+            part.xRot = r[3] + neckXRotDelta + headTilt;
             part.yRot = r[4] + neckYRotDelta;
 
             part.y = r[1] + 2;
