@@ -189,7 +189,7 @@ public class Unicorn extends AbstractHorse {
                         );
 
                         livingEntity.hurt(damageSource, (float) (18.5 * direction));
-                        livingEntity.knockback(1, -x, -z);
+                        livingEntity.knockback(0.3, -x, -z);
                     }
                 }
             }
