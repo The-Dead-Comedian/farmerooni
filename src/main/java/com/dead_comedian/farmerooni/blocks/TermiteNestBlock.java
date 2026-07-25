@@ -1,5 +1,6 @@
 package com.dead_comedian.farmerooni.blocks;
 
+import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlockEntities;
 import com.mojang.serialization.MapCodec;
@@ -94,6 +95,24 @@ public class TermiteNestBlock extends BaseEntityBlock {
             }
         }
 
+    }
+
+    /*
+        clears resident memories
+     */
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        ((TermiteNestBlockEntity) level.getBlockEntity(pos)).disbandTerritory();
+        super.onRemove(state, level, pos, newState, movedByPiston);
+    }
+
+    /*
+        adds resident memories
+     */
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        ((TermiteNestBlockEntity) level.getBlockEntity(pos)).createTerritory();
+        super.onPlace(state, level, pos, oldState, movedByPiston);
     }
 
     @Nullable
