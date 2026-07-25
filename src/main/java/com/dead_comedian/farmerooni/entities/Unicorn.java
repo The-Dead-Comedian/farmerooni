@@ -1,7 +1,9 @@
 package com.dead_comedian.farmerooni.entities;
 
+import com.dead_comedian.farmerooni.registries.FarmerooniDamageTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -94,11 +96,11 @@ public class Unicorn extends AbstractHorse {
     }
 
     private void setPoke(boolean poke) {
-         this.entityData.set(POKE, poke);
+        this.entityData.set(POKE, poke);
     }
 
     public boolean getPoke() {
-         return this.entityData.get(POKE);
+        return this.entityData.get(POKE);
     }
 
 
@@ -155,7 +157,7 @@ public class Unicorn extends AbstractHorse {
                 double x = 4 * this.getLookAngle().x;
                 double z = 4 * this.getLookAngle().z;
 
-                AABB aabb = new AABB(this.getX() + x - 0.5, this.getY() - 1, this.getZ() + z - 0.5, this.getX() + x + 0.5, this.getY() + 0.5, this.getZ() + z + 0.5);
+                AABB aabb = new AABB(this.getX() + x - 0.75, this.getY() - 1, this.getZ() + z - 0.75, this.getX() + x + 0.75, this.getY() + 1, this.getZ() + z + 0.75);
 
                 //Makes sure the unicorn doesnt impale the rider's pets
                 Predicate<Entity> predicate = (livingEntity) -> !(
@@ -166,12 +168,10 @@ public class Unicorn extends AbstractHorse {
                 )
                         && !livingEntity.is(this);
 
-
-                List<Entity> damageMeBoi = level().getEntities(this, aabb, predicate);
+                List<Entity> damageMeBoi = level().getEntities(this, aabb );
 
                 //todo: make custom damage source with custom death message
 
-                System.out.println(damageMeBoi);
                 for (Entity entity : damageMeBoi) {
                     if (entity instanceof LivingEntity livingEntity) {
 
@@ -181,7 +181,14 @@ public class Unicorn extends AbstractHorse {
                                 + Math.pow(relativeVelocity.y, 2)
                                 + Math.pow(relativeVelocity.z, 2));
 
-                        livingEntity.hurt(this.damageSources().generic(), (float) (2.15 * direction));
+                        DamageSource damageSource = new DamageSource(
+                                level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(FarmerooniDamageTypes.POKE),
+                                this.getControllingPassenger(),
+                                this.getControllingPassenger(),
+                                null
+                        );
+
+                        livingEntity.hurt(damageSource, (float) (18.5 * direction));
                         livingEntity.knockback(1, -x, -z);
                     }
                 }
