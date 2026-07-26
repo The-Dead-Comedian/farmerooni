@@ -1,7 +1,9 @@
 package com.dead_comedian.farmerooni.entities;
 
+import com.dead_comedian.farmerooni.registries.FarmerooniDamageTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -10,7 +12,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.DifficultyInstance;
@@ -21,7 +22,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AnimalArmorItem;
 import net.minecraft.world.item.Item;
@@ -30,48 +30,37 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.CommonHooks;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 public class Unicorn extends AbstractHorse {
     private static final EntityDataAccessor<Boolean> SKINNED = SynchedEntityData.defineId(Unicorn.class, EntityDataSerializers.BOOLEAN);
-    ;
+    private static final EntityDataAccessor<Boolean> POKE = SynchedEntityData.defineId(Unicorn.class, EntityDataSerializers.BOOLEAN);
 
     public Unicorn(EntityType<? extends AbstractHorse> entityType, Level level) {
         super(entityType, level);
     }
 
+
     @Override
-    protected void executeRidersJump(float playerJumpPendingScale, Vec3 travelVector) {
-        double d0 = (double)this.getJumpPower(playerJumpPendingScale);
-        System.out.println(d0);
-        System.out.println();
-        Vec3 vec3 = this.getDeltaMovement();
-        this.setDeltaMovement(vec3.x, d0, vec3.z);
-        this.setIsJumping(true);
-        this.hasImpulse = true;
-        CommonHooks.onLivingJump(this);
-        if (travelVector.z > (double)0.0F) {
-            float f = Mth.sin(this.getYRot() * ((float)Math.PI / 180F));
-            float f1 = Mth.cos(this.getYRot() * ((float)Math.PI / 180F));
-            this.setDeltaMovement(this.getDeltaMovement().add((double)(-0.4F * f * playerJumpPendingScale), (double)0.0F, (double)(0.4F * f1 * playerJumpPendingScale)));
+    public void handleStartJump(int jumpPower) {
+        if (jumpPower < 40) {
+            this.setPoke(!this.getPoke());
+            level().playSound(this, this.blockPosition(), SoundEvents.ZOMBIE_HORSE_AMBIENT, SoundSource.NEUTRAL, 1, 1);
+        } else {
+            super.handleStartJump(jumpPower);
         }
-
-    }
-
-    @Override
-    public void onPlayerJump(int jumpPower) {
-        System.out.println(jumpPower);
-        super.onPlayerJump(jumpPower);
     }
 
     protected void randomizeAttributes(RandomSource random) {
         AttributeInstance attributeInstance = this.getAttribute(Attributes.MAX_HEALTH);
         Objects.requireNonNull(random);
-        attributeInstance.setBaseValue((double) generateMaxHealth(random::nextInt));
+        attributeInstance.setBaseValue(generateMaxHealth(random::nextInt));
         attributeInstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
         Objects.requireNonNull(random);
         attributeInstance.setBaseValue(generateSpeed(random::nextDouble));
@@ -84,6 +73,8 @@ public class Unicorn extends AbstractHorse {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(SKINNED, false);
+        builder.define(POKE, false);
+
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -102,6 +93,14 @@ public class Unicorn extends AbstractHorse {
 
     public boolean getSkin() {
         return this.entityData.get(SKINNED);
+    }
+
+    private void setPoke(boolean poke) {
+        this.entityData.set(POKE, poke);
+    }
+
+    public boolean getPoke() {
+        return this.entityData.get(POKE);
     }
 
 
@@ -149,7 +148,60 @@ public class Unicorn extends AbstractHorse {
         if (this.tickCount > 20 && this.isBodyArmorItem(itemstack1) && itemstack != itemstack1) {
             this.playSound(SoundEvents.HORSE_ARMOR, 0.5F, 1.0F);
         }
+    }
 
+    @Override
+    public void tick() {
+        if (!level().isClientSide) {
+            if (this.getPoke()) {
+                double x = 4 * this.getLookAngle().x;
+                double z = 4 * this.getLookAngle().z;
+
+                AABB aabb = new AABB(this.getX() + x - 0.75, this.getY() - 1, this.getZ() + z - 0.75, this.getX() + x + 0.75, this.getY() + 1, this.getZ() + z + 0.75);
+
+                //Makes sure the unicorn doesnt impale the rider's pets
+                Predicate<Entity> predicate = (livingEntity) -> !(
+                        livingEntity instanceof TamableAnimal tame
+                                && this.getControllingPassenger() != null
+                                && tame.getOwner() != null
+                                && tame.getOwner().is(this.getControllingPassenger())
+                )
+                        && !livingEntity.is(this);
+
+                List<Entity> damageMeBoi = level().getEntities(this, aabb );
+
+                //todo: make custom damage source with custom death message
+
+                for (Entity entity : damageMeBoi) {
+                    if (entity instanceof LivingEntity livingEntity) {
+
+
+                        Vec3 relativeVelocity = this.getDeltaMovement().subtract(livingEntity.getDeltaMovement());
+                        double direction = Math.sqrt(Math.pow(relativeVelocity.x, 2)
+                                + Math.pow(relativeVelocity.y, 2)
+                                + Math.pow(relativeVelocity.z, 2));
+
+                        DamageSource damageSource = new DamageSource(
+                                level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(FarmerooniDamageTypes.POKE),
+                                this.getControllingPassenger(),
+                                this.getControllingPassenger(),
+                                null
+                        );
+
+                        livingEntity.hurt(damageSource, (float) (18.5 * direction));
+                        livingEntity.knockback(0.3, -x, -z);
+                    }
+                }
+            }
+        }
+
+
+        super.tick();
+    }
+
+    @Override
+    public boolean dismountsUnderwater() {
+        return super.dismountsUnderwater();
     }
 
     protected void playGallopSound(SoundType soundType) {

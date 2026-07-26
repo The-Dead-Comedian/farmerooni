@@ -1,10 +1,18 @@
 {
-
   "item.farmerooni.putrid_boat": "Putrid Boat",
   "item.farmerooni.putrid_chest_boat": "Putrid Boat with Chest",
 
   "block.farmerooni.termite_eggs": "Termite Eggs",
   "block.farmerooni.termite_nest": "Termite Nest",
+
+  "item.farmerooni.termite_spawn_egg": "Termite Spawn Egg",
+  "item.farmerooni.unicorn_spawn_egg": "Unicorn Spawn Egg",
+
+
+  "entity.farmerooni.termite": "Termite",
+  "entity.farmerooni.unicorn": "Unicorn",
+
+  "death.attack.poke": "%1$s got poked where the sun don't shine by %2$s",
 
   "block.farmerooni.putrid_button": "Putrid Button",
   "block.farmerooni.putrid_door": "Putrid Door",
