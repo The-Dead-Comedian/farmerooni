@@ -6,6 +6,7 @@ import com.dead_comedian.farmerooni.entities.ai.TermiteAi;
 import com.dead_comedian.farmerooni.entities.ai.codec_masturbation.NestData;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
+import com.dead_comedian.farmerooni.registries.FarmerooniSensorTypes;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -80,6 +81,15 @@ public class TermiteEntity extends Animal {
         this.level().getProfiler().push("termiteBrain");
         ((Brain<TermiteEntity>) this.brain).tick((ServerLevel) this.level(), this);
         this.level().getProfiler().pop();
+
+        this.level().getProfiler().push("termiteActivityUpdateFromSchedule");
+        brain.updateActivityFromSchedule(
+                level().getDayTime(),
+                level().getGameTime()
+        );
+        this.level().getProfiler().pop();
+
+
         this.level().getProfiler().push("termiteActivityUpdate");
         TermiteAi.updateActivity(this);
         this.level().getProfiler().pop();
@@ -89,7 +99,9 @@ public class TermiteEntity extends Animal {
 
     @Override
     protected Brain<?> makeBrain(Dynamic<?> dynamic) {
-        return TermiteAi.makeBrain(this, this.brainProvider().makeBrain(dynamic));
+        Brain bbraing = this.brainProvider().makeBrain(dynamic);
+        bbraing.setSchedule(FarmerooniSensorTypes.TERMITESCHDEULE.get());
+        return TermiteAi.makeBrain(this, bbraing);
     }
 
     @Override

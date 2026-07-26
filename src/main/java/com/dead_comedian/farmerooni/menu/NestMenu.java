@@ -25,6 +25,7 @@ public class NestMenu extends AbstractContainerMenu {
 
     public NestMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
         this(containerId, inv, (TermiteNestBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos()), 0);
+        //bug: spectator mode causes extraData.readBlockpos() to be null, kicking the player from the level.
     }
 
     public NestMenu(int id, Inventory inv, Container be, int residussy) {
