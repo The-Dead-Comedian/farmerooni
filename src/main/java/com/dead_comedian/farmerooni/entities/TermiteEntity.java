@@ -89,7 +89,7 @@ public class TermiteEntity extends Animal {
 
     @Override
     protected Brain<?> makeBrain(Dynamic<?> dynamic) {
-        return TermiteAi.makeBrain(this.brainProvider().makeBrain(dynamic));
+        return TermiteAi.makeBrain(this, this.brainProvider().makeBrain(dynamic));
     }
 
     @Override
@@ -149,12 +149,13 @@ public class TermiteEntity extends Animal {
         Farmerooni.LOGGER.info("new termite finding nest");
         for (BlockPos pos : BlockPos.betweenClosed(poss.offset(-15, -2, -15), poss.offset(15, 2, 15))) {
             if (level.getBlockState(pos).is(FarmerooniBlocks.TERMITE_NEST.get())) {
-                if(!((TermiteNestBlockEntity) level.getBlockEntity(pos)).addTermiteResident(this)){
+                if (!((TermiteNestBlockEntity) level.getBlockEntity(pos)).addTermiteResident(this)) {
                     this.getBrain().setMemory(FarmerooniMemoryModules.NEST_DATA.get(), new NestData(
                             ((TermiteNestBlockEntity) level.getBlockEntity(pos)).colony,
                             pos
                     ));
-                    if(level instanceof ServerLevel slevel) slevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY() + 1.0, this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+                    if (level instanceof ServerLevel slevel)
+                        slevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY() + 1.0, this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 
                     Farmerooni.LOGGER.info("new termite linked to existing nest");
                     break;
@@ -171,15 +172,16 @@ public class TermiteEntity extends Animal {
 
         if (
                 this.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).isPresent() &&
-                this.level().getBlockEntity(
-                     this.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest()
-                ) != null
+                        this.level().getBlockEntity(
+                                this.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest()
+                        ) != null
         ) {
             ((TermiteNestBlockEntity) this.level().getBlockEntity(
                     this.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest()
             )).removeTermiteResident(this);
 
-            if(this.level() instanceof ServerLevel slevel) slevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, this.getX(), this.getY() + 1.0, this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+            if (this.level() instanceof ServerLevel slevel)
+                slevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, this.getX(), this.getY() + 1.0, this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 
             Farmerooni.LOGGER.info("killed termite unlinked to nest");
         }

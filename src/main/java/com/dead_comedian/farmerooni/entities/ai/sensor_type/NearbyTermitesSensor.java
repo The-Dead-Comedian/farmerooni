@@ -1,6 +1,5 @@
 package com.dead_comedian.farmerooni.entities.ai.sensor_type;
 
-import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
 import com.dead_comedian.farmerooni.entities.ai.codec_masturbation.NestData;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
@@ -31,19 +30,18 @@ public class NearbyTermitesSensor extends Sensor<TermiteEntity> {
         NestData mine = nestinfo.get();
 
         List<TermiteEntity> theopps = level.getEntitiesOfClass(
-            TermiteEntity.class,
-            thisone.getBoundingBox().inflate(32),
-            opp-> {
-                if (opp == thisone) return false;
+                TermiteEntity.class,
+                thisone.getBoundingBox().inflate(32),
+                opp -> {
+                    if (opp == thisone) return false;
 
-                Optional<NestData> oppinfo = opp
-                    .getBrain()
-                    .getMemory(FarmerooniMemoryModules.NEST_DATA.get());
+                    Optional<NestData> oppinfo = opp
+                            .getBrain()
+                            .getMemory(FarmerooniMemoryModules.NEST_DATA.get());
 
 
-
-                return oppinfo.isEmpty() || !mine.colony().equals(oppinfo.get().colony());
-            }
+                    return oppinfo.isEmpty() || (mine.colony() != null && !mine.colony().equals(oppinfo.get().colony()));
+                }
         );
 
         if (theopps.isEmpty()) {

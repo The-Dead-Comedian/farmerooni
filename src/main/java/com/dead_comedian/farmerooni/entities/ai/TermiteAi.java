@@ -1,25 +1,22 @@
 package com.dead_comedian.farmerooni.entities.ai;
 
-import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
-import com.dead_comedian.farmerooni.entities.ai.sensor_type.NearbyTermitesSensor;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.dead_comedian.farmerooni.registries.FarmerooniSensorTypes;
 import com.google.common.collect.ImmutableList;
-import com.sun.jna.Memory;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.schedule.Activity;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public class TermiteAi {
@@ -31,6 +28,7 @@ public class TermiteAi {
             MemoryModuleType.NEAREST_LIVING_ENTITIES,
             MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
             MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
+            MemoryModuleType.ATTACK_COOLING_DOWN,
             MemoryModuleType.PATH,
             FarmerooniMemoryModules.NEST_DATA.get()
     );
@@ -42,10 +40,10 @@ public class TermiteAi {
             FarmerooniSensorTypes.TILFS_NEAR_ME_SENSOR.get()
     );
 
-    public static Brain<?> makeBrain(Brain<TermiteEntity> brain) {
+    public static Brain<?> makeBrain(TermiteEntity termite, Brain<TermiteEntity> brain) {
         initCoreActivity(brain);
         initIdleActivity(brain);
-        initWarActivity(brain);
+        initWarActivity(termite, brain);
 
         brain.setCoreActivities(Set.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
@@ -53,14 +51,14 @@ public class TermiteAi {
         return brain;
     }
 
-    public static void updateActivity(TermiteEntity revenant) {
+    public static void updateActivity(TermiteEntity termite) {
 
-        revenant.getBrain().setActiveActivityToFirstValid(ImmutableList.of(
+        termite.getBrain().setActiveActivityToFirstValid(ImmutableList.of(
                 Activity.FIGHT,
                 Activity.IDLE
         ));
 
-        revenant.setAggressive(revenant.getBrain().hasMemoryValue(MemoryModuleType.ATTACK_TARGET));
+        termite.setAggressive(termite.getBrain().hasMemoryValue(MemoryModuleType.ATTACK_TARGET));
     }
 
     private static void initCoreActivity(Brain<TermiteEntity> brain) {
@@ -87,18 +85,24 @@ public class TermiteAi {
 
     }
 
-    private static void initWarActivity(Brain<TermiteEntity> brain) {
+    private static void initWarActivity(TermiteEntity termite, Brain<TermiteEntity> brain) {
         brain.addActivityAndRemoveMemoryWhenStopped(
                 Activity.FIGHT,
-                10,
+                0,
                 ImmutableList.of(
                         StopAttackingIfTargetInvalid.<Mob>create(p_35118_ -> !p_35118_.isAlive()),
-                        SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(1.0F),
-                        MeleeAttack.create(20)
+                        SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(1.2F),
+                        SetEntityLookTarget.create(p_219535_ -> isTarget(termite, p_219535_), (float) termite.getAttributeValue(Attributes.FOLLOW_RANGE)),
+
+                        MeleeAttack.create(30)
                 ),
                 MemoryModuleType.ATTACK_TARGET
         );
 
+    }
+
+    private static boolean isTarget(TermiteEntity termite, LivingEntity entity) {
+        return termite.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).filter(p_219509_ -> p_219509_ == entity).isPresent();
     }
 
 }
