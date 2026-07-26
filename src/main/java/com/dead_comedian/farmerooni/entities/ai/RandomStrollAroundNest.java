@@ -36,12 +36,12 @@ public class RandomStrollAroundNest {
                     if (!canStroll.test(pathfinderMob)) {
                         return false;
                     } else {
-                        if (pathfinderMob.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).isPresent()) {
+                        if (pathfinderMob.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).isPresent()) {
                             Optional<Vec3> optional = Optional.ofNullable((Vec3) target.apply(pathfinderMob));
                             if (optional.isPresent()) {
                                 Level level = pathfinderMob.level();
                                 BlockPos blockPos = new BlockPos((int) optional.get().x(), (int) optional.get().y(), (int) optional.get().z());
-                                BlockPos nestPos = pathfinderMob.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).get();
+                                BlockPos nestPos = pathfinderMob.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
                                 DifficultyInstance difficulty = level.getCurrentDifficultyAt(nestPos);
                                 if (blockPos.distToCenterSqr(nestPos.getX(), nestPos.getY(), nestPos.getZ()) < 10) {
                                     walkTargetMemoryAccessor.setOrErase(optional.map((vec3) -> new WalkTarget(vec3, speedModifier, 0)));

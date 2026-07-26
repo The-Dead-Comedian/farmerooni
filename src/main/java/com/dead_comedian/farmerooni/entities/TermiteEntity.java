@@ -3,6 +3,7 @@ package com.dead_comedian.farmerooni.entities;
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
 import com.dead_comedian.farmerooni.entities.ai.TermiteAi;
+import com.dead_comedian.farmerooni.entities.ai.codec_masturbation.NestData;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.mojang.serialization.Dynamic;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -117,7 +119,9 @@ public class TermiteEntity extends Animal {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10)
                 .add(Attributes.MOVEMENT_SPEED, 0.3f)
-                .add(Attributes.ARMOR, 2f);
+                .add(Attributes.ARMOR, 2f)
+                .add(Attributes.ATTACK_DAMAGE, 5);
+
     }
 
     @Override
@@ -126,9 +130,19 @@ public class TermiteEntity extends Animal {
         this.updateAnimations();
     }
 
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        return true;
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity livingentity, TargetingConditions condition) {
+        return true;
+    }
+
     /*
-        look for the nest when summoned, spawn-egged, hatched, natural spawned etc etc
-     */
+                    look for the nest when summoned, spawn-egged, hatched, natural spawned etc etc
+                 */
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
         BlockPos poss = this.blockPosition();
@@ -136,7 +150,10 @@ public class TermiteEntity extends Animal {
         for (BlockPos pos : BlockPos.betweenClosed(poss.offset(-15, -2, -15), poss.offset(15, 2, 15))) {
             if (level.getBlockState(pos).is(FarmerooniBlocks.TERMITE_NEST.get())) {
                 if(!((TermiteNestBlockEntity) level.getBlockEntity(pos)).addTermiteResident(this)){
-                    this.getBrain().setMemory(FarmerooniMemoryModules.NEST.get(), pos);
+                    this.getBrain().setMemory(FarmerooniMemoryModules.NEST_DATA.get(), new NestData(
+                            ((TermiteNestBlockEntity) level.getBlockEntity(pos)).colony,
+                            pos
+                    ));
                     if(level instanceof ServerLevel slevel) slevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY() + 1.0, this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 
                     Farmerooni.LOGGER.info("new termite linked to existing nest");
@@ -153,13 +170,13 @@ public class TermiteEntity extends Animal {
         //todo dimension checking
 
         if (
-                this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).isPresent() &&
+                this.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).isPresent() &&
                 this.level().getBlockEntity(
-                     this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).get()
+                     this.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest()
                 ) != null
         ) {
             ((TermiteNestBlockEntity) this.level().getBlockEntity(
-                    this.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).get()
+                    this.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest()
             )).removeTermiteResident(this);
 
             if(this.level() instanceof ServerLevel slevel) slevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, this.getX(), this.getY() + 1.0, this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
