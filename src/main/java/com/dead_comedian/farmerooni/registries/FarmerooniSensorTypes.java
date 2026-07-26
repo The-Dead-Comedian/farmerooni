@@ -1,6 +1,7 @@
 package com.dead_comedian.farmerooni.registries;
 
 import com.dead_comedian.farmerooni.Farmerooni;
+import com.dead_comedian.farmerooni.entities.ai.sensor_type.NearbyTermitesSensor;
 import com.dead_comedian.farmerooni.entities.ai.sensor_type.NestValidSensor;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.ai.sensing.SensorType;
@@ -18,6 +19,9 @@ public class FarmerooniSensorTypes {
             SENSOR_TYPES.register("nest_valid_sensor",
                     () -> new SensorType<>(NestValidSensor::new));
 
+    public static final Supplier<SensorType<NearbyTermitesSensor>> TILFS_NEAR_ME_SENSOR =
+            SENSOR_TYPES.register("nearby_termites_sensor",
+                    () -> new SensorType<>(NearbyTermitesSensor::new));
 
     public static void init(IEventBus eventBus) {
         SENSOR_TYPES.register(eventBus);

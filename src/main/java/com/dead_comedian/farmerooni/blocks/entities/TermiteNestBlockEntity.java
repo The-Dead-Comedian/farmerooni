@@ -2,12 +2,14 @@ package com.dead_comedian.farmerooni.blocks.entities;
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.ai.codec_masturbation.NestData;
 import com.dead_comedian.farmerooni.menu.NestMenu;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlockEntities;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
@@ -33,6 +35,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
     private NonNullList<ItemStack> items;
     private static int MAX_TERMITES = 8;
     private final List<UUID> residents = new ArrayList<>();
+    public UUID colony;
     int counter = 0;
 
 
@@ -82,10 +85,12 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         if(this.level instanceof ServerLevel level) {
             this.residents.forEach(uuid -> {
                 TermiteEntity revenantlmao = ((TermiteEntity) level.getEntity(uuid));
-                revenantlmao.getBrain().eraseMemory(FarmerooniMemoryModules.NEST.get());
-                level.sendParticles(ParticleTypes.ANGRY_VILLAGER, revenantlmao.getX(), revenantlmao.getY() + 1.0, revenantlmao.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+                if(!revenantlmao.isRemoved()){
+                    revenantlmao.getBrain().eraseMemory(FarmerooniMemoryModules.NEST_DATA.get());
+                    level.sendParticles(ParticleTypes.ANGRY_VILLAGER, revenantlmao.getX(), revenantlmao.getY() + 1.0, revenantlmao.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 
-                Farmerooni.LOGGER.info("existing termite removed to broken nest");
+                    Farmerooni.LOGGER.info("existing termite removed to broken nest");
+                }
             });
 
             this.residents.clear();
@@ -94,18 +99,24 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
 
     public void createTerritory(){
         Farmerooni.LOGGER.info("new nest looking for existing termites");
+        this.colony = UUID.randomUUID();
+
         List<TermiteEntity> termites = level.getEntitiesOfClass(
             TermiteEntity.class,
             new AABB(this.getBlockPos()).inflate(15, 2, 15),
             termitty -> {
-                return !termitty.getBrain().getMemory(FarmerooniMemoryModules.NEST.get()).isPresent();
+                return !termitty.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).isPresent();
             }
         );
         termites.stream()
             .limit(8)
             .forEach(termtity -> {
                 if(!this.addTermiteResident(termtity)){
-                    termtity.getBrain().setMemory(FarmerooniMemoryModules.NEST.get(), this.getBlockPos());
+                    termtity.getBrain().setMemory(FarmerooniMemoryModules.NEST_DATA.get(), new NestData(
+                        this.colony,
+                        this.getBlockPos()
+                    ));
+
                     if(level instanceof ServerLevel slevel) slevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, termtity.getX(), termtity.getY() + 1.0, termtity.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 
                     Farmerooni.LOGGER.info("existing termite added to new nest");
@@ -143,11 +154,13 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         super.loadAdditional(tag, registries);
 
         this.residents.clear();
+        this.colony = tag.getUUID("Colony");
         ListTag uuidList = tag.getList("Residents", Tag.TAG_INT_ARRAY);
 
         for (Tag tug : uuidList) {
             if (tug instanceof IntArrayTag) {
                 residents.add(NbtUtils.loadUUID(tug));
+
             }
         }
     }
@@ -160,6 +173,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         for (UUID uuid : residents) {
             residentList.add(NbtUtils.createUUID(uuid));
         }
+        if (this.colony != null) tag.putUUID("Colony",  this.colony);
         tag.put("Residents", residentList);
 
     }
