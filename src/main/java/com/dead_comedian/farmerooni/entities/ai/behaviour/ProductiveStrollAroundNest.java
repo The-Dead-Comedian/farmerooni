@@ -2,6 +2,8 @@ package com.dead_comedian.farmerooni.entities.ai.behaviour;
 
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.core.BlockPos;
+import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.behavior.BehaviorControl;
@@ -12,6 +14,7 @@ import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.Tags;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -30,10 +33,16 @@ public class ProductiveStrollAroundNest {
             .create(
                 (pathfinderMobInstance)
                 -> pathfinderMobInstance.group(
-                        pathfinderMobInstance.absent(MemoryModuleType.WALK_TARGET)
+                        pathfinderMobInstance.absent(MemoryModuleType.WALK_TARGET),
+                        pathfinderMobInstance.absent(FarmerooniMemoryModules.SCOUT_HAS_DISCOVERY.get())
+
                 ).apply(
                     pathfinderMobInstance,
-                    (walkTargetMemoryAccessor) -> (serverLevel, pathfinderMob, l) -> {
+                    (
+                        walkTargetMemoryAccessor,
+                        scoutDiscovery
+
+                    ) -> (serverLevel, pathfinderMob, l) -> {
                         if (pathfinderMob.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).isPresent()) {
                             Optional<Vec3> optional = Optional.ofNullable((Vec3) target.apply(pathfinderMob));
 
@@ -45,8 +54,19 @@ public class ProductiveStrollAroundNest {
                                     walkTargetMemoryAccessor.setOrErase(optional.map((vec3) -> new WalkTarget(vec3, speedModifier, 0)));
                                 }
                             }
-                            return true;
                             //todo scan the region or something
+                            Optional<BlockPos> starterooni = BlockPos.betweenClosedStream(
+                                    pathfinderMob.blockPosition().offset(-1,-1,-1),
+                                    pathfinderMob.blockPosition().offset(1,1,1)
+                            ).filter(
+                                    pos -> serverLevel.getBlockState(pos).is(BlockTags.PLANKS)
+                            ).findFirst();
+
+                            if(starterooni.isPresent()){
+                                pathfinderMob.getBrain().setMemory(FarmerooniMemoryModules.SCOUT_HAS_DISCOVERY.get(), true);
+                            }
+
+                            return true;
                         } else {
                             Optional<Vec3> optional2 = Optional.ofNullable((Vec3) target.apply(pathfinderMob));
                             walkTargetMemoryAccessor.setOrErase(optional2.map((p_258622_) -> new WalkTarget(p_258622_, speedModifier, 0)));

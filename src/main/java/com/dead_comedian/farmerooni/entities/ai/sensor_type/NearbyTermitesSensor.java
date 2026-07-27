@@ -1,7 +1,7 @@
 package com.dead_comedian.farmerooni.entities.ai.sensor_type;
 
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
-import com.dead_comedian.farmerooni.entities.ai.codec_masturbation.NestData;
+import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.Brain;

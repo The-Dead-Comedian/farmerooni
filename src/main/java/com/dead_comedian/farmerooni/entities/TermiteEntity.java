@@ -3,9 +3,10 @@ package com.dead_comedian.farmerooni.entities;
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
 import com.dead_comedian.farmerooni.entities.ai.TermiteAi;
-import com.dead_comedian.farmerooni.entities.ai.codec_masturbation.NestData;
+import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
+import com.dead_comedian.farmerooni.registries.FarmerooniSchedules;
 import com.dead_comedian.farmerooni.registries.FarmerooniSensorTypes;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
@@ -100,7 +101,7 @@ public class TermiteEntity extends Animal {
     @Override
     protected Brain<?> makeBrain(Dynamic<?> dynamic) {
         Brain bbraing = this.brainProvider().makeBrain(dynamic);
-        bbraing.setSchedule(FarmerooniSensorTypes.TERMITESCHDEULE.get());
+        bbraing.setSchedule(FarmerooniSchedules.TERMITESCHDEULE.get());
         return TermiteAi.makeBrain(this, bbraing);
     }
 

@@ -2,14 +2,13 @@ package com.dead_comedian.farmerooni.blocks.entities;
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
-import com.dead_comedian.farmerooni.entities.ai.codec_masturbation.NestData;
+import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
 import com.dead_comedian.farmerooni.menu.NestMenu;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlockEntities;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
@@ -19,7 +18,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -85,7 +83,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         if(this.level instanceof ServerLevel level) {
             this.residents.forEach(uuid -> {
                 TermiteEntity revenantlmao = ((TermiteEntity) level.getEntity(uuid));
-                if(!revenantlmao.isRemoved()){
+                if(!revenantlmao.isRemoved() || revenantlmao != null){
                     revenantlmao.getBrain().eraseMemory(FarmerooniMemoryModules.NEST_DATA.get());
                     level.sendParticles(ParticleTypes.ANGRY_VILLAGER, revenantlmao.getX(), revenantlmao.getY() + 1.0, revenantlmao.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 

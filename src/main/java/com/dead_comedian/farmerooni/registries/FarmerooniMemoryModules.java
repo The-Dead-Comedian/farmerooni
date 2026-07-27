@@ -2,9 +2,8 @@ package com.dead_comedian.farmerooni.registries;
 
 
 import com.dead_comedian.farmerooni.Farmerooni;
-import com.dead_comedian.farmerooni.entities.ai.codec_masturbation.NestData;
+import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
 import com.mojang.serialization.Codec;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.neoforged.bus.api.IEventBus;
@@ -17,6 +16,7 @@ public class FarmerooniMemoryModules {
     public static final DeferredRegister<MemoryModuleType<?>> MEMORY_MODULE_TYPES = DeferredRegister.create(Registries.MEMORY_MODULE_TYPE, Farmerooni.MOD_ID);
 
     public static final Supplier<MemoryModuleType<NestData>> NEST_DATA = register("nest_data", NestData.CODEC);
+    public static final Supplier<MemoryModuleType<Boolean>> SCOUT_HAS_DISCOVERY = register("has_discovery", Codec.BOOL);
 
     private static <T> Supplier<MemoryModuleType<T>> register(String name, Codec<T> codec) {
         return register(name, Optional.of(codec));

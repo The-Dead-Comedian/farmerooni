@@ -31,7 +31,9 @@ public class TermiteAi {
             MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
             MemoryModuleType.ATTACK_COOLING_DOWN,
             MemoryModuleType.PATH,
-            FarmerooniMemoryModules.NEST_DATA.get()
+            FarmerooniMemoryModules.NEST_DATA.get(),
+            FarmerooniMemoryModules.SCOUT_HAS_DISCOVERY.get()
+
     );
 
     public static final ImmutableList<SensorType<? extends Sensor<? super TermiteEntity>>> SENSORS = ImmutableList.of(

@@ -1,4 +1,4 @@
-package com.dead_comedian.farmerooni.entities.ai.codec_masturbation;
+package com.dead_comedian.farmerooni.entities.ai.data_stuff;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
