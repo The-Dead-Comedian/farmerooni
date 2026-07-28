@@ -16,6 +16,7 @@
     "ZombieHorseMixin"
   ],
   "client": [
+    "AbstractHorseRendererMixin",
     "UndeadHorseRendererMixin"
   ]
 }
