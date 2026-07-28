@@ -8,7 +8,14 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "AbstractHorseMixin",
     "BlockBehaviourMixin",
-    "TamableAnimalMixin"
+    "MobMixin",
+    "SkeletonHorseMixin",
+    "TamableAnimalMixin",
+    "ZombieHorseMixin"
+  ],
+  "client": [
+    "UndeadHorseRendererMixin"
   ]
 }
