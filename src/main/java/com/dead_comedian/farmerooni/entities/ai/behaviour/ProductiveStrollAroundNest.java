@@ -1,11 +1,12 @@
 package com.dead_comedian.farmerooni.entities.ai.behaviour;
 
+import com.dead_comedian.farmerooni.Farmerooni;
+import com.dead_comedian.farmerooni.entities.TermiteEntity;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.behavior.BehaviorControl;
 import net.minecraft.world.entity.ai.behavior.OneShot;
 import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
@@ -22,53 +23,54 @@ import java.util.function.Predicate;
 
 public class ProductiveStrollAroundNest {
 
-    public static OneShot<PathfinderMob> stroll(float speedModifier) {
+    public static <E extends TermiteEntity> OneShot<E> stroll(float speedModifier) {
         return strollFlyOrSwim(
                 speedModifier,
                 (mob) -> LandRandomPos.getPos(mob, 10, 7));
     }
 
-    private static OneShot<PathfinderMob> strollFlyOrSwim(float speedModifier, Function<PathfinderMob, Vec3> target) {
+    private static <E extends TermiteEntity> OneShot<E> strollFlyOrSwim(float speedModifier, Function<TermiteEntity, Vec3> target) {
         return BehaviorBuilder
             .create(
-                (pathfinderMobInstance)
-                -> pathfinderMobInstance.group(
-                        pathfinderMobInstance.absent(MemoryModuleType.WALK_TARGET),
-                        pathfinderMobInstance.absent(FarmerooniMemoryModules.SCOUT_HAS_DISCOVERY.get())
+                (TermiteEntityInstance)
+                -> TermiteEntityInstance.group(
+                        TermiteEntityInstance.absent(MemoryModuleType.WALK_TARGET),
+                        TermiteEntityInstance.absent(FarmerooniMemoryModules.LUMBER_CURSOR.get())
 
                 ).apply(
-                    pathfinderMobInstance,
+                    TermiteEntityInstance,
                     (
                         walkTargetMemoryAccessor,
                         scoutDiscovery
 
-                    ) -> (serverLevel, pathfinderMob, l) -> {
-                        if (pathfinderMob.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).isPresent()) {
-                            Optional<Vec3> optional = Optional.ofNullable((Vec3) target.apply(pathfinderMob));
+                    ) -> (serverLevel, TermiteEntity, l) -> {
+                        if (TermiteEntity.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).isPresent()) {
+                            Optional<Vec3> optional = Optional.ofNullable((Vec3) target.apply(TermiteEntity));
 
                             if (optional.isPresent()) {
                                 BlockPos blockPos = new BlockPos((int) optional.get().x(), (int) optional.get().y(), (int) optional.get().z());
-                                BlockPos nestPos = pathfinderMob.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
+                                BlockPos nestPos = TermiteEntity.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
 
-                                if (blockPos.distToCenterSqr(nestPos.getX(), nestPos.getY(), nestPos.getZ()) < 10) {
+                                if (blockPos.distToCenterSqr(nestPos.getX(), nestPos.getY(), nestPos.getZ()) < 20) {
                                     walkTargetMemoryAccessor.setOrErase(optional.map((vec3) -> new WalkTarget(vec3, speedModifier, 0)));
                                 }
                             }
                             //todo scan the region or something
                             Optional<BlockPos> starterooni = BlockPos.betweenClosedStream(
-                                    pathfinderMob.blockPosition().offset(-1,-1,-1),
-                                    pathfinderMob.blockPosition().offset(1,1,1)
+                                    TermiteEntity.blockPosition().offset(-1,-1,-1),
+                                    TermiteEntity.blockPosition().offset(1,1,1)
                             ).filter(
                                     pos -> serverLevel.getBlockState(pos).is(BlockTags.PLANKS)
                             ).findFirst();
 
                             if(starterooni.isPresent()){
-                                pathfinderMob.getBrain().setMemory(FarmerooniMemoryModules.SCOUT_HAS_DISCOVERY.get(), true);
+                                TermiteEntity.getBrain().setMemory(FarmerooniMemoryModules.LUMBER_CURSOR.get(), starterooni);
+                                Farmerooni.LOGGER.info("termite found a piece of plank, starting lumber inspection");
                             }
 
                             return true;
                         } else {
-                            Optional<Vec3> optional2 = Optional.ofNullable((Vec3) target.apply(pathfinderMob));
+                            Optional<Vec3> optional2 = Optional.ofNullable((Vec3) target.apply(TermiteEntity));
                             walkTargetMemoryAccessor.setOrErase(optional2.map((p_258622_) -> new WalkTarget(p_258622_, speedModifier, 0)));
                             return true;
                         }

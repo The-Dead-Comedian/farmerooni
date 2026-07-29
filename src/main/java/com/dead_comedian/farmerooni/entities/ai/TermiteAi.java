@@ -1,11 +1,14 @@
 package com.dead_comedian.farmerooni.entities.ai;
 
+import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.ai.behaviour.InspectLumber;
 import com.dead_comedian.farmerooni.entities.ai.behaviour.ProductiveStrollAroundNest;
 import com.dead_comedian.farmerooni.entities.ai.behaviour.RandomStrollAroundNest;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.dead_comedian.farmerooni.registries.FarmerooniSensorTypes;
 import com.google.common.collect.ImmutableList;
+import com.ibm.icu.impl.Pair;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -32,8 +35,8 @@ public class TermiteAi {
             MemoryModuleType.ATTACK_COOLING_DOWN,
             MemoryModuleType.PATH,
             FarmerooniMemoryModules.NEST_DATA.get(),
-            FarmerooniMemoryModules.SCOUT_HAS_DISCOVERY.get()
-
+            FarmerooniMemoryModules.LUMBER_CURSOR.get(),
+            FarmerooniMemoryModules.LUMBER.get()
     );
 
     public static final ImmutableList<SensorType<? extends Sensor<? super TermiteEntity>>> SENSORS = ImmutableList.of(
@@ -116,11 +119,11 @@ public class TermiteAi {
                 Activity.INVESTIGATE,
                 0,
                 ImmutableList.of(
-                        ProductiveStrollAroundNest.stroll(1F),
-                        new DoNothing(5, 10)
+                        ProductiveStrollAroundNest.stroll(1.0F),
+                        InspectLumber.InspectLumber(1.0F)
+                        //Pair.of(1, (BehaviorControl<? super TermiteEntity>) new DoNothing(5, 10))
                 )
         );
-
     }
 
     private static boolean isTarget(TermiteEntity termite, LivingEntity entity) {

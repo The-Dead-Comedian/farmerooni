@@ -83,7 +83,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         if(this.level instanceof ServerLevel level) {
             this.residents.forEach(uuid -> {
                 TermiteEntity revenantlmao = ((TermiteEntity) level.getEntity(uuid));
-                if(!revenantlmao.isRemoved() || revenantlmao != null){
+                if(revenantlmao != null){
                     revenantlmao.getBrain().eraseMemory(FarmerooniMemoryModules.NEST_DATA.get());
                     level.sendParticles(ParticleTypes.ANGRY_VILLAGER, revenantlmao.getX(), revenantlmao.getY() + 1.0, revenantlmao.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 
