@@ -168,7 +168,7 @@ public class Unicorn extends AbstractHorse {
                 )
                         && !livingEntity.is(this);
 
-                List<Entity> damageMeBoi = level().getEntities(this, aabb );
+                List<Entity> damageMeBoi = level().getEntities(this, aabb, predicate);
 
                 //todo: make custom damage source with custom death message
 

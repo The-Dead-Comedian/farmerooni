@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -84,7 +85,18 @@ public class TermiteAi {
                 )
         );
     }
-
+//    private static void initScoutingActivity(Brain<TermiteEntity> brain) {
+//        brain.addActivity(
+//                Activity.INVESTIGATE,
+//                ImmutableList.of(
+//                        Pair.of(
+//                                1,
+//                                ProductiveStrollAroundNest.stroll(1.0F)
+//                        )
+//                        //Pair.of(1, (BehaviorControl<? super TermiteEntity>) new DoNothing(5, 10))
+//                )
+//        );
+//    }
 
     private static void initIdleActivity(Brain<TermiteEntity> brain) {
         brain.addActivity(

@@ -6,6 +6,7 @@ import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
 import com.dead_comedian.farmerooni.registries.FarmerooniEntities;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
@@ -27,4 +28,5 @@ public class FarmerooniEvents {
         event.put(FarmerooniEntities.TERMITE.get(), TermiteEntity.createAttributes().build());
         event.put(FarmerooniEntities.UNICORN.get(), Unicorn.createMobAttributes().build());
     }
+
 }

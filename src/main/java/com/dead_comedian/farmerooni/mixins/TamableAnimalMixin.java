@@ -20,7 +20,7 @@ public class TamableAnimalMixin extends LivingEntity implements EquipmentUser, L
 
     @Inject(method = "registerGoals", at = @At("HEAD"))
     private void registerExtraGoals(CallbackInfo ci) {
-        Mob mob = ((Mob) (Object) this);
+        LivingEntity mob = this;
         if (mob instanceof TamableAnimal tamableAnimal) {
             tamableAnimal.goalSelector.addGoal(1, new AvoidEntityGoal<>(tamableAnimal, Creeper.class, 10f, 1.5, 1.5));
         }
