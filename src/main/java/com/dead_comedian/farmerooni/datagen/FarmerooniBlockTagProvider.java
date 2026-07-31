@@ -2,6 +2,7 @@ package com.dead_comedian.farmerooni.datagen;
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
+import com.dead_comedian.farmerooni.registries.FarmerooniTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -33,6 +34,7 @@ public class FarmerooniBlockTagProvider extends BlockTagsProvider {
         mineableAxe();
 
         this.tag(BlockTags.MUSHROOM_GROW_BLOCK).add(Blocks.GRASS_BLOCK);
+        this.tag(FarmerooniTags.Blocks.NEST_INTERIOR_BLOCKS).add(Blocks.COARSE_DIRT).add(Blocks.ROOTED_DIRT);
     }
 
 

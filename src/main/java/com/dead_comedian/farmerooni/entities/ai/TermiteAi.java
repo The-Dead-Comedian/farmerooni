@@ -37,14 +37,17 @@ public class TermiteAi {
             MemoryModuleType.PATH,
             FarmerooniMemoryModules.NEST_DATA.get(),
             FarmerooniMemoryModules.LUMBER_CURSOR.get(),
-            FarmerooniMemoryModules.LUMBER.get()
+            FarmerooniMemoryModules.LUMBER.get(),
+            FarmerooniMemoryModules.IN_NEST.get()
     );
 
     public static final ImmutableList<SensorType<? extends Sensor<? super TermiteEntity>>> SENSORS = ImmutableList.of(
             SensorType.NEAREST_LIVING_ENTITIES,
             SensorType.HURT_BY,
             FarmerooniSensorTypes.NEST_VALID_SENSOR.get(),
-            FarmerooniSensorTypes.TILFS_NEAR_ME_SENSOR.get()
+            FarmerooniSensorTypes.TILFS_NEAR_ME_SENSOR.get(),
+            FarmerooniSensorTypes.INSIDE_NEST_SENSOR.get()
+
     );
 
     public static Brain<?> makeBrain(TermiteEntity termite, Brain<TermiteEntity> brain) {
