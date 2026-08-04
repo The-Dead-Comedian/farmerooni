@@ -2,7 +2,7 @@ package com.dead_comedian.farmerooni.entities.ai.behaviour;
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
-import com.dead_comedian.farmerooni.entities.ai.data_stuff.Lumber;
+import com.dead_comedian.farmerooni.entities.ai.data_stuff.Tree;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
@@ -16,13 +16,8 @@ import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
-import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
 
 /*
     https://www.geeksforgeeks.org/dsa/depth-first-search-or-dfs-for-a-graph/
@@ -47,7 +42,7 @@ public class InspectLumber extends Behavior<TermiteEntity> {
         BlockPos startingPoint = termbrain.getMemory(FarmerooniMemoryModules.LUMBER_CURSOR.get()).get();
 
         if (termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).isEmpty()) {
-            termbrain.setMemory(FarmerooniMemoryModules.LUMBER.get(), new Lumber(startingPoint));
+            termbrain.setMemory(FarmerooniMemoryModules.LUMBER.get(), new Tree(startingPoint));
             Farmerooni.LOGGER.info("lumber tree memory has been created");
         }
     }
@@ -77,12 +72,12 @@ public class InspectLumber extends Behavior<TermiteEntity> {
         Brain<TermiteEntity> termbrain = owner.getBrain();
         BlockPos startingPoint = termbrain.getMemory(FarmerooniMemoryModules.LUMBER_CURSOR.get()).get();
 
-        Lumber woodStructure = termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).get();
+        Tree woodStructure = termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).get();
 
 
 
         //current node inspection
-        Lumber cursor = Lumber.find(woodStructure, startingPoint);
+        Tree cursor = Tree.find(woodStructure, startingPoint);
 
         //dfs start
         boolean foundNewNeighbour = false;
@@ -97,12 +92,12 @@ public class InspectLumber extends Behavior<TermiteEntity> {
             }
 
             //dfs visited check
-            if (Lumber.contains(woodStructure, neighbourPos)) {
+            if (Tree.contains(woodStructure, neighbourPos)) {
                 //Farmerooni.LOGGER.info("{} has been visited at {}, checking next neighbour", neighbourPos, direction.toString());
                 continue;
             }
 
-            Lumber child = new Lumber(neighbourPos, cursor);
+            Tree child = new Tree(neighbourPos, cursor);
 
             cursor.addNeighbour(child);
             //Farmerooni.LOGGER.info("added {} as neighbour to {}", cursor.pos, child.pos);
@@ -189,16 +184,16 @@ public class InspectLumber extends Behavior<TermiteEntity> {
                         BlockPos startingPoint = termbrain.getMemory(FarmerooniMemoryModules.LUMBER_CURSOR.get()).get();
 
                         if (termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).isEmpty()) {
-                            lumberMemory.set(new Lumber(startingPoint));
+                            lumberMemory.set(new Tree(startingPoint));
                             //Farmerooni.LOGGER.info("lumber tree memory has been created");
 
                         }
 
-                        Lumber woodStructure = termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).get();
+                        Tree woodStructure = termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).get();
                         ;
 
                         //current node inspection
-                        Lumber cursor = Lumber.find(woodStructure, startingPoint);
+                        Tree cursor = Tree.find(woodStructure, startingPoint);
 
                         //dfs start
                         boolean foundNewNeighbour = false;
@@ -213,12 +208,12 @@ public class InspectLumber extends Behavior<TermiteEntity> {
                             }
 
                             //dfs visited check
-                            if (Lumber.contains(woodStructure, neighbourPos)) {
+                            if (Tree.contains(woodStructure, neighbourPos)) {
                                 //Farmerooni.LOGGER.info("{} has been visited at {}, checking next neighbour", neighbourPos, direction.toString());
                                 continue;
                             }
 
-                            Lumber child = new Lumber(neighbourPos, cursor);
+                            Tree child = new Tree(neighbourPos, cursor);
 
                             cursor.addNeighbour(child);
                             //Farmerooni.LOGGER.info("added {} as neighbour to {}", cursor.pos, child.pos);

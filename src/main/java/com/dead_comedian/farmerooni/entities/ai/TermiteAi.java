@@ -37,7 +37,9 @@ public class TermiteAi {
         FarmerooniMemoryModules.LUMBER_CURSOR.get(),
         FarmerooniMemoryModules.LUMBER.get(),
         FarmerooniMemoryModules.WANTS_REST.get(),
-        FarmerooniMemoryModules.INSIDE_NEST.get()
+        FarmerooniMemoryModules.INSIDE_NEST.get(),
+        FarmerooniMemoryModules.WANTS_DIGGING.get(),
+        FarmerooniMemoryModules.DIG_LEADER.get()
     );
 
     public static final ImmutableList<SensorType<? extends Sensor<? super TermiteEntity>>> SENSORS = ImmutableList.of(
@@ -53,6 +55,7 @@ public class TermiteAi {
         initWarActivity(termite, brain);
         initScoutingActivity(brain);
         initRestActivity(brain);
+        initDigActivity(brain);
 
         brain.setCoreActivities(Set.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
@@ -67,14 +70,16 @@ public class TermiteAi {
                 Activity.IDLE,
                 Activity.INVESTIGATE
         ));
-
-         */
+        */
         if (termite.getBrain().hasMemoryValue(MemoryModuleType.ATTACK_TARGET)) {
             termite.getBrain().setActiveActivityIfPossible(Activity.FIGHT);
         }
 
         if (termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.WANTS_REST.get())) {
             termite.getBrain().setActiveActivityIfPossible(Activity.REST);
+        }
+        if (termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.WANTS_DIGGING.get()) || termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.DIG_LEADER.get())) {
+            termite.getBrain().setActiveActivityIfPossible(Activity.DIG);
         }
 
         termite.setAggressive(termite.getBrain().hasMemoryValue(MemoryModuleType.ATTACK_TARGET));
@@ -110,10 +115,21 @@ public class TermiteAi {
                 new RestOrRegroup.GoHome(),
                 new JerkOffInsideTheNest(),
                 new RestOrRegroup.GoWork()
-
             )
         );
     }
+
+    private static void initDigActivity(Brain<TermiteEntity> brain) {
+        brain.addActivity(
+            Activity.DIG,
+            0,
+            ImmutableList.of(
+                new RestOrRegroup.FollowLeader(),
+                new CollectLumber()
+            )
+        );
+    }
+
 
 
     private static void initWarActivity(TermiteEntity termite, Brain<TermiteEntity> brain) {

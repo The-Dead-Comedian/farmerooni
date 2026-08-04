@@ -46,6 +46,7 @@ public class JerkOffInsideTheNest extends Behavior<TermiteEntity> {
     @Override
     protected void stop(ServerLevel level, TermiteEntity termite, long gameTime) {
         termite.getBrain().eraseMemory(FarmerooniMemoryModules.WANTS_REST.get());
+        //termite.getBrain().setMemory(FarmerooniMemoryModules.WANTS_DIGGING.get(), true);
 
         Brain<TermiteEntity> brain = termite.getBrain();
         BlockPos nest = brain.getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
