@@ -21,6 +21,9 @@ public class FarmerooniMemoryModules {
     public static final Supplier<MemoryModuleType<NestData>> NEST_DATA = register("nest_data", NestData.CODEC);
     public static final Supplier<MemoryModuleType<BlockPos>> LUMBER_CURSOR = register("lumber_cursor", BlockPos.CODEC);
     public static final Supplier<MemoryModuleType<Lumber>> LUMBER = register("lumber_structure", Optional.empty());
+    public static final Supplier<MemoryModuleType<Boolean>> INSIDE_NEST = register("inside_nest", Codec.BOOL);
+    public static final Supplier<MemoryModuleType<Boolean>> WANTS_REST = register("wants_rest", Codec.BOOL);
+
 
 
     private static <T> Supplier<MemoryModuleType<T>> register(String name, Codec<T> codec) {

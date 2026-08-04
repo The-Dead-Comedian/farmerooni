@@ -7,6 +7,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -18,6 +19,13 @@ public class FarmerooniEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
             DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Farmerooni.MOD_ID);
 
+    //gamerule colon sob colon
+    public static final GameRules.Key<GameRules.BooleanValue> TERMITE_WORK_IN_GROUPS = GameRules.register(
+            "TermiteWorkInGroup",
+            GameRules.Category.MOBS,
+            GameRules.BooleanValue.create(false)
+
+    );
 
     //    MOBS
     public static final Supplier<EntityType<TermiteEntity>> TERMITE =

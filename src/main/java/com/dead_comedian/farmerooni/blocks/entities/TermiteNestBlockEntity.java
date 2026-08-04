@@ -5,6 +5,7 @@ import com.dead_comedian.farmerooni.entities.TermiteEntity;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
 import com.dead_comedian.farmerooni.menu.NestMenu;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlockEntities;
+import com.dead_comedian.farmerooni.registries.FarmerooniEntities;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -14,13 +15,16 @@ import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentType;
 
 import java.util.ArrayList;
@@ -132,6 +136,49 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         this.residents.add(entity.getUUID());
         return false;
 
+    }
+
+    public boolean TermiteWantInHOOK(TermiteEntity entity){
+        //trigger going inside "structure", add to "in" list, teleport
+        entity.getBrain().setMemory(FarmerooniMemoryModules.INSIDE_NEST.get(), true);
+        entity.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
+        Farmerooni.LOGGER.info("inside?");
+
+        Vec3 pos = this.getBlockPos().below(1).getCenter();
+        entity.setPos(pos);
+
+        return true;
+    }
+
+    public boolean TermiteRegroupOrRestHook(TermiteEntity entity){
+        //set termite memories, and on each call want out hook
+
+        if(this.level instanceof ServerLevel level) {
+            if(level.getGameRules().getBoolean(FarmerooniEntities.TERMITE_WORK_IN_GROUPS)){
+                this.residents.forEach(uuid -> {
+                    TermiteEntity revenantlmao = ((TermiteEntity) level.getEntity(uuid));
+                    if(revenantlmao != null){
+                        //revenantlmao.getBrain();
+                        //follow behav if "leader" memory else goto map && transition digging
+
+                        level.sendParticles(ParticleTypes.ANGRY_VILLAGER, revenantlmao.getX(), revenantlmao.getY() + 1.0, revenantlmao.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+
+                        Farmerooni.LOGGER.info("if there are more termites, they have been let out");
+                    }
+                });
+            }
+        }
+
+        return false;
+    }
+
+    public boolean TermiteWantOutHOOK(TermiteEntity entity){
+        //trigger going outside "structure", remove from "in" list, teleport
+        entity.getBrain().eraseMemory(FarmerooniMemoryModules.INSIDE_NEST.get());
+        Vec3 pos = this.getBlockPos().above(1).getCenter();
+        entity.setPos(pos);
+
+        return true;
     }
 
     public boolean removeTermiteResident(TermiteEntity entity) {

@@ -32,7 +32,7 @@ public class RandomStrollAroundNest {
     }
 
     private static OneShot<PathfinderMob> strollFlyOrSwim(float speedModifier, Function<PathfinderMob, Vec3> target, Predicate<PathfinderMob> canStroll) {
-        return BehaviorBuilder.create((pathfinderMobInstance) -> pathfinderMobInstance.group(pathfinderMobInstance.absent(MemoryModuleType.WALK_TARGET)).apply(pathfinderMobInstance, (walkTargetMemoryAccessor) -> (serverLevel, pathfinderMob, l) -> {
+        return BehaviorBuilder.create((pathfinderMobInstance) -> pathfinderMobInstance.group(pathfinderMobInstance.absent(MemoryModuleType.WALK_TARGET), pathfinderMobInstance.absent(FarmerooniMemoryModules.LUMBER.get())).apply(pathfinderMobInstance, (walkTargetMemoryAccessor, lumbermemoerythingy) -> (serverLevel, pathfinderMob, l) -> {
                     if (!canStroll.test(pathfinderMob)) {
                         return false;
                     } else {
