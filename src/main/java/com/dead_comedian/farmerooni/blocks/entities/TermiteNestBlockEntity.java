@@ -152,9 +152,8 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
 
     public boolean TermiteRegroupOrRestHook(TermiteEntity entity){
         //set termite memories, and on each call want out hook
-
         if(this.level instanceof ServerLevel level) {
-            if(level.getGameRules().getBoolean(FarmerooniEntities.TERMITE_WORK_IN_GROUPS)){
+            if(level.getGameRules().getBoolean(FarmerooniEntities.TERMITE_WORK_IN_GROUPS) && entity.getBrain().hasMemoryValue(FarmerooniMemoryModules.LUMBER.get())){
                 this.residents.forEach(uuid -> {
                     TermiteEntity revenantlmao = ((TermiteEntity) level.getEntity(uuid));
                     if(revenantlmao != null){

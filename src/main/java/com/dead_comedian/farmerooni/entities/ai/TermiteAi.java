@@ -37,6 +37,7 @@ public class TermiteAi {
         FarmerooniMemoryModules.LUMBER_CURSOR.get(),
         FarmerooniMemoryModules.LUMBER.get(),
         FarmerooniMemoryModules.WANTS_REST.get(),
+        FarmerooniMemoryModules.GOON_TIME.get(),
         FarmerooniMemoryModules.INSIDE_NEST.get(),
         FarmerooniMemoryModules.WANTS_DIGGING.get(),
         FarmerooniMemoryModules.DIG_LEADER.get()
@@ -113,7 +114,7 @@ public class TermiteAi {
             0,
             ImmutableList.of(
                 new RestOrRegroup.GoHome(),
-                new JerkOffInsideTheNest(),
+                new JerkOffInsideTheNest(60),
                 new RestOrRegroup.GoWork()
             )
         );

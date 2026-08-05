@@ -55,7 +55,6 @@ public class CollectLumber extends Behavior<TermiteEntity> {
 
     @Override
     protected void tick(ServerLevel serverLevel, TermiteEntity owner, long gameTime) {
-
         Brain<TermiteEntity> termbrain = owner.getBrain();
         Tree woodStructure = termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).get();
 

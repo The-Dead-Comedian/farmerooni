@@ -14,14 +14,16 @@ import net.minecraft.world.phys.Vec3;
 
 //wait 5 fucking seconds god fucking damn it
 public class JerkOffInsideTheNest extends Behavior<TermiteEntity> {
-    public JerkOffInsideTheNest() {
+    int goonticks;
+    public JerkOffInsideTheNest(int goonticks) {
         super(
             ImmutableMap.of(
                 FarmerooniMemoryModules.WANTS_REST.get(), MemoryStatus.VALUE_PRESENT,
                 FarmerooniMemoryModules.INSIDE_NEST.get(), MemoryStatus.VALUE_PRESENT
             ),
-            100
+            goonticks
         );
+        this.goonticks = goonticks;
     }
 
     @Override
@@ -37,15 +39,24 @@ public class JerkOffInsideTheNest extends Behavior<TermiteEntity> {
     @Override
     protected void start(ServerLevel level, TermiteEntity termite, long gameTime) {
         Farmerooni.LOGGER.info("jorking it");
+        termite.getBrain().setMemory(FarmerooniMemoryModules.GOON_TIME.get(), this.goonticks);
     }
 
     @Override
     protected void tick(ServerLevel level, TermiteEntity termite, long gameTime) {
+        termite.getBrain().setMemory(FarmerooniMemoryModules.GOON_TIME.get(), (termite.getBrain().getMemory(FarmerooniMemoryModules.GOON_TIME.get())).get()-1);
+
+
+        if(this.goonticks == 0){
+            this.doStop(level, termite, gameTime);
+        }
     }
 
     @Override
     protected void stop(ServerLevel level, TermiteEntity termite, long gameTime) {
         termite.getBrain().eraseMemory(FarmerooniMemoryModules.WANTS_REST.get());
+        termite.getBrain().eraseMemory(FarmerooniMemoryModules.GOON_TIME.get());
+
         //termite.getBrain().setMemory(FarmerooniMemoryModules.WANTS_DIGGING.get(), true);
 
         Brain<TermiteEntity> brain = termite.getBrain();

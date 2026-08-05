@@ -69,7 +69,7 @@ public class RestOrRegroup {
 
             BlockPos nest = brain.getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
 
-            if (termite.distanceToSqr(Vec3.atCenterOf(nest.above())) <= 0.4) {
+            if (termite.distanceToSqr(Vec3.atCenterOf(nest.above())) <= 0.5) {
                 TermiteNestBlockEntity be =
                     (TermiteNestBlockEntity) level.getBlockEntity(nest);
 

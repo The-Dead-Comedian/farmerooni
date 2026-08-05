@@ -20,7 +20,7 @@ public class ProductiveStrollAroundNest {
     public static <E extends TermiteEntity> OneShot<E> stroll(float speedModifier) {
         return strollFlyOrSwim(
             speedModifier,
-            (mob) -> LandRandomPos.getPos(mob, 10, 7));
+            (mob) -> LandRandomPos.getPos(mob, 20, 7));
     }
 
     private static <E extends TermiteEntity> OneShot<E> strollFlyOrSwim(float speedModifier, Function<TermiteEntity, Vec3> target) {
@@ -46,8 +46,9 @@ public class ProductiveStrollAroundNest {
                             BlockPos blockPos = new BlockPos((int) optional.get().x(), (int) optional.get().y(), (int) optional.get().z());
                             BlockPos nestPos = TermiteEntity.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
 
-                            if (blockPos.distToCenterSqr(nestPos.getX(), nestPos.getY(), nestPos.getZ()) < 20) {
-                                walkTargetMemoryAccessor.setOrErase(optional.map((vec3) -> new WalkTarget(vec3, speedModifier, 0)));
+                            if (blockPos.distToCenterSqr(nestPos.getX(), nestPos.getY(), nestPos.getZ()) < 50) {
+                                if(serverLevel.random.nextBoolean()) TermiteEntity.getBrain().setMemory(FarmerooniMemoryModules.WANTS_REST.get(), true);
+                                else walkTargetMemoryAccessor.setOrErase(optional.map((vec3) -> new WalkTarget(vec3, speedModifier, 0)));
                             }
                         }
                         //todo scan the region or something
