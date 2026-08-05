@@ -1,14 +1,10 @@
 package com.dead_comedian.farmerooni.registries;
 
 import com.dead_comedian.farmerooni.Farmerooni;
-import com.dead_comedian.farmerooni.entities.ai.sensor_type.InsideNestSensor;
 import com.dead_comedian.farmerooni.entities.ai.sensor_type.NearbyTermitesSensor;
 import com.dead_comedian.farmerooni.entities.ai.sensor_type.NestValidSensor;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.ai.sensing.SensorType;
-import net.minecraft.world.entity.schedule.Activity;
-import net.minecraft.world.entity.schedule.Schedule;
-import net.minecraft.world.entity.schedule.ScheduleBuilder;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -26,9 +22,6 @@ public class FarmerooniSensorTypes {
     public static final Supplier<SensorType<NearbyTermitesSensor>> TILFS_NEAR_ME_SENSOR =
             SENSOR_TYPES.register("nearby_termites_sensor",
                     () -> new SensorType<>(NearbyTermitesSensor::new));
-    public static final Supplier<SensorType<InsideNestSensor>> INSIDE_NEST_SENSOR =
-            SENSOR_TYPES.register("inside_nest_sensor",
-                    () -> new SensorType<>(InsideNestSensor::new));
 
     public static void init(IEventBus eventBus) {
         SENSOR_TYPES.register(eventBus);
