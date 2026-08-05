@@ -5,6 +5,7 @@ import com.dead_comedian.farmerooni.entities.TermiteEntity;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
 import com.dead_comedian.farmerooni.menu.NestMenu;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlockEntities;
+import com.dead_comedian.farmerooni.registries.FarmerooniEntities;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -14,13 +15,16 @@ import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentType;
 
 import java.util.ArrayList;
@@ -79,11 +83,11 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         return 27;
     }
 
-    public void disbandTerritory(){
-        if(this.level instanceof ServerLevel level) {
+    public void disbandTerritory() {
+        if (this.level instanceof ServerLevel level) {
             this.residents.forEach(uuid -> {
                 TermiteEntity revenantlmao = ((TermiteEntity) level.getEntity(uuid));
-                if(revenantlmao != null){
+                if (revenantlmao != null) {
                     revenantlmao.getBrain().eraseMemory(FarmerooniMemoryModules.NEST_DATA.get());
                     level.sendParticles(ParticleTypes.ANGRY_VILLAGER, revenantlmao.getX(), revenantlmao.getY() + 1.0, revenantlmao.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 
@@ -95,7 +99,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         }
     }
 
-    public void createTerritory(){
+    public void createTerritory() {
         Farmerooni.LOGGER.info("new nest looking for existing termites");
         this.colony = UUID.randomUUID();
 
@@ -109,13 +113,14 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         termites.stream()
             .limit(8)
             .forEach(termtity -> {
-                if(!this.addTermiteResident(termtity)){
+                if (!this.addTermiteResident(termtity)) {
                     termtity.getBrain().setMemory(FarmerooniMemoryModules.NEST_DATA.get(), new NestData(
                         this.colony,
                         this.getBlockPos()
                     ));
 
-                    if(level instanceof ServerLevel slevel) slevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, termtity.getX(), termtity.getY() + 1.0, termtity.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+                    if (level instanceof ServerLevel slevel)
+                        slevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, termtity.getX(), termtity.getY() + 1.0, termtity.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 
                     Farmerooni.LOGGER.info("existing termite added to new nest");
                 }
@@ -127,16 +132,74 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
             return true;
         }
         BlockPos bp = this.getBlockPos();
-        if(level instanceof ServerLevel slevel) slevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, bp.getX(), bp.getY() + 1.0, bp.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+        if (level instanceof ServerLevel slevel)
+            slevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, bp.getX(), bp.getY() + 1.0, bp.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 
         this.residents.add(entity.getUUID());
         return false;
 
     }
 
+    public boolean TermiteWantInHOOK(TermiteEntity entity) {
+        //trigger going inside "structure", add to "in" list, teleport
+        entity.getBrain().setMemory(FarmerooniMemoryModules.INSIDE_NEST.get(), true);
+        entity.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
+        entity.getBrain().eraseMemory(FarmerooniMemoryModules.DIG_LEADER.get());
+        Farmerooni.LOGGER.info("inside?");
+
+        Vec3 pos = this.getBlockPos().below(1).getCenter();
+        entity.setPos(pos);
+
+        return true;
+    }
+
+    public boolean TermiteRegroupOrRestHook(TermiteEntity entity) {
+        //set termite memories, and on each call want out hook
+
+        if (this.level instanceof ServerLevel level) {
+            if (level.getGameRules().getBoolean(FarmerooniEntities.TERMITE_WORK_IN_GROUPS) && entity.getBrain().hasMemoryValue(FarmerooniMemoryModules.LUMBER.get())) {
+                Farmerooni.LOGGER.info("starting termite recruiting");
+                entity.getBrain().setMemory(FarmerooniMemoryModules.GOON_TIME.get(), 60);
+
+                this.residents.forEach(uuid -> {
+                    TermiteEntity revenantlmao = ((TermiteEntity) level.getEntity(uuid));
+                    if (revenantlmao == null) return;
+                    if (revenantlmao.getUUID() == entity.getUUID()) return;
+                    if (revenantlmao.getBrain().hasMemoryValue(FarmerooniMemoryModules.INSIDE_NEST.get())) {
+                        Farmerooni.LOGGER.info("termite found inside");
+
+                        //follow behav if "leader" memory else goto map && transition digging
+                        revenantlmao.getBrain().setMemory(FarmerooniMemoryModules.DIG_LEADER.get(), entity);
+                        revenantlmao.getBrain().setMemory(FarmerooniMemoryModules.GOON_TIME.get(), 60);
+
+                        level.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, revenantlmao.getX(), revenantlmao.getY() + 1.0, revenantlmao.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+
+                        Farmerooni.LOGGER.info("termite queued to follow leader");
+                    }
+                });
+            }
+        }
+
+        return false;
+    }
+
+    public boolean TermiteWantOutHOOK(TermiteEntity entity) {
+        //trigger going outside "structure", remove from "in" list, teleport
+        entity.getBrain().eraseMemory(FarmerooniMemoryModules.INSIDE_NEST.get());
+        if(entity.getBrain().hasMemoryValue(FarmerooniMemoryModules.LUMBER.get())||entity.getBrain().hasMemoryValue(FarmerooniMemoryModules.DIG_LEADER.get())){
+            entity.getBrain().setMemory(FarmerooniMemoryModules.WANTS_DIGGING.get(), true);
+        }
+
+        Vec3 pos = this.getBlockPos().above(1).getCenter();
+        entity.setPos(pos);
+
+        return true;
+    }
+
     public boolean removeTermiteResident(TermiteEntity entity) {
         BlockPos bp = this.getBlockPos();
-        if(level instanceof ServerLevel slevel) slevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, bp.getX(), bp.getY() + 1.0, bp.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+        if (level instanceof ServerLevel slevel)
+            slevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, bp.getX(), bp.getY() + 1.0, bp.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 
         this.residents.remove(entity.getUUID());
         return false;
@@ -171,7 +234,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         for (UUID uuid : residents) {
             residentList.add(NbtUtils.createUUID(uuid));
         }
-        if (this.colony != null) tag.putUUID("Colony",  this.colony);
+        if (this.colony != null) tag.putUUID("Colony", this.colony);
         tag.put("Residents", residentList);
 
     }

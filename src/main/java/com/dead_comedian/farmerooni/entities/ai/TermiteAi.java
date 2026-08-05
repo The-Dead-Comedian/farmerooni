@@ -2,9 +2,7 @@ package com.dead_comedian.farmerooni.entities.ai;
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
-import com.dead_comedian.farmerooni.entities.ai.behaviour.InspectLumber;
-import com.dead_comedian.farmerooni.entities.ai.behaviour.ProductiveStrollAroundNest;
-import com.dead_comedian.farmerooni.entities.ai.behaviour.RandomStrollAroundNest;
+import com.dead_comedian.farmerooni.entities.ai.behaviour.*;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.dead_comedian.farmerooni.registries.FarmerooniSensorTypes;
 import com.google.common.collect.ImmutableList;
@@ -27,27 +25,29 @@ import java.util.Set;
 public class TermiteAi {
 
     public static final List<MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(
-            MemoryModuleType.WALK_TARGET,
-            MemoryModuleType.LOOK_TARGET,
-            MemoryModuleType.ATTACK_TARGET,
-            MemoryModuleType.NEAREST_LIVING_ENTITIES,
-            MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
-            MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
-            MemoryModuleType.ATTACK_COOLING_DOWN,
-            MemoryModuleType.PATH,
-            FarmerooniMemoryModules.NEST_DATA.get(),
-            FarmerooniMemoryModules.LUMBER_CURSOR.get(),
-            FarmerooniMemoryModules.LUMBER.get(),
-            FarmerooniMemoryModules.IN_NEST.get()
+        MemoryModuleType.WALK_TARGET,
+        MemoryModuleType.LOOK_TARGET,
+        MemoryModuleType.ATTACK_TARGET,
+        MemoryModuleType.NEAREST_LIVING_ENTITIES,
+        MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
+        MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
+        MemoryModuleType.ATTACK_COOLING_DOWN,
+        MemoryModuleType.PATH,
+        FarmerooniMemoryModules.NEST_DATA.get(),
+        FarmerooniMemoryModules.LUMBER_CURSOR.get(),
+        FarmerooniMemoryModules.LUMBER.get(),
+        FarmerooniMemoryModules.WANTS_REST.get(),
+        FarmerooniMemoryModules.GOON_TIME.get(),
+        FarmerooniMemoryModules.INSIDE_NEST.get(),
+        FarmerooniMemoryModules.WANTS_DIGGING.get(),
+        FarmerooniMemoryModules.DIG_LEADER.get()
     );
 
     public static final ImmutableList<SensorType<? extends Sensor<? super TermiteEntity>>> SENSORS = ImmutableList.of(
-            SensorType.NEAREST_LIVING_ENTITIES,
-            SensorType.HURT_BY,
-            FarmerooniSensorTypes.NEST_VALID_SENSOR.get(),
-            FarmerooniSensorTypes.TILFS_NEAR_ME_SENSOR.get(),
-            FarmerooniSensorTypes.INSIDE_NEST_SENSOR.get()
-
+        SensorType.NEAREST_LIVING_ENTITIES,
+        SensorType.HURT_BY,
+        FarmerooniSensorTypes.NEST_VALID_SENSOR.get(),
+        FarmerooniSensorTypes.TILFS_NEAR_ME_SENSOR.get()
     );
 
     public static Brain<?> makeBrain(TermiteEntity termite, Brain<TermiteEntity> brain) {
@@ -55,6 +55,8 @@ public class TermiteAi {
         initIdleActivity(brain);
         initWarActivity(termite, brain);
         initScoutingActivity(brain);
+        initRestActivity(brain);
+        initDigActivity(brain);
 
         brain.setCoreActivities(Set.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
@@ -69,10 +71,16 @@ public class TermiteAi {
                 Activity.IDLE,
                 Activity.INVESTIGATE
         ));
-
-         */
+        */
         if (termite.getBrain().hasMemoryValue(MemoryModuleType.ATTACK_TARGET)) {
             termite.getBrain().setActiveActivityIfPossible(Activity.FIGHT);
+        }
+
+        if (termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.WANTS_REST.get())) {
+            termite.getBrain().setActiveActivityIfPossible(Activity.REST);
+        }
+        if (termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.WANTS_DIGGING.get())){
+            termite.getBrain().setActiveActivityIfPossible(Activity.DIG);
         }
 
         termite.setAggressive(termite.getBrain().hasMemoryValue(MemoryModuleType.ATTACK_TARGET));
@@ -80,64 +88,76 @@ public class TermiteAi {
 
     private static void initCoreActivity(Brain<TermiteEntity> brain) {
         brain.addActivity(
-                Activity.CORE,
-                0,
-                ImmutableList.of(
-                        new LookAtTargetSink(45, 90),
-                        new MoveToTargetSink()
-                )
+            Activity.CORE,
+            0,
+            ImmutableList.of(
+                new LookAtTargetSink(45, 90),
+                new MoveToTargetSink()
+            )
         );
     }
-//    private static void initScoutingActivity(Brain<TermiteEntity> brain) {
-//        brain.addActivity(
-//                Activity.INVESTIGATE,
-//                ImmutableList.of(
-//                        Pair.of(
-//                                1,
-//                                ProductiveStrollAroundNest.stroll(1.0F)
-//                        )
-//                        //Pair.of(1, (BehaviorControl<? super TermiteEntity>) new DoNothing(5, 10))
-//                )
-//        );
-//    }
 
     private static void initIdleActivity(Brain<TermiteEntity> brain) {
         brain.addActivity(
-                Activity.IDLE,
-                0,
-                ImmutableList.of(
-                        RandomStrollAroundNest.stroll(1),
-                        new RandomLookAround(UniformInt.of(10, 15), 30, 30, 90)
-                )
+            Activity.IDLE,
+            0,
+            ImmutableList.of(
+                RandomStrollAroundNest.stroll(1),
+                new RandomLookAround(UniformInt.of(10, 15), 30, 30, 90)
+            )
         );
-
     }
+
+    private static void initRestActivity(Brain<TermiteEntity> brain) {
+        brain.addActivity(
+            Activity.REST,
+            0,
+            ImmutableList.of(
+                new RestOrRegroup.GoHome(),
+                new JerkOffInsideTheNest(240)
+            )
+        );
+    }
+
+    private static void initDigActivity(Brain<TermiteEntity> brain) {
+        brain.addActivity(
+            Activity.DIG,
+            0,
+            ImmutableList.of(
+                new RestOrRegroup.GoWork(),
+                new CollectLumber()
+            )
+        );
+    }
+
+
 
     private static void initWarActivity(TermiteEntity termite, Brain<TermiteEntity> brain) {
         brain.addActivityAndRemoveMemoryWhenStopped(
-                Activity.FIGHT,
-                0,
-                ImmutableList.of(
-                        StopAttackingIfTargetInvalid.<Mob>create(p_35118_ -> !p_35118_.isAlive()),
-                        SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(1.3F),
-                        SetEntityLookTarget.create(p_219535_ -> isTarget(termite, p_219535_), (float) termite.getAttributeValue(Attributes.FOLLOW_RANGE)),
+            Activity.FIGHT,
+            0,
+            ImmutableList.of(
+                StopAttackingIfTargetInvalid.<Mob>create(p_35118_ -> !p_35118_.isAlive()),
+                SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(1.3F),
+                SetEntityLookTarget.create(p_219535_ -> isTarget(termite, p_219535_), (float) termite.getAttributeValue(Attributes.FOLLOW_RANGE)),
 
-                        MeleeAttack.create(30)
-                ),
-                MemoryModuleType.ATTACK_TARGET
+                MeleeAttack.create(30)
+            ),
+            MemoryModuleType.ATTACK_TARGET
         );
 
     }
 
     private static void initScoutingActivity(Brain<TermiteEntity> brain) {
         brain.addActivity(
-                Activity.INVESTIGATE,
-                0,
-                ImmutableList.of(
-                        ProductiveStrollAroundNest.stroll(1.0F),
-                        InspectLumber.InspectLumber(1.0F)
-                        //Pair.of(1, (BehaviorControl<? super TermiteEntity>) new DoNothing(5, 10))
-                )
+            Activity.INVESTIGATE,
+            0,
+            ImmutableList.of(
+                ProductiveStrollAroundNest.stroll(1.0F),
+                new InspectLumber()
+                //RestOrRegroup.goHome(0.8F)
+                //Pair.of(1, (BehaviorControl<? super TermiteEntity>) new DoNothing(5, 10))
+            )
         );
     }
 
