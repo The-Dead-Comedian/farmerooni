@@ -39,15 +39,18 @@ public class JerkOffInsideTheNest extends Behavior<TermiteEntity> {
     @Override
     protected void start(ServerLevel level, TermiteEntity termite, long gameTime) {
         Farmerooni.LOGGER.info("jorking it");
-        termite.getBrain().setMemory(FarmerooniMemoryModules.GOON_TIME.get(), this.goonticks);
+        if(! termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.GOON_TIME.get())) termite.getBrain().setMemory(FarmerooniMemoryModules.GOON_TIME.get(), this.goonticks);
     }
 
     @Override
     protected void tick(ServerLevel level, TermiteEntity termite, long gameTime) {
-        termite.getBrain().setMemory(FarmerooniMemoryModules.GOON_TIME.get(), (termite.getBrain().getMemory(FarmerooniMemoryModules.GOON_TIME.get())).get()-1);
+        termite.getBrain().setMemory(
+            FarmerooniMemoryModules.GOON_TIME.get(),
+            (termite.getBrain().getMemory(FarmerooniMemoryModules.GOON_TIME.get())).get().intValue()-1);
+        //Farmerooni.LOGGER.info("jork count {}" ,termite.getBrain().getMemory(FarmerooniMemoryModules.GOON_TIME.get()));
 
 
-        if(this.goonticks == 0){
+        if(termite.getBrain().getMemory(FarmerooniMemoryModules.GOON_TIME.get()).get().intValue() == 0){
             this.doStop(level, termite, gameTime);
         }
     }
@@ -60,12 +63,15 @@ public class JerkOffInsideTheNest extends Behavior<TermiteEntity> {
         //termite.getBrain().setMemory(FarmerooniMemoryModules.WANTS_DIGGING.get(), true);
 
         Brain<TermiteEntity> brain = termite.getBrain();
-        BlockPos nest = brain.getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
+        if(brain.getMemory(FarmerooniMemoryModules.NEST_DATA.get()).isPresent()){
+            BlockPos nest = brain.getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
 
-        TermiteNestBlockEntity be =
-            (TermiteNestBlockEntity) level.getBlockEntity(nest);
+            TermiteNestBlockEntity be =
+                (TermiteNestBlockEntity) level.getBlockEntity(nest);
 
-        be.TermiteWantOutHOOK(termite);
+            be.TermiteWantOutHOOK(termite);
+
+        }
 
 
         Farmerooni.LOGGER.info("jorking stopped, energy 100");

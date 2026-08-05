@@ -30,7 +30,9 @@ public class CollectLumber extends Behavior<TermiteEntity> {
             ImmutableMap.of(
                 //FarmerooniMemoryModules.NEST_REST.get(), MemoryStatus.VALUE_PRESENT
                 MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT,
-                FarmerooniMemoryModules.LUMBER.get(), MemoryStatus.VALUE_PRESENT
+                FarmerooniMemoryModules.INSIDE_NEST.get(), MemoryStatus.VALUE_ABSENT,
+                FarmerooniMemoryModules.LUMBER.get(), MemoryStatus.VALUE_PRESENT,
+                FarmerooniMemoryModules.LUMBER_CURSOR.get(), MemoryStatus.VALUE_PRESENT
             )
         );
     }
@@ -46,7 +48,7 @@ public class CollectLumber extends Behavior<TermiteEntity> {
 
     @Override
     protected boolean canStillUse(ServerLevel serverLevel, TermiteEntity termite, long l) {
-        return termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.LUMBER.get());
+        return true;
     }
 
     @Override
@@ -56,6 +58,14 @@ public class CollectLumber extends Behavior<TermiteEntity> {
     @Override
     protected void tick(ServerLevel serverLevel, TermiteEntity owner, long gameTime) {
         Brain<TermiteEntity> termbrain = owner.getBrain();
+        if(termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).isEmpty()){
+            termbrain.eraseMemory(FarmerooniMemoryModules.LUMBER.get());
+            termbrain.eraseMemory(FarmerooniMemoryModules.LUMBER_CURSOR.get());
+
+            termbrain.eraseMemory(FarmerooniMemoryModules.WANTS_DIGGING.get());
+            termbrain.setMemory(FarmerooniMemoryModules.WANTS_REST.get(), true);
+            return;
+        }
         Tree woodStructure = termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).get();
 
         Tree cursor = Tree.leaf(woodStructure);
@@ -64,17 +74,14 @@ public class CollectLumber extends Behavior<TermiteEntity> {
             MemoryModuleType.WALK_TARGET,
             new WalkTarget(
                 Vec3.atCenterOf(cursor.pos),
-                0.6f,
+                1.4f,
                 0
             )
         );
         //Farmerooni.LOGGER.info("breaker cursor at {}, walking to it", cursor.pos);
 
         //dont be a sped
-        if (owner.getNavigation().isInProgress()) {
-            return;
-        }
-
+        if (owner.distanceToSqr(cursor.pos.getCenter()) >= 1.1) return;
 
         if (chipAway(cursor, owner)){
             Tree parent = cursor.parent;
@@ -84,7 +91,10 @@ public class CollectLumber extends Behavior<TermiteEntity> {
                 //Farmerooni.LOGGER.info("breaker cursor parent doesnt exist, exiting collecting");
 
                 termbrain.eraseMemory(FarmerooniMemoryModules.LUMBER.get());
+                termbrain.eraseMemory(FarmerooniMemoryModules.LUMBER_CURSOR.get());
+
                 termbrain.eraseMemory(FarmerooniMemoryModules.WANTS_DIGGING.get());
+                termbrain.setMemory(FarmerooniMemoryModules.WANTS_REST.get(), true);
             }
             else {
                 parent.removeNeighbour(cursor);
@@ -111,7 +121,7 @@ public class CollectLumber extends Behavior<TermiteEntity> {
         if(this.breakProgress == 10){
             this.breakProgress = 0;
 
-            trm.level().removeBlock(cursor.pos, false);
+            if (!trm.level().getBlockState(cursor.pos).isEmpty()) trm.level().removeBlock(cursor.pos, false);
             //Farmerooni.LOGGER.info("block broken at breaker cursor");
 
             return true;

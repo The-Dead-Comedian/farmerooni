@@ -79,7 +79,7 @@ public class TermiteAi {
         if (termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.WANTS_REST.get())) {
             termite.getBrain().setActiveActivityIfPossible(Activity.REST);
         }
-        if (termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.WANTS_DIGGING.get()) || termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.DIG_LEADER.get())) {
+        if (termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.WANTS_DIGGING.get())){
             termite.getBrain().setActiveActivityIfPossible(Activity.DIG);
         }
 
@@ -114,8 +114,7 @@ public class TermiteAi {
             0,
             ImmutableList.of(
                 new RestOrRegroup.GoHome(),
-                new JerkOffInsideTheNest(60),
-                new RestOrRegroup.GoWork()
+                new JerkOffInsideTheNest(240)
             )
         );
     }
@@ -125,7 +124,7 @@ public class TermiteAi {
             Activity.DIG,
             0,
             ImmutableList.of(
-                new RestOrRegroup.FollowLeader(),
+                new RestOrRegroup.GoWork(),
                 new CollectLumber()
             )
         );
