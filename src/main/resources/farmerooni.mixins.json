@@ -13,7 +13,8 @@
     "MobMixin",
     "SkeletonHorseMixin",
     "TamableAnimalMixin",
-    "ZombieHorseMixin"
+    "ZombieHorseMixin",
+    "ZombieMixin"
   ],
   "client": [
     "AbstractHorseRendererMixin",

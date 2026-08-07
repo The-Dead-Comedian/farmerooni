@@ -22,6 +22,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AnimalArmorItem;
 import net.minecraft.world.item.Item;
@@ -41,7 +42,7 @@ import java.util.function.Predicate;
 public class Unicorn extends AbstractHorse {
     private static final EntityDataAccessor<Boolean> SKINNED = SynchedEntityData.defineId(Unicorn.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> POKE = SynchedEntityData.defineId(Unicorn.class, EntityDataSerializers.BOOLEAN);
-
+    private int cooldown = 30;
     public Unicorn(EntityType<? extends AbstractHorse> entityType, Level level) {
         super(entityType, level);
     }
@@ -152,10 +153,16 @@ public class Unicorn extends AbstractHorse {
 
     @Override
     public void tick() {
+        if(this.getControllingPassenger() instanceof Zombie){
+            this.setPoke(true);
+        }
+        if(this.getControllingPassenger()==null){
+            this.setPoke(false);
+        }
         if (!level().isClientSide) {
             if (this.getPoke()) {
-                double x = 4 * this.getLookAngle().x;
-                double z = 4 * this.getLookAngle().z;
+                double x = 3 * this.getLookAngle().x;
+                double z = 3 * this.getLookAngle().z;
 
                 AABB aabb = new AABB(this.getX() + x - 0.75, this.getY() - 1, this.getZ() + z - 0.75, this.getX() + x + 0.75, this.getY() + 1, this.getZ() + z + 0.75);
 
@@ -187,8 +194,14 @@ public class Unicorn extends AbstractHorse {
                                 this.getControllingPassenger(),
                                 null
                         );
-
-                        livingEntity.hurt(damageSource, (float) (18.5 * direction));
+                        if (cooldown >= 0) {
+                            this.cooldown++;
+                        } else {
+                            cooldown = 0;
+                        }
+                        if (cooldown >= 29) {
+                            livingEntity.hurt(damageSource, (float) (15 * direction));
+                        }
                         livingEntity.knockback(0.3, -x, -z);
                     }
                 }
