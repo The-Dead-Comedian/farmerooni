@@ -35,6 +35,7 @@ public class FarmerooniBlockTagProvider extends BlockTagsProvider {
 
         this.tag(BlockTags.MUSHROOM_GROW_BLOCK).add(Blocks.GRASS_BLOCK);
         this.tag(FarmerooniTags.Blocks.NEST_INTERIOR_BLOCKS).add(Blocks.COARSE_DIRT).add(Blocks.ROOTED_DIRT);
+        this.tag(FarmerooniTags.Blocks.EXTRA_WOOD).add(Blocks.CRAFTING_TABLE);
     }
 
 

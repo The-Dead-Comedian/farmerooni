@@ -1,0 +1,25 @@
+{
+  "types": [
+    {
+      "type": "oak"
+    },
+    {
+      "type": "birch"
+    },
+    {
+      "type": "spruce"
+    },
+    {
+      "type": "acacia"
+    },
+    {
+      "type": "jungle"
+    },
+    {
+      "type": "cherry"
+    },
+    {
+      "type": "mangrove"
+    }
+  ]
+}
