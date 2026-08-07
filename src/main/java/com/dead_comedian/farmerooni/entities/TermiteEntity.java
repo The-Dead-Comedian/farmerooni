@@ -13,28 +13,31 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.DebugPackets;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.InventoryCarrier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 public class TermiteEntity extends Animal implements InventoryCarrier {
-
+    private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(TermiteEntity.class, EntityDataSerializers.BYTE);
+    ;
     private static final Vec3i ITEM_PICKUP_REACH = new Vec3i(1, 1, 1);
     private final SimpleContainer inventory = new SimpleContainer(1);
 
@@ -71,7 +74,6 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
 //        }
 
 
-
     public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         this.writeInventoryToTag(nbt, this.registryAccess());
@@ -91,8 +93,9 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
     public boolean wantsToPickUp(ItemStack stack) {
         ItemStack itemstack = this.getItemInHand(InteractionHand.MAIN_HAND);
         return !itemstack.isEmpty()
-                 && net.neoforged.neoforge.event.EventHooks.canEntityGrief(this.level(), this);
+                && net.neoforged.neoforge.event.EventHooks.canEntityGrief(this.level(), this);
     }
+
     @Override
     protected void pickUpItem(ItemEntity itemEntity) {
         InventoryCarrier.pickUpItem(this, this, itemEntity);
@@ -132,6 +135,30 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
         return TermiteAi.makeBrain(this, bbraing);
     }
 
+    protected PathNavigation createNavigation(Level level) {
+        return new WallClimberNavigation(this, level);
+    }
+
+    public boolean onClimbable() {
+        return this.isClimbing();
+    }
+
+    public boolean isClimbing() {
+        return ((Byte) this.entityData.get(DATA_FLAGS_ID) & 1) != 0;
+    }
+
+    public void setClimbing(boolean climbing) {
+        byte b0 = (Byte) this.entityData.get(DATA_FLAGS_ID);
+        if (climbing) {
+            b0 = (byte) (b0 | 1);
+        } else {
+            b0 = (byte) (b0 & -2);
+        }
+
+        this.entityData.set(DATA_FLAGS_ID, b0);
+    }
+
+
     @Override
     protected Brain.Provider<TermiteEntity> brainProvider() {
         return Brain.provider(TermiteAi.MEMORY_MODULES, TermiteAi.SENSORS);
@@ -143,9 +170,9 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
     }
 
 
-    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
+        builder.define(DATA_FLAGS_ID, (byte) 0);
     }
 
     public void updateAnimations() {
@@ -168,6 +195,9 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
     public void tick() {
         super.tick();
         this.updateAnimations();
+        if (!this.level().isClientSide) {
+            this.setClimbing(this.horizontalCollision);
+        }
     }
 
     @Override
