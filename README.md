@@ -1,25 +1,23 @@
+# Farmerooni Wiki
 
-Installation information
-=======
+## About
+  **Farmerooni** is a vanilla friendly mod, who's main focus is adding unique interactions between mobs, both Vanilla and custom, and the Player, through ecosystems.
+All of these ecosystems are meant to exist independent of the Player, however allow the Player to interact with said ecosystem in a symbiotic manner. Where the Player has an input
+beneficial to the ecosystem and is rewarded for caring for said environment. Another smaller goal of **Farmerooni** is to enhance the general experience of interacting with farm 
+animals. For example making horses more useful.
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+## Articles:
+<details>
+  		<summary>
+     Dropdown
+    </summary>
+		<ul>
+			<li><a href="https://github.com/The-Dead-Comedian/farmerooni/blob/main/buffer/wiki%20articles/Termites.md">Termites</a></li>
+  			<li><a href="https://www.youtube.com/watch?v=55qUIf3GMss&list=PLKGarocXCE1H9Y21-pxjt5Pt8bW14twa-">1.20.X forge</a></li>
+			<li><a href="https://www.youtube.com/watch?v=p-mp91zrlqo&list=PLKGarocXCE1FlLU16RRfaS0bcabHDSvLA">1.19.3 forge</a></li>
+			<li><a href="https://www.youtube.com/watch?v=LpoSy091wYI&list=PLKGarocXCE1HrC60yuTNTGRoZc6hf5Uvl">1.19 forge</a></li>
+			<li>And for 1.18, KaupenJoe has multiple playlists on <a href="https://www.youtube.com/@ModdingByKaupenjoe/playlists">his channel</a></li>
+		</ul>
+  
+  </details>
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
-
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
-
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
-
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
