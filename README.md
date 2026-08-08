@@ -12,7 +12,7 @@ animals. For example making horses more useful.
      Dropdown
     </summary>
 		<ul>
-			<li><a href="https://github.com/The-Dead-Comedian/farmerooni/blob/main/buffer/wiki%20articles/Termites.md">Termites</a></li>
+			<li><a href="https://github.com/The-Dead-Comedian/farmerooni/blob/Wiki/buffer/wiki%20articles/Termites.md">Termites</a></li>
   			<li><a href="https://www.youtube.com/watch?v=55qUIf3GMss&list=PLKGarocXCE1H9Y21-pxjt5Pt8bW14twa-">1.20.X forge</a></li>
 			<li><a href="https://www.youtube.com/watch?v=p-mp91zrlqo&list=PLKGarocXCE1FlLU16RRfaS0bcabHDSvLA">1.19.3 forge</a></li>
 			<li><a href="https://www.youtube.com/watch?v=LpoSy091wYI&list=PLKGarocXCE1HrC60yuTNTGRoZc6hf5Uvl">1.19 forge</a></li>
