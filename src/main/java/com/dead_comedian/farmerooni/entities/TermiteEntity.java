@@ -144,7 +144,9 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
     }
 
     public boolean isClimbing() {
-        return ((Byte) this.entityData.get(DATA_FLAGS_ID) & 1) != 0;
+
+        // additional memory checks look for whether the memory is false or absent, therefore not letting it climb while IN the nest
+        return ((Byte) this.entityData.get(DATA_FLAGS_ID) & 1) != 0 && (((this.getBrain().getMemory(FarmerooniMemoryModules.INSIDE_NEST.get()).isPresent() && !this.getBrain().getMemory(FarmerooniMemoryModules.INSIDE_NEST.get()).get())) || this.getBrain().getMemory(FarmerooniMemoryModules.INSIDE_NEST.get()).isEmpty());
     }
 
     public void setClimbing(boolean climbing) {
