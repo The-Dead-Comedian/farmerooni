@@ -35,7 +35,7 @@ public abstract class ZombieMixin {
         Zombie zombie = (Zombie) (Object) this;
 
         if (spawnGroupData instanceof Zombie.ZombieGroupData) {
-            if (randomsource.nextFloat() <= 0.2F) {
+            if (randomsource.nextFloat() <= 0.05F) {
                 RandomSource randomsource2 = level.getRandom();
                 if (randomsource2.nextFloat() > 0.3) {
                     ZombieHorse horse = EntityType.ZOMBIE_HORSE.create(zombie.level());

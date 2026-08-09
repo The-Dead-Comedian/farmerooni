@@ -34,15 +34,6 @@ public class FarmerooniEvents {
 
 
     @SubscribeEvent
-    public static void aaa(PlayerInteractEvent.RightClickBlock event) {
-        Block pumpkin = event.getLevel().getBlockState(event.getPos()).getBlock();
-        if (event.getLevel() instanceof ServerLevel serverLevel) {
-            System.out.println(IsBlockWoodHelper.isWood(pumpkin, serverLevel));
-        }
-    }
-
-
-    @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(FarmerooniEntities.TERMITE.get(), TermiteEntity.createAttributes().build());
         event.put(FarmerooniEntities.UNICORN.get(), Unicorn.createMobAttributes().build());
