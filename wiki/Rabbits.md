@@ -32,3 +32,6 @@ So they will be some of the animals to benefit from at least partial revamp.
   The rest of the items will just exist there. Therefore:
   - generally it will make their items go to waste, by having them despawn
   - allow players to use allays to harvest the crops essentially automatically
+
+Another small detail, if they end up being added hawks serve as scarecrows that can circle a certain area and eat rabbits.
+They could also maybe breed, on their own, with the mob cap in place and everything to balance it
