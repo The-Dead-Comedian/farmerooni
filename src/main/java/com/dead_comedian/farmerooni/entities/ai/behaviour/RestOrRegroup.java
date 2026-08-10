@@ -74,7 +74,7 @@ public class RestOrRegroup {
                     (TermiteNestBlockEntity) level.getBlockEntity(nest);
 
                 if (be != null && be.TermiteWantInHOOK(termite)) {
-                    be.TermiteRegroupOrRestHook(termite);
+                    be.TermiteRegroupOrRestOrStoreHook(termite);
                 }
             }
         }
@@ -112,7 +112,7 @@ public class RestOrRegroup {
                 brain.setMemory(FarmerooniMemoryModules.WANTS_REST.get(), true);
                 brain.eraseMemory(FarmerooniMemoryModules.DIG_LEADER.get());
                 brain.eraseMemory(FarmerooniMemoryModules.LUMBER.get());
-
+                return;
             }
 
             brain.setMemory(

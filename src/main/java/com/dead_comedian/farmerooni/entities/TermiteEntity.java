@@ -3,7 +3,9 @@ package com.dead_comedian.farmerooni.entities;
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
 import com.dead_comedian.farmerooni.entities.ai.TermiteAi;
+import com.dead_comedian.farmerooni.entities.ai.data_stuff.CustomInventory;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
+import com.dead_comedian.farmerooni.helper.TermiteHelper;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.dead_comedian.farmerooni.registries.FarmerooniSchedules;
@@ -18,7 +20,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
@@ -30,16 +31,18 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.InventoryCarrier;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 
 public class TermiteEntity extends Animal implements InventoryCarrier {
     private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(TermiteEntity.class, EntityDataSerializers.BYTE);
-    ;
-    private static final Vec3i ITEM_PICKUP_REACH = new Vec3i(1, 1, 1);
-    private final SimpleContainer inventory = new SimpleContainer(1);
+
+    private static final Vec3i ITEM_PICKUP_REACH = new Vec3i(3, 3, 3);
+    private final SimpleContainer inventory = new SimpleContainer(1);//new CustomInventory();
 
     public TermiteEntity(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
@@ -91,13 +94,29 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
 
     @Override
     public boolean wantsToPickUp(ItemStack stack) {
-        ItemStack itemstack = this.getItemInHand(InteractionHand.MAIN_HAND);
-        return !itemstack.isEmpty()
-                && net.neoforged.neoforge.event.EventHooks.canEntityGrief(this.level(), this);
+        return TermiteHelper.isWood(stack, this.level());
+    }
+
+    @Override
+    public boolean canTakeItem(ItemStack itemstack) {
+        return true;
+    }
+
+    @Override
+    public void aiStep() {
+        for (ItemEntity itementity : this.level()
+            .getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(getPickupReach().getX(), getPickupReach().getY(), getPickupReach().getZ()))) {
+            if (!itementity.isRemoved() && !itementity.getItem().isEmpty() && !itementity.hasPickUpDelay() && this.wantsToPickUp(itementity.getItem())) {
+                this.pickUpItem(itementity);
+            }
+        }
+
+        super.aiStep();
     }
 
     @Override
     protected void pickUpItem(ItemEntity itemEntity) {
+        Farmerooni.LOGGER.info("pikced up item {}", itemEntity);
         InventoryCarrier.pickUpItem(this, this, itemEntity);
     }
 
@@ -186,10 +205,10 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 10)
-                .add(Attributes.MOVEMENT_SPEED, 0.3f)
-                .add(Attributes.ARMOR, 2f)
-                .add(Attributes.ATTACK_DAMAGE, 5);
+            .add(Attributes.MAX_HEALTH, 10)
+            .add(Attributes.MOVEMENT_SPEED, 0.3f)
+            .add(Attributes.ARMOR, 2f)
+            .add(Attributes.ATTACK_DAMAGE, 5);
 
     }
 
