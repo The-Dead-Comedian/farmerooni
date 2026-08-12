@@ -18,13 +18,16 @@ public class FarmerooniSchedules {
     public static final DeferredRegister<Schedule> SCHEDULES =
             DeferredRegister.create(Registries.SCHEDULE, Farmerooni.MOD_ID);
 
+    public static final int TERMITE_REST_TIME = 13000;
+
     public static final Supplier<Schedule> TERMITESCHDEULE =
             SCHEDULES.register(
                     "termite",
                     () -> new ScheduleBuilder(new Schedule())
                         .changeActivityAt(0, Activity.IDLE)
                         .changeActivityAt(1000, Activity.INVESTIGATE)
-                        .changeActivityAt(12000, Activity.IDLE)
+                        .changeActivityAt(10000, Activity.IDLE)
+                        .changeActivityAt(TERMITE_REST_TIME, Activity.REST)
                         .build()
                     );
 

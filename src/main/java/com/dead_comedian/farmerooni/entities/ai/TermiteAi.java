@@ -113,8 +113,9 @@ public class TermiteAi {
             Activity.REST,
             0,
             ImmutableList.of(
-                new RestOrRegroup.GoHome(),
+                new RestOrRegroup.GoHome(true),
                 new JerkOffInsideTheNest(240)
+                //new RestOrExit()
             )
         );
     }

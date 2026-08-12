@@ -46,7 +46,7 @@ public class ProductiveStrollAroundNest {
                             BlockPos blockPos = new BlockPos((int) optional.get().x(), (int) optional.get().y(), (int) optional.get().z());
                             BlockPos nestPos = TermiteEntity.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
 
-                            if (blockPos.distToCenterSqr(nestPos.getX(), nestPos.getY(), nestPos.getZ()) < 50) {
+                            if (blockPos.distToCenterSqr(nestPos.getX(), nestPos.getY(), nestPos.getZ()) > 50) {
                                 walkTargetMemoryAccessor.setOrErase(optional.map((vec3) -> new WalkTarget(vec3, speedModifier, 0)));
                             }
                         }
@@ -66,8 +66,15 @@ public class ProductiveStrollAroundNest {
                             return true;
                         }
 
-                        if(serverLevel.random.nextBoolean()){
-                            TermiteEntity.getBrain().setMemory(FarmerooniMemoryModules.WANTS_REST.get(), true);
+                        if (serverLevel.random.nextFloat() < 0.005f && TermiteEntity.getNavigation().isDone()) {
+                            Farmerooni.LOGGER.info("termite tired and goin to rest");
+
+                            TermiteEntity.getBrain().setMemory(
+                                FarmerooniMemoryModules.WANTS_REST.get(),
+                                true
+                            );
+
+                            return false;
                         }
 
                         return true;

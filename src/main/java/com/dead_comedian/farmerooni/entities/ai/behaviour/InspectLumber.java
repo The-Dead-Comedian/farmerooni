@@ -3,6 +3,7 @@ package com.dead_comedian.farmerooni.entities.ai.behaviour;
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.Tree;
+import com.dead_comedian.farmerooni.helper.TermiteHelper;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
@@ -75,7 +76,6 @@ public class InspectLumber extends Behavior<TermiteEntity> {
         Tree woodStructure = termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).get();
 
 
-
         //current node inspection
         Tree cursor = Tree.find(woodStructure, startingPoint);
 
@@ -83,9 +83,13 @@ public class InspectLumber extends Behavior<TermiteEntity> {
         boolean foundNewNeighbour = false;
 
         //for simplicity i think we should have a hard limit on how many blocks it recalls
-        for (Direction direction : Direction.values()) {
+        for (TermiteHelper.NeoDirection direction : TermiteHelper.NeoDirection.VALUES) {
 
-            BlockPos neighbourPos = cursor.pos.relative(direction);
+            BlockPos neighbourPos = cursor.pos.offset(
+                direction.x(),
+                direction.y(),
+                direction.z()
+            );
 
             if (!serverLevel.getBlockState(neighbourPos).is(BlockTags.PLANKS)) {
                 continue;

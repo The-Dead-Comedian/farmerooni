@@ -4,6 +4,7 @@ import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.CustomInventory;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.Tree;
+import com.dead_comedian.farmerooni.helper.TermiteHelper;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
@@ -82,6 +83,8 @@ public class CollectLumber extends Behavior<TermiteEntity> {
 
         Tree cursor = Tree.leaf(woodStructure);
 
+        //todo, move on if cursor already broken or air
+
         termbrain.setMemory(
             MemoryModuleType.WALK_TARGET,
             new WalkTarget(
@@ -93,7 +96,9 @@ public class CollectLumber extends Behavior<TermiteEntity> {
         //Farmerooni.LOGGER.info("breaker cursor at {}, walking to it", cursor.pos);
 
         //dont be a sped
-        if (owner.distanceToSqr(cursor.pos.getCenter()) >= 2) return;
+        if (owner.distanceToSqr(cursor.pos.getCenter()) >= 2){
+            if (TermiteHelper.isWood(owner.level().getBlockState(cursor.pos).getBlock(), owner.level())) return;
+        }
 
         if (chipAway(cursor, owner)){
             Tree parent = cursor.parent;
@@ -119,7 +124,7 @@ public class CollectLumber extends Behavior<TermiteEntity> {
      */
     public boolean chipAway(Tree cursor, TermiteEntity trm){
         //avoid being a pickaxe lmao
-        if (!trm.level().getBlockState(cursor.pos).is(BlockTags.PLANKS)) return true;
+        if (!TermiteHelper.isWood(trm.level().getBlockState(cursor.pos).getBlock(), trm.level())) return true;
 
         this.breakTicks++;
 

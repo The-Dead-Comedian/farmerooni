@@ -6,6 +6,7 @@ import com.dead_comedian.farmerooni.entities.TermiteEntity;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
+import com.dead_comedian.farmerooni.registries.FarmerooniSchedules;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -41,12 +42,23 @@ public class RestOrRegroup {
                     FarmerooniMemoryModules.INSIDE_NEST.get(), MemoryStatus.VALUE_ABSENT
                 )
             );
+        }
+
+        public GoHome(boolean vvoid) {
+            super(
+                ImmutableMap.of(
+                    FarmerooniMemoryModules.NEST_DATA.get(), MemoryStatus.VALUE_PRESENT,
+                    //FarmerooniMemoryModules.WANTS_REST.get(), MemoryStatus.VALUE_PRESENT,
+                    FarmerooniMemoryModules.INSIDE_NEST.get(), MemoryStatus.VALUE_ABSENT
+                )
+            );
 
         }
 
+
         @Override
         protected boolean checkExtraStartConditions(ServerLevel level, TermiteEntity termite) {
-            return true;
+            return termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.WANTS_REST.get()) || (level.getDayTime()  % 24000L) > FarmerooniSchedules.TERMITE_REST_TIME;
         }
 
         @Override
@@ -56,6 +68,7 @@ public class RestOrRegroup {
             BlockPos nest = brain.getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
 
             if (!brain.hasMemoryValue(MemoryModuleType.WALK_TARGET)) {
+                Farmerooni.LOGGER.info("gohome walk home");
                 brain.setMemory(
                     MemoryModuleType.WALK_TARGET,
                     new WalkTarget(nest, 1.0F, 0)
@@ -66,6 +79,10 @@ public class RestOrRegroup {
         @Override
         protected void stop(ServerLevel level, TermiteEntity termite, long gameTime) {
             Brain<TermiteEntity> brain = termite.getBrain();
+            if(brain.hasMemoryValue(FarmerooniMemoryModules.INSIDE_NEST.get())) {
+                Farmerooni.LOGGER.info("gohome already insdie nest cancel");
+                return;
+            };
 
             BlockPos nest = brain.getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
 
@@ -108,7 +125,7 @@ public class RestOrRegroup {
                 brain.getMemory(FarmerooniMemoryModules.DIG_LEADER.get()).get().blockPosition() :
                 brain.getMemory(FarmerooniMemoryModules.LUMBER.get()).isPresent() ? brain.getMemory(FarmerooniMemoryModules.LUMBER.get()).get().pos : null;
 
-            if(work == null){
+            if (work == null) {
                 brain.setMemory(FarmerooniMemoryModules.WANTS_REST.get(), true);
                 brain.eraseMemory(FarmerooniMemoryModules.DIG_LEADER.get());
                 brain.eraseMemory(FarmerooniMemoryModules.LUMBER.get());
