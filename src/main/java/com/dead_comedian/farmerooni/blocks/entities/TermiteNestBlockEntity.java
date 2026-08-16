@@ -2,25 +2,34 @@ package com.dead_comedian.farmerooni.blocks.entities;
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.ai.data_stuff.CustomInventory;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
+import com.dead_comedian.farmerooni.helper.TermiteHelper;
 import com.dead_comedian.farmerooni.menu.NestMenu;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlockEntities;
 import com.dead_comedian.farmerooni.registries.FarmerooniEntities;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.Hopper;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -153,10 +162,16 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         return true;
     }
 
-    public boolean TermiteRegroupOrRestHook(TermiteEntity entity) {
+
+    public boolean TermiteRegroupOrRestOrStoreHook(TermiteEntity entity) {
         //set termite memories, and on each call want out hook
 
         if (this.level instanceof ServerLevel level) {
+            //if(((CustomInventory) entity.getInventory()).isFull()){
+                //CustomInventory tainer = (CustomInventory) entity.getInventory();
+                TermiteHelper.transferAll(entity.getInventory(), this);
+            //}
+
             if (level.getGameRules().getBoolean(FarmerooniEntities.TERMITE_WORK_IN_GROUPS) && entity.getBrain().hasMemoryValue(FarmerooniMemoryModules.LUMBER.get())) {
                 Farmerooni.LOGGER.info("starting termite recruiting");
                 entity.getBrain().setMemory(FarmerooniMemoryModules.GOON_TIME.get(), 60);
@@ -217,6 +232,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         this.residents.clear();
         this.colony = tag.getUUID("Colony");
         ListTag uuidList = tag.getList("Residents", Tag.TAG_INT_ARRAY);
+        ContainerHelper.loadAllItems(tag, this.items, registries);
 
         for (Tag tug : uuidList) {
             if (tug instanceof IntArrayTag) {
@@ -234,6 +250,8 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         for (UUID uuid : residents) {
             residentList.add(NbtUtils.createUUID(uuid));
         }
+        ContainerHelper.saveAllItems(tag, this.items, registries);
+
         if (this.colony != null) tag.putUUID("Colony", this.colony);
         tag.put("Residents", residentList);
 

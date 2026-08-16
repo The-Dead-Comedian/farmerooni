@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.Behavior;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.phys.Vec3;
 
@@ -39,6 +40,7 @@ public class JerkOffInsideTheNest extends Behavior<TermiteEntity> {
     @Override
     protected void start(ServerLevel level, TermiteEntity termite, long gameTime) {
         Farmerooni.LOGGER.info("jorking it");
+        termite.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
         if(! termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.GOON_TIME.get())) termite.getBrain().setMemory(FarmerooniMemoryModules.GOON_TIME.get(), this.goonticks);
     }
 

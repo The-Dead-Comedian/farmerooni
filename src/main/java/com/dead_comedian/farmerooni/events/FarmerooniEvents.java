@@ -3,7 +3,7 @@ package com.dead_comedian.farmerooni.events;
 import com.dead_comedian.farmerooni.codecs.WoodData;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
 import com.dead_comedian.farmerooni.entities.Unicorn;
-import com.dead_comedian.farmerooni.helper.IsBlockWoodHelper;
+import com.dead_comedian.farmerooni.helper.TermiteHelper;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
 import com.dead_comedian.farmerooni.registries.FarmerooniCodecs;
 import com.dead_comedian.farmerooni.registries.FarmerooniEntities;
@@ -30,6 +30,15 @@ public class FarmerooniEvents {
     public static void datapackRegistry(DataPackRegistryEvent.NewRegistry event) {
         event.dataPackRegistry(FarmerooniCodecs.PREFIX_WOOD, WoodData.WoodTypeListCodec.CODEC, WoodData.WoodTypeListCodec.CODEC);
 
+    }
+
+
+    @SubscribeEvent
+    public static void aaa(PlayerInteractEvent.RightClickBlock event) {
+        Block pumpkin = event.getLevel().getBlockState(event.getPos()).getBlock();
+        if (event.getLevel() instanceof ServerLevel serverLevel) {
+            System.out.println(TermiteHelper.isWood(pumpkin, serverLevel));
+        }
     }
 
 
