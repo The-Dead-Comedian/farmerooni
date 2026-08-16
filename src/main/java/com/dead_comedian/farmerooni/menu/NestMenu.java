@@ -1,6 +1,7 @@
 package com.dead_comedian.farmerooni.menu;
 
 import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
+import com.dead_comedian.farmerooni.menu.slot.NestSaplingSlot;
 import com.dead_comedian.farmerooni.registries.FarmerooniMenus;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
@@ -46,6 +47,7 @@ public class NestMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
     }
+
     public int getResidentCount() {
         return this.residentCount.get();
     }
@@ -63,12 +65,21 @@ public class NestMenu extends AbstractContainerMenu {
     private void addMainStorageSlots(Container container) {
         for (int row = 0; row < MAIN_ROWS; ++row) {
             for (int col = 0; col < MAIN_COLUMNS; ++col) {
-                addSlot(new Slot(
-                        container,
-                        col + row * MAIN_COLUMNS,
-                        8 + col * 18,
-                        row * 18
-                ));
+                if (col + row * MAIN_COLUMNS < 17) {
+                    addSlot(new Slot(
+                            container,
+                            col + row * MAIN_COLUMNS,
+                            8 + col * 18,
+                            row * 18
+                    ));
+                }else {
+                    addSlot(new NestSaplingSlot(
+                            container,
+                            col + row * MAIN_COLUMNS,
+                            8 + col * 18,
+                            row * 18
+                    ));
+                }
             }
         }
     }
