@@ -3,7 +3,6 @@ package com.dead_comedian.farmerooni.entities;
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
 import com.dead_comedian.farmerooni.entities.ai.TermiteAi;
-import com.dead_comedian.farmerooni.entities.ai.data_stuff.CustomInventory;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
 import com.dead_comedian.farmerooni.helper.TermiteHelper;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
@@ -31,18 +30,16 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.InventoryCarrier;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 
 public class TermiteEntity extends Animal implements InventoryCarrier {
     private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(TermiteEntity.class, EntityDataSerializers.BYTE);
 
     private static final Vec3i ITEM_PICKUP_REACH = new Vec3i(3, 3, 3);
-    private final SimpleContainer inventory = new SimpleContainer(1);//new CustomInventory();
+    private final SimpleContainer inventory = new SimpleContainer(16);//new CustomInventory();
 
     public TermiteEntity(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
@@ -58,23 +55,9 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
         return null;
     }
 
-
-//        private static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(RevenantEntity.class, EntityDataSerializers.INT);
-
     /// ///////////////////////////////
 
     public final AnimationState idleAnimationState = new AnimationState();
-
-//
-//        public RevenantStates getState() {
-//            int stateId = this.entityData.get(STATE);
-//
-//            return RevenantStates.BY_ID.apply(stateId);
-//        }
-//
-//        public void setState(RevenantStates state) {
-//            this.entityData.set(STATE, state.getId());
-//        }
 
 
     public void addAdditionalSaveData(CompoundTag nbt) {
@@ -94,7 +77,7 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
 
     @Override
     public boolean wantsToPickUp(ItemStack stack) {
-        return TermiteHelper.isWood(stack, this.level());
+        return TermiteHelper.isWood(stack, this.level()) && hasSpaceInInventory();
     }
 
     @Override
@@ -102,10 +85,28 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
         return true;
     }
 
+    public boolean hasSpaceInInventory() {
+        int count = 0;
+        for (ItemStack stack : this.getInventory().getItems()) {
+            count = count + stack.getCount();
+        }
+        return count < 16;
+    }
+
+    public int getSpaceInInventory() {
+        int count = 0;
+        for (ItemStack stack : this.getInventory().getItems()) {
+            count = count + stack.getCount();
+        }
+
+
+        return 16 - count;
+    }
+
     @Override
     public void aiStep() {
         for (ItemEntity itementity : this.level()
-            .getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(getPickupReach().getX(), getPickupReach().getY(), getPickupReach().getZ()))) {
+                .getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(getPickupReach().getX(), getPickupReach().getY(), getPickupReach().getZ()))) {
             if (!itementity.isRemoved() && !itementity.getItem().isEmpty() && !itementity.hasPickUpDelay() && this.wantsToPickUp(itementity.getItem())) {
                 this.pickUpItem(itementity);
             }
@@ -117,7 +118,25 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
     @Override
     protected void pickUpItem(ItemEntity itemEntity) {
         Farmerooni.LOGGER.info("pikced up item {}", itemEntity);
-        InventoryCarrier.pickUpItem(this, this, itemEntity);
+        ItemStack initialStack = itemEntity.getItem();
+
+        if (initialStack.getCount() > getSpaceInInventory()) {
+
+            ItemStack pickUpStack = new ItemStack(initialStack.getItem(), getSpaceInInventory());
+            ItemStack remainingStack = new ItemStack(initialStack.getItem(), initialStack.getCount() - getSpaceInInventory());
+
+
+            ItemEntity pickUpItemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), pickUpStack, 0, 0, 0);
+            ItemEntity remainingItemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), remainingStack, 0, 0, 0);
+
+            itemEntity.discard();
+            this.level().addFreshEntity(remainingItemEntity);
+
+            InventoryCarrier.pickUpItem(this, this, pickUpItemEntity);
+        } else {
+            InventoryCarrier.pickUpItem(this, this, itemEntity);
+        }
+
     }
 
     @Override
@@ -167,7 +186,7 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
 
         // additional memory checks look for whether the memory is false or absent, therefore not letting it climb while IN the nest
         return ((Byte) this.entityData.get(DATA_FLAGS_ID) & 1) != 0;
-            //&& (((this.getBrain().getMemory(FarmerooniMemoryModules.INSIDE_NEST.get()).isPresent() && !this.getBrain().getMemory(FarmerooniMemoryModules.INSIDE_NEST.get()).get())) || this.getBrain().getMemory(FarmerooniMemoryModules.INSIDE_NEST.get()).isEmpty());
+        //&& (((this.getBrain().getMemory(FarmerooniMemoryModules.INSIDE_NEST.get()).isPresent() && !this.getBrain().getMemory(FarmerooniMemoryModules.INSIDE_NEST.get()).get())) || this.getBrain().getMemory(FarmerooniMemoryModules.INSIDE_NEST.get()).isEmpty());
     }
 
     public void setClimbing(boolean climbing) {
@@ -207,10 +226,10 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-            .add(Attributes.MAX_HEALTH, 10)
-            .add(Attributes.MOVEMENT_SPEED, 0.3f)
-            .add(Attributes.ARMOR, 2f)
-            .add(Attributes.ATTACK_DAMAGE, 5);
+                .add(Attributes.MAX_HEALTH, 10)
+                .add(Attributes.MOVEMENT_SPEED, 0.3f)
+                .add(Attributes.ARMOR, 2f)
+                .add(Attributes.ATTACK_DAMAGE, 5);
 
     }
 

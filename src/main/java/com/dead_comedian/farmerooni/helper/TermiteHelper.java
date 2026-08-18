@@ -20,23 +20,33 @@ import java.util.Optional;
 
 public class TermiteHelper {
 
+
+
+    //Mista eppy i improved the loop, because of the return statement you had it would always break the loop after the first entry (oak), so i modified it a bit
     public static boolean isWood(Block block, Level level) {
-        if(level.isClientSide()) return false;
+        if (level.isClientSide()) return false;
 
         Registry<WoodData.WoodTypeListCodec> registry = level.registryAccess().registryOrThrow(FarmerooniCodecs.PREFIX_WOOD);
 
         Optional<WoodData.WoodTypeListCodec> data =
-            registry.getOptional(ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, "prefix_wood"));
+                registry.getOptional(ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, "prefix_wood"));
 
         if (data.isPresent()) {
             List<WoodData.WoodTypeCodec> list = data.get().types();
-            for (WoodData.WoodTypeCodec woodTypeCodec : list) {
-                String name = woodTypeCodec.name();
-                return block.getName().toString().contains(name) ||
-                    block.getName().toString().contains("leaves") ||
-                    block.getName().toString().contains("sapling");
+            String blockName = block.getName().toString();
+
+            if (blockName.contains("leaves") || blockName.contains("sapling")) {
+                return true;
             }
+
+            for (WoodData.WoodTypeCodec woodTypeCodec : list) {
+                if (blockName.contains(woodTypeCodec.name())) {
+                    return true;
+                }
+            }
+            return false;
         }
+
         return block.defaultBlockState().is(FarmerooniTags.Blocks.EXTRA_WOOD);
     }
 
