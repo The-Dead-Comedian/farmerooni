@@ -18,6 +18,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.*;
@@ -33,6 +34,11 @@ import net.minecraft.world.entity.npc.InventoryCarrier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class TermiteEntity extends Animal implements InventoryCarrier {
@@ -109,6 +115,24 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
                 .getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(getPickupReach().getX(), getPickupReach().getY(), getPickupReach().getZ()))) {
             if (!itementity.isRemoved() && !itementity.getItem().isEmpty() && !itementity.hasPickUpDelay() && this.wantsToPickUp(itementity.getItem())) {
                 this.pickUpItem(itementity);
+            }
+        }
+
+
+        if (this.horizontalCollision && EventHooks.canEntityGrief(this.level(), this)) {
+            boolean flag = false;
+            AABB aabb = this.getBoundingBox().inflate(0.2);
+
+            for(BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
+                BlockState blockstate = this.level().getBlockState(blockpos);
+                Block block = blockstate.getBlock();
+                if (block instanceof LeavesBlock) {
+                    flag = this.level().destroyBlock(blockpos, true, this) || flag;
+                }
+            }
+
+            if (!flag && this.onGround()) {
+                this.jumpFromGround();
             }
         }
 
