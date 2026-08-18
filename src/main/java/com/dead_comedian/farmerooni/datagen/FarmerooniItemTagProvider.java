@@ -8,6 +8,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -30,9 +31,13 @@ public class FarmerooniItemTagProvider extends ItemTagsProvider {
         signs();
         logs();
         boats();
-      
+
+        this.tag(FarmerooniTags.Items.SAPLINGS_2X2)
+                .add(Blocks.DARK_OAK_SAPLING.asItem())
+                .add(Blocks.SPRUCE_SAPLING.asItem())
+                .add(Blocks.JUNGLE_SAPLING.asItem());
     }
-    
+
 
     private void planks() {
         this.tag(ItemTags.PLANKS).add(FarmerooniBlocks.PUTRID_PLANKS.get().asItem());
@@ -84,5 +89,5 @@ public class FarmerooniItemTagProvider extends ItemTagsProvider {
         this.tag(ItemTags.BOATS).add(FarmerooniItems.PUTRID_BOAT.get());
         this.tag(ItemTags.CHEST_BOATS).add(FarmerooniItems.PUTRID_CHEST_BOAT.get());
     }
-    
+
 }

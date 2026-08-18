@@ -3,54 +3,39 @@ package com.dead_comedian.farmerooni.entities.ai.behaviour;
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
 import com.dead_comedian.farmerooni.entities.TermiteEntity;
-import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
-import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
+import com.dead_comedian.farmerooni.helper.TermiteHelper;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.dead_comedian.farmerooni.registries.FarmerooniSchedules;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.parsing.packrat.Term;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.Behavior;
-import net.minecraft.world.entity.ai.behavior.BehaviorControl;
-import net.minecraft.world.entity.ai.behavior.OneShot;
-import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
-import net.minecraft.world.entity.ai.util.LandRandomPos;
-import net.minecraft.world.entity.schedule.Activity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 public class RestOrRegroup {
 
     public static class GoHome extends Behavior<TermiteEntity> {
         public GoHome() {
             super(
-                ImmutableMap.of(
-                    FarmerooniMemoryModules.NEST_DATA.get(), MemoryStatus.VALUE_PRESENT,
-                    FarmerooniMemoryModules.WANTS_REST.get(), MemoryStatus.VALUE_PRESENT,
-                    FarmerooniMemoryModules.INSIDE_NEST.get(), MemoryStatus.VALUE_ABSENT
-                )
+                    ImmutableMap.of(
+                            FarmerooniMemoryModules.NEST_DATA.get(), MemoryStatus.VALUE_PRESENT,
+                            FarmerooniMemoryModules.WANTS_REST.get(), MemoryStatus.VALUE_PRESENT,
+                            FarmerooniMemoryModules.INSIDE_NEST.get(), MemoryStatus.VALUE_ABSENT
+                    )
             );
         }
 
         public GoHome(boolean vvoid) {
             super(
-                ImmutableMap.of(
-                    FarmerooniMemoryModules.NEST_DATA.get(), MemoryStatus.VALUE_PRESENT,
-                    //FarmerooniMemoryModules.WANTS_REST.get(), MemoryStatus.VALUE_PRESENT,
-                    FarmerooniMemoryModules.INSIDE_NEST.get(), MemoryStatus.VALUE_ABSENT
-                )
+                    ImmutableMap.of(
+                            FarmerooniMemoryModules.NEST_DATA.get(), MemoryStatus.VALUE_PRESENT,
+                            //FarmerooniMemoryModules.WANTS_REST.get(), MemoryStatus.VALUE_PRESENT,
+                            FarmerooniMemoryModules.INSIDE_NEST.get(), MemoryStatus.VALUE_ABSENT
+                    )
             );
 
         }
@@ -58,7 +43,7 @@ public class RestOrRegroup {
 
         @Override
         protected boolean checkExtraStartConditions(ServerLevel level, TermiteEntity termite) {
-            return termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.WANTS_REST.get()) || (level.getDayTime()  % 24000L) > FarmerooniSchedules.TERMITE_REST_TIME;
+            return termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.WANTS_REST.get()) || (level.getDayTime() % 24000L) > FarmerooniSchedules.TERMITE_REST_TIME;
         }
 
         @Override
@@ -70,8 +55,8 @@ public class RestOrRegroup {
             if (!brain.hasMemoryValue(MemoryModuleType.WALK_TARGET)) {
                 Farmerooni.LOGGER.info("gohome walk home");
                 brain.setMemory(
-                    MemoryModuleType.WALK_TARGET,
-                    new WalkTarget(nest, 1.0F, 0)
+                        MemoryModuleType.WALK_TARGET,
+                        new WalkTarget(nest, 1.0F, 0)
                 );
             }
         }
@@ -79,19 +64,22 @@ public class RestOrRegroup {
         @Override
         protected void stop(ServerLevel level, TermiteEntity termite, long gameTime) {
             Brain<TermiteEntity> brain = termite.getBrain();
-            if(brain.hasMemoryValue(FarmerooniMemoryModules.INSIDE_NEST.get())) {
+            if (brain.hasMemoryValue(FarmerooniMemoryModules.INSIDE_NEST.get())) {
                 Farmerooni.LOGGER.info("gohome already insdie nest cancel");
                 return;
-            };
+            }
+            ;
 
             BlockPos nest = brain.getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
 
             if (termite.distanceToSqr(Vec3.atCenterOf(nest.above())) <= 0.5) {
                 TermiteNestBlockEntity be =
-                    (TermiteNestBlockEntity) level.getBlockEntity(nest);
+                        (TermiteNestBlockEntity) level.getBlockEntity(nest);
 
                 if (be != null && be.TermiteWantInHOOK(termite)) {
                     be.TermiteRegroupOrRestOrStoreHook(termite);
+                } else if (be != null && be.TermiteWantOutHOOK(termite)) {
+                    TermiteHelper.grabSaplers(be, termite.getInventory());
                 }
             }
         }
@@ -100,11 +88,11 @@ public class RestOrRegroup {
     public static class GoWork extends Behavior<TermiteEntity> {
         public GoWork() {
             super(
-                ImmutableMap.of(
-                    FarmerooniMemoryModules.INSIDE_NEST.get(), MemoryStatus.VALUE_ABSENT,
-                    FarmerooniMemoryModules.WANTS_REST.get(), MemoryStatus.VALUE_ABSENT,
-                    FarmerooniMemoryModules.LUMBER_CURSOR.get(), MemoryStatus.VALUE_ABSENT
-                )
+                    ImmutableMap.of(
+                            FarmerooniMemoryModules.INSIDE_NEST.get(), MemoryStatus.VALUE_ABSENT,
+                            FarmerooniMemoryModules.WANTS_REST.get(), MemoryStatus.VALUE_ABSENT,
+                            FarmerooniMemoryModules.LUMBER_CURSOR.get(), MemoryStatus.VALUE_ABSENT
+                    )
             );
         }
 
@@ -122,8 +110,8 @@ public class RestOrRegroup {
             Brain<TermiteEntity> brain = termite.getBrain();
 
             BlockPos work = brain.hasMemoryValue(FarmerooniMemoryModules.DIG_LEADER.get()) ?
-                brain.getMemory(FarmerooniMemoryModules.DIG_LEADER.get()).get().blockPosition() :
-                brain.getMemory(FarmerooniMemoryModules.LUMBER.get()).isPresent() ? brain.getMemory(FarmerooniMemoryModules.LUMBER.get()).get().pos : null;
+                    brain.getMemory(FarmerooniMemoryModules.DIG_LEADER.get()).get().blockPosition() :
+                    brain.getMemory(FarmerooniMemoryModules.LUMBER.get()).isPresent() ? brain.getMemory(FarmerooniMemoryModules.LUMBER.get()).get().pos : null;
 
             if (work == null) {
                 brain.setMemory(FarmerooniMemoryModules.WANTS_REST.get(), true);
@@ -133,8 +121,8 @@ public class RestOrRegroup {
             }
 
             brain.setMemory(
-                MemoryModuleType.WALK_TARGET,
-                new WalkTarget(work, 1.0F, 0)
+                    MemoryModuleType.WALK_TARGET,
+                    new WalkTarget(work, 1.0F, 0)
             );
 
             if (termite.distanceToSqr(Vec3.atCenterOf(work)) <= 1) {
@@ -144,16 +132,16 @@ public class RestOrRegroup {
 
                     work = leader.getBrain().getMemory(FarmerooniMemoryModules.LUMBER.get()).get().pos;
                     brain.setMemory(
-                        FarmerooniMemoryModules.LUMBER.get(),
-                        leader.getBrain().getMemory(FarmerooniMemoryModules.LUMBER.get())
+                            FarmerooniMemoryModules.LUMBER.get(),
+                            leader.getBrain().getMemory(FarmerooniMemoryModules.LUMBER.get())
                     );
 
                     brain.eraseMemory(FarmerooniMemoryModules.DIG_LEADER.get());
                 }
 
                 brain.setMemory(
-                    FarmerooniMemoryModules.LUMBER_CURSOR.get(),
-                    work
+                        FarmerooniMemoryModules.LUMBER_CURSOR.get(),
+                        work
                 );
             }
         }

@@ -8,15 +8,17 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 public class FarmerooniTags {
-    public static class Items{
-        public static final TagKey<Item>  PUTRID_LOGS = create("putrid_logs");
-        public static final TagKey<Item>  PUTRID_WOOD = create("putrid_wood");
+    public static class Items {
+        public static final TagKey<Item> SAPLINGS_2X2 = create("saplings_2x2");
+        public static final TagKey<Item> PUTRID_LOGS = create("putrid_logs");
+        public static final TagKey<Item> PUTRID_WOOD = create("putrid_wood");
 
         private static TagKey<Item> create(String name) {
             return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, name));
         }
     }
-    public static class Blocks{
+
+    public static class Blocks {
         public static final TagKey<Block> PUTRID_LOGS = create("putrid_logs");
         public static final TagKey<Block> NEST_INTERIOR_BLOCKS = create("nest_interior_blocks");
         public static final TagKey<Block> EXTRA_WOOD = create("extra_wood");
