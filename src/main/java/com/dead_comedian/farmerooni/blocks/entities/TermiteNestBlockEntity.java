@@ -18,6 +18,7 @@ import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Unit;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
@@ -151,7 +152,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
 
     public boolean TermiteWantInHOOK(TermiteEntity entity) {
         //trigger going inside "structure", add to "in" list, teleport
-        entity.getBrain().setMemory(FarmerooniMemoryModules.INSIDE_NEST.get(), true);
+        entity.getBrain().setMemory(FarmerooniMemoryModules.INSIDE_NEST.get(), Unit.INSTANCE);
         entity.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
         entity.getBrain().eraseMemory(FarmerooniMemoryModules.DIG_LEADER.get());
         Farmerooni.LOGGER.info("inside?");
