@@ -1,7 +1,7 @@
 package com.dead_comedian.farmerooni.entities.ai.behaviour;
 
 import com.dead_comedian.farmerooni.Farmerooni;
-import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.Termite;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
@@ -17,13 +17,13 @@ import java.util.function.Function;
 
 public class ProductiveStrollAroundNest {
 
-    public static <E extends TermiteEntity> OneShot<E> stroll(float speedModifier) {
+    public static <E extends Termite> OneShot<E> stroll(float speedModifier) {
         return strollFlyOrSwim(
             speedModifier,
             (mob) -> LandRandomPos.getPos(mob, 20, 7));
     }
 
-    private static <E extends TermiteEntity> OneShot<E> strollFlyOrSwim(float speedModifier, Function<TermiteEntity, Vec3> target) {
+    private static <E extends Termite> OneShot<E> strollFlyOrSwim(float speedModifier, Function<Termite, Vec3> target) {
         return BehaviorBuilder.create(
             (TermiteEntityInstance)
                 -> TermiteEntityInstance.group(

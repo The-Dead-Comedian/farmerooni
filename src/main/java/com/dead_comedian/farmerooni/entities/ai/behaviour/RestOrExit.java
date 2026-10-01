@@ -2,7 +2,7 @@ package com.dead_comedian.farmerooni.entities.ai.behaviour;
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
-import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.Termite;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.dead_comedian.farmerooni.registries.FarmerooniSchedules;
 import com.google.common.collect.ImmutableMap;
@@ -13,7 +13,7 @@ import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 
-public class RestOrExit extends Behavior<TermiteEntity> {
+public class RestOrExit extends Behavior<Termite> {
     public RestOrExit() {
         super(
             ImmutableMap.of(
@@ -23,29 +23,29 @@ public class RestOrExit extends Behavior<TermiteEntity> {
     }
 
     @Override
-    protected boolean checkExtraStartConditions(ServerLevel level, TermiteEntity termite) {
+    protected boolean checkExtraStartConditions(ServerLevel level, Termite termite) {
         return true;
     }
 
     @Override
-    protected boolean canStillUse(ServerLevel level, TermiteEntity entity, long gameTime) {
+    protected boolean canStillUse(ServerLevel level, Termite entity, long gameTime) {
         return true;
     }
 
     @Override
-    protected void start(ServerLevel level, TermiteEntity termite, long gameTime) {
+    protected void start(ServerLevel level, Termite termite, long gameTime) {
         termite.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
     }
 
     @Override
-    protected void tick(ServerLevel level, TermiteEntity termite, long gameTime) {
+    protected void tick(ServerLevel level, Termite termite, long gameTime) {
         if (level.getDayTime() < FarmerooniSchedules.TERMITE_REST_TIME) this.doStop(level, termite, gameTime);
     }
 
     @Override
-    protected void stop(ServerLevel level, TermiteEntity termite, long gameTime) {
+    protected void stop(ServerLevel level, Termite termite, long gameTime) {
         if(level.getDayTime() < FarmerooniSchedules.TERMITE_REST_TIME){
-            Brain<TermiteEntity> brain = termite.getBrain();
+            Brain<Termite> brain = termite.getBrain();
             if(brain.getMemory(FarmerooniMemoryModules.NEST_DATA.get()).isPresent()){
                 BlockPos nest = brain.getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
                 termite.getBrain().eraseMemory(FarmerooniMemoryModules.WANTS_REST.get());

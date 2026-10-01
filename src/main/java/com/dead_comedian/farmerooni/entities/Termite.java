@@ -41,13 +41,13 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class TermiteEntity extends Animal implements InventoryCarrier {
-    private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(TermiteEntity.class, EntityDataSerializers.BYTE);
+public class Termite extends Animal implements InventoryCarrier {
+    private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(Termite.class, EntityDataSerializers.BYTE);
 
     private static final Vec3i ITEM_PICKUP_REACH = new Vec3i(3, 3, 3);
     private final SimpleContainer inventory = new SimpleContainer(16);//new CustomInventory();
 
-    public TermiteEntity(EntityType<? extends Animal> entityType, Level level) {
+    public Termite(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -172,7 +172,7 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
     @Override
     protected void customServerAiStep() {
         this.level().getProfiler().push("termiteBrain");
-        ((Brain<TermiteEntity>) this.brain).tick((ServerLevel) this.level(), this);
+        ((Brain<Termite>) this.brain).tick((ServerLevel) this.level(), this);
         this.level().getProfiler().pop();
 
         this.level().getProfiler().push("termiteActivityUpdateFromSchedule");
@@ -226,13 +226,13 @@ public class TermiteEntity extends Animal implements InventoryCarrier {
 
 
     @Override
-    protected Brain.Provider<TermiteEntity> brainProvider() {
+    protected Brain.Provider<Termite> brainProvider() {
         return Brain.provider(TermiteAi.MEMORY_MODULES, TermiteAi.SENSORS);
     }
 
     @Override
-    public Brain<TermiteEntity> getBrain() {
-        return (Brain<TermiteEntity>) super.getBrain();
+    public Brain<Termite> getBrain() {
+        return (Brain<Termite>) super.getBrain();
     }
 
 

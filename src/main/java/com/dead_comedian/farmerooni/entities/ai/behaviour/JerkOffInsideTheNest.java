@@ -2,7 +2,7 @@ package com.dead_comedian.farmerooni.entities.ai.behaviour;
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
-import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.Termite;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
@@ -11,10 +11,9 @@ import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.phys.Vec3;
 
 //wait 5 fucking seconds god fucking damn it
-public class JerkOffInsideTheNest extends Behavior<TermiteEntity> {
+public class JerkOffInsideTheNest extends Behavior<Termite> {
     int goonticks;
     public JerkOffInsideTheNest(int goonticks) {
         super(
@@ -28,24 +27,24 @@ public class JerkOffInsideTheNest extends Behavior<TermiteEntity> {
     }
 
     @Override
-    protected boolean checkExtraStartConditions(ServerLevel level, TermiteEntity termite) {
+    protected boolean checkExtraStartConditions(ServerLevel level, Termite termite) {
         return true;
     }
 
     @Override
-    protected boolean canStillUse(ServerLevel level, TermiteEntity entity, long gameTime) {
+    protected boolean canStillUse(ServerLevel level, Termite entity, long gameTime) {
         return true;
     }
 
     @Override
-    protected void start(ServerLevel level, TermiteEntity termite, long gameTime) {
+    protected void start(ServerLevel level, Termite termite, long gameTime) {
         Farmerooni.LOGGER.info("jorking it");
         termite.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
         if(! termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.GOON_TIME.get())) termite.getBrain().setMemory(FarmerooniMemoryModules.GOON_TIME.get(), this.goonticks);
     }
 
     @Override
-    protected void tick(ServerLevel level, TermiteEntity termite, long gameTime) {
+    protected void tick(ServerLevel level, Termite termite, long gameTime) {
         termite.getBrain().setMemory(
             FarmerooniMemoryModules.GOON_TIME.get(),
             (termite.getBrain().getMemory(FarmerooniMemoryModules.GOON_TIME.get())).get().intValue()-1);
@@ -58,13 +57,13 @@ public class JerkOffInsideTheNest extends Behavior<TermiteEntity> {
     }
 
     @Override
-    protected void stop(ServerLevel level, TermiteEntity termite, long gameTime) {
+    protected void stop(ServerLevel level, Termite termite, long gameTime) {
         termite.getBrain().eraseMemory(FarmerooniMemoryModules.WANTS_REST.get());
         termite.getBrain().eraseMemory(FarmerooniMemoryModules.GOON_TIME.get());
 
         //termite.getBrain().setMemory(FarmerooniMemoryModules.WANTS_DIGGING.get(), true);
 
-        Brain<TermiteEntity> brain = termite.getBrain();
+        Brain<Termite> brain = termite.getBrain();
         if(brain.getMemory(FarmerooniMemoryModules.NEST_DATA.get()).isPresent()){
             BlockPos nest = brain.getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
 

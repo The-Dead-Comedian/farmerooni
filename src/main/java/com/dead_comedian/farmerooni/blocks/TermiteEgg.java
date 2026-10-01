@@ -1,11 +1,7 @@
 package com.dead_comedian.farmerooni.blocks;
 
-import com.dead_comedian.farmerooni.Farmerooni;
-import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
-import com.dead_comedian.farmerooni.entities.TermiteEntity;
-import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
+import com.dead_comedian.farmerooni.entities.Termite;
 import com.dead_comedian.farmerooni.registries.FarmerooniEntities;
-import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -25,7 +21,7 @@ public class TermiteEgg extends GlowLichenBlock {
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos poss, RandomSource random) {
         //level.levelEvent(2001, pos, Block.getId(state));
-        TermiteEntity term = FarmerooniEntities.TERMITE.get().create(level);
+        Termite term = FarmerooniEntities.TERMITE.get().create(level);
         if (term != null) {
             //term.setAge(-24000);
 

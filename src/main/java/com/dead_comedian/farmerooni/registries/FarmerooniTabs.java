@@ -40,6 +40,7 @@ public class FarmerooniTabs {
                         pOutput.accept(FarmerooniBlocks.TERMITE_EGGS);
                         pOutput.accept(FarmerooniItems.TERMITE_SPAWN_EGG);
                         pOutput.accept(FarmerooniItems.UNICORN_SPAWN_EGG);
+                        pOutput.accept(FarmerooniItems.SEAGULL_SPAWN_EGG);
                     })
                     .build());
 

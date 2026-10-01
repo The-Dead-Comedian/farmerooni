@@ -4,7 +4,7 @@ package com.dead_comedian.farmerooni.client.models;// Made with Blockbench 5.1.4
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.client.animations.TermiteAnimations;
-import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.Termite;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -12,7 +12,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 
-public class TermiteModel<T extends TermiteEntity> extends HierarchicalModel<T> {
+public class TermiteModel<T extends Termite> extends HierarchicalModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, "termite"), "main");
     private final ModelPart root;
     private final ModelPart head;

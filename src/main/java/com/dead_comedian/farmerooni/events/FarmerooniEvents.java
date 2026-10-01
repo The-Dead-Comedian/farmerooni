@@ -1,7 +1,8 @@
 package com.dead_comedian.farmerooni.events;
 
 import com.dead_comedian.farmerooni.codecs.WoodData;
-import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.Seagull;
+import com.dead_comedian.farmerooni.entities.Termite;
 import com.dead_comedian.farmerooni.entities.Unicorn;
 import com.dead_comedian.farmerooni.helper.TermiteHelper;
 import com.dead_comedian.farmerooni.registries.FarmerooniBlocks;
@@ -44,8 +45,9 @@ public class FarmerooniEvents {
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
-        event.put(FarmerooniEntities.TERMITE.get(), TermiteEntity.createAttributes().build());
+        event.put(FarmerooniEntities.TERMITE.get(), Termite.createAttributes().build());
         event.put(FarmerooniEntities.UNICORN.get(), Unicorn.createMobAttributes().build());
+        event.put(FarmerooniEntities.SEAGULL.get(), Seagull.createMobAttributes().build());
     }
 
 }

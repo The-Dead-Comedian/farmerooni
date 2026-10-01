@@ -1,8 +1,7 @@
 package com.dead_comedian.farmerooni.blocks.entities;
 
 import com.dead_comedian.farmerooni.Farmerooni;
-import com.dead_comedian.farmerooni.entities.TermiteEntity;
-import com.dead_comedian.farmerooni.entities.ai.data_stuff.CustomInventory;
+import com.dead_comedian.farmerooni.entities.Termite;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
 import com.dead_comedian.farmerooni.helper.TermiteHelper;
 import com.dead_comedian.farmerooni.menu.NestMenu;
@@ -10,27 +9,20 @@ import com.dead_comedian.farmerooni.registries.FarmerooniBlockEntities;
 import com.dead_comedian.farmerooni.registries.FarmerooniEntities;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Unit;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.Hopper;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -96,7 +88,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
     public void disbandTerritory() {
         if (this.level instanceof ServerLevel level) {
             this.residents.forEach(uuid -> {
-                TermiteEntity revenantlmao = ((TermiteEntity) level.getEntity(uuid));
+                Termite revenantlmao = ((Termite) level.getEntity(uuid));
                 if (revenantlmao != null) {
                     revenantlmao.getBrain().eraseMemory(FarmerooniMemoryModules.NEST_DATA.get());
                     level.sendParticles(ParticleTypes.ANGRY_VILLAGER, revenantlmao.getX(), revenantlmao.getY() + 1.0, revenantlmao.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
@@ -113,8 +105,8 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         Farmerooni.LOGGER.info("new nest looking for existing termites");
         this.colony = UUID.randomUUID();
 
-        List<TermiteEntity> termites = level.getEntitiesOfClass(
-            TermiteEntity.class,
+        List<Termite> termites = level.getEntitiesOfClass(
+            Termite.class,
             new AABB(this.getBlockPos()).inflate(15, 2, 15),
             termitty -> {
                 return !termitty.getBrain().getMemory(FarmerooniMemoryModules.NEST_DATA.get()).isPresent();
@@ -137,7 +129,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
             });
     }
 
-    public boolean addTermiteResident(TermiteEntity entity) {
+    public boolean addTermiteResident(Termite entity) {
         if (this.residents.size() == MAX_TERMITES) {
             return true;
         }
@@ -150,7 +142,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
 
     }
 
-    public boolean TermiteWantInHOOK(TermiteEntity entity) {
+    public boolean TermiteWantInHOOK(Termite entity) {
         //trigger going inside "structure", add to "in" list, teleport
         entity.getBrain().setMemory(FarmerooniMemoryModules.INSIDE_NEST.get(), Unit.INSTANCE);
         entity.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
@@ -164,7 +156,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
     }
 
 
-    public boolean TermiteRegroupOrRestOrStoreHook(TermiteEntity entity) {
+    public boolean TermiteRegroupOrRestOrStoreHook(Termite entity) {
         //set termite memories, and on each call want out hook
 
         if (this.level instanceof ServerLevel level) {
@@ -178,7 +170,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
                 entity.getBrain().setMemory(FarmerooniMemoryModules.GOON_TIME.get(), 60);
 
                 this.residents.forEach(uuid -> {
-                    TermiteEntity revenantlmao = ((TermiteEntity) level.getEntity(uuid));
+                    Termite revenantlmao = ((Termite) level.getEntity(uuid));
                     if (revenantlmao == null) return;
                     if (revenantlmao.getUUID() == entity.getUUID()) return;
                     if (revenantlmao.getBrain().hasMemoryValue(FarmerooniMemoryModules.INSIDE_NEST.get())) {
@@ -199,7 +191,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         return false;
     }
 
-    public boolean TermiteWantOutHOOK(TermiteEntity entity) {
+    public boolean TermiteWantOutHOOK(Termite entity) {
         //trigger going outside "structure", remove from "in" list, teleport
         entity.getBrain().eraseMemory(FarmerooniMemoryModules.INSIDE_NEST.get());
         if(entity.getBrain().hasMemoryValue(FarmerooniMemoryModules.LUMBER.get())||entity.getBrain().hasMemoryValue(FarmerooniMemoryModules.DIG_LEADER.get())){
@@ -212,7 +204,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         return true;
     }
 
-    public boolean removeTermiteResident(TermiteEntity entity) {
+    public boolean removeTermiteResident(Termite entity) {
         BlockPos bp = this.getBlockPos();
         if (level instanceof ServerLevel slevel)
             slevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, bp.getX(), bp.getY() + 1.0, bp.getZ(), 1, 0.0, 0.0, 0.0, 0.0);

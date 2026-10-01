@@ -1,6 +1,6 @@
 package com.dead_comedian.farmerooni.entities.ai;
 
-import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.Termite;
 import com.dead_comedian.farmerooni.entities.ai.behaviour.*;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.dead_comedian.farmerooni.registries.FarmerooniSensorTypes;
@@ -42,7 +42,7 @@ public class TermiteAi {
         FarmerooniMemoryModules.DIG_LEADER.get()
     );
 
-    public static final ImmutableList<SensorType<? extends Sensor<? super TermiteEntity>>> SENSORS = ImmutableList.of(
+    public static final ImmutableList<SensorType<? extends Sensor<? super Termite>>> SENSORS = ImmutableList.of(
         SensorType.NEAREST_LIVING_ENTITIES,
         SensorType.HURT_BY,
         SensorType.NEAREST_ITEMS,
@@ -50,7 +50,7 @@ public class TermiteAi {
         FarmerooniSensorTypes.TILFS_NEAR_ME_SENSOR.get()
     );
 
-    public static Brain<?> makeBrain(TermiteEntity termite, Brain<TermiteEntity> brain) {
+    public static Brain<?> makeBrain(Termite termite, Brain<Termite> brain) {
         initCoreActivity(brain);
         initIdleActivity(brain);
         initWarActivity(termite, brain);
@@ -64,7 +64,7 @@ public class TermiteAi {
         return brain;
     }
 
-    public static void updateActivity(TermiteEntity termite) {
+    public static void updateActivity(Termite termite) {
         /*
         termite.getBrain().setActiveActivityToFirstValid(ImmutableList.of(
                 Activity.FIGHT,
@@ -86,7 +86,7 @@ public class TermiteAi {
         termite.setAggressive(termite.getBrain().hasMemoryValue(MemoryModuleType.ATTACK_TARGET));
     }
 
-    private static void initCoreActivity(Brain<TermiteEntity> brain) {
+    private static void initCoreActivity(Brain<Termite> brain) {
         brain.addActivity(
             Activity.CORE,
             0,
@@ -97,7 +97,7 @@ public class TermiteAi {
         );
     }
 
-    private static void initIdleActivity(Brain<TermiteEntity> brain) {
+    private static void initIdleActivity(Brain<Termite> brain) {
         brain.addActivity(
             Activity.IDLE,
             0,
@@ -108,7 +108,7 @@ public class TermiteAi {
         );
     }
 
-    private static void initRestActivity(Brain<TermiteEntity> brain) {
+    private static void initRestActivity(Brain<Termite> brain) {
         brain.addActivity(
             Activity.REST,
             0,
@@ -120,7 +120,7 @@ public class TermiteAi {
         );
     }
 
-    private static void initDigActivity(Brain<TermiteEntity> brain) {
+    private static void initDigActivity(Brain<Termite> brain) {
         brain.addActivity(
             Activity.DIG,
             0,
@@ -132,7 +132,7 @@ public class TermiteAi {
     }
 
 
-    private static void initWarActivity(TermiteEntity termite, Brain<TermiteEntity> brain) {
+    private static void initWarActivity(Termite termite, Brain<Termite> brain) {
         brain.addActivityAndRemoveMemoryWhenStopped(
             Activity.FIGHT,
             0,
@@ -148,7 +148,7 @@ public class TermiteAi {
 
     }
 
-    private static void initScoutingActivity(Brain<TermiteEntity> brain) {
+    private static void initScoutingActivity(Brain<Termite> brain) {
         brain.addActivity(
             Activity.INVESTIGATE,
             0,
@@ -161,7 +161,7 @@ public class TermiteAi {
         );
     }
 
-    private static boolean isTarget(TermiteEntity termite, LivingEntity entity) {
+    private static boolean isTarget(Termite termite, LivingEntity entity) {
         return termite.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).filter(p_219509_ -> p_219509_ == entity).isPresent();
     }
 

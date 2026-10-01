@@ -1,6 +1,6 @@
 package com.dead_comedian.farmerooni.entities.ai.sensor_type;
 
-import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.Termite;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import net.minecraft.server.level.ServerLevel;
@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class NearbyTermitesSensor extends Sensor<TermiteEntity> {
+public class NearbyTermitesSensor extends Sensor<Termite> {
 
     @Override
-    protected void doTick(ServerLevel level, TermiteEntity thisone) {
+    protected void doTick(ServerLevel level, Termite thisone) {
         Brain<?> brain = thisone.getBrain();
 
         Optional<NestData> nestinfo =
@@ -29,8 +29,8 @@ public class NearbyTermitesSensor extends Sensor<TermiteEntity> {
 
         NestData mine = nestinfo.get();
 
-        List<TermiteEntity> theopps = level.getEntitiesOfClass(
-                TermiteEntity.class,
+        List<Termite> theopps = level.getEntitiesOfClass(
+                Termite.class,
                 thisone.getBoundingBox().inflate(32),
                 opp -> {
                     if (opp == thisone) return false;

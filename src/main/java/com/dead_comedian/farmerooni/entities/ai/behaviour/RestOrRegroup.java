@@ -2,7 +2,7 @@ package com.dead_comedian.farmerooni.entities.ai.behaviour;
 
 import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.blocks.entities.TermiteNestBlockEntity;
-import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.Termite;
 import com.dead_comedian.farmerooni.helper.TermiteHelper;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.dead_comedian.farmerooni.registries.FarmerooniSchedules;
@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class RestOrRegroup {
 
-    public static class GoHome extends Behavior<TermiteEntity> {
+    public static class GoHome extends Behavior<Termite> {
         public GoHome() {
             super(
                     ImmutableMap.of(
@@ -42,13 +42,13 @@ public class RestOrRegroup {
 
 
         @Override
-        protected boolean checkExtraStartConditions(ServerLevel level, TermiteEntity termite) {
+        protected boolean checkExtraStartConditions(ServerLevel level, Termite termite) {
             return termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.WANTS_REST.get()) || (level.getDayTime() % 24000L) > FarmerooniSchedules.TERMITE_REST_TIME;
         }
 
         @Override
-        protected void start(ServerLevel level, TermiteEntity termite, long gameTime) {
-            Brain<TermiteEntity> brain = termite.getBrain();
+        protected void start(ServerLevel level, Termite termite, long gameTime) {
+            Brain<Termite> brain = termite.getBrain();
 
             BlockPos nest = brain.getMemory(FarmerooniMemoryModules.NEST_DATA.get()).get().nest();
 
@@ -62,8 +62,8 @@ public class RestOrRegroup {
         }
 
         @Override
-        protected void stop(ServerLevel level, TermiteEntity termite, long gameTime) {
-            Brain<TermiteEntity> brain = termite.getBrain();
+        protected void stop(ServerLevel level, Termite termite, long gameTime) {
+            Brain<Termite> brain = termite.getBrain();
             if (brain.hasMemoryValue(FarmerooniMemoryModules.INSIDE_NEST.get())) {
                 Farmerooni.LOGGER.info("gohome already insdie nest cancel");
                 return;
@@ -85,7 +85,7 @@ public class RestOrRegroup {
         }
     }
 
-    public static class GoWork extends Behavior<TermiteEntity> {
+    public static class GoWork extends Behavior<Termite> {
         public GoWork() {
             super(
                     ImmutableMap.of(
@@ -97,17 +97,17 @@ public class RestOrRegroup {
         }
 
         @Override
-        protected boolean checkExtraStartConditions(ServerLevel level, TermiteEntity termite) {
+        protected boolean checkExtraStartConditions(ServerLevel level, Termite termite) {
             return true;
         }
 
         @Override
-        protected void start(ServerLevel level, TermiteEntity entity, long gameTime) {
+        protected void start(ServerLevel level, Termite entity, long gameTime) {
         }
 
         @Override
-        protected void tick(ServerLevel level, TermiteEntity termite, long gameTime) {
-            Brain<TermiteEntity> brain = termite.getBrain();
+        protected void tick(ServerLevel level, Termite termite, long gameTime) {
+            Brain<Termite> brain = termite.getBrain();
 
             BlockPos work = brain.hasMemoryValue(FarmerooniMemoryModules.DIG_LEADER.get()) ?
                     brain.getMemory(FarmerooniMemoryModules.DIG_LEADER.get()).get().blockPosition() :
@@ -128,7 +128,7 @@ public class RestOrRegroup {
             if (termite.distanceToSqr(Vec3.atCenterOf(work)) <= 1) {
 
                 if (brain.hasMemoryValue(FarmerooniMemoryModules.DIG_LEADER.get())) {
-                    TermiteEntity leader = brain.getMemory(FarmerooniMemoryModules.DIG_LEADER.get()).get();
+                    Termite leader = brain.getMemory(FarmerooniMemoryModules.DIG_LEADER.get()).get();
 
                     work = leader.getBrain().getMemory(FarmerooniMemoryModules.LUMBER.get()).get().pos;
                     brain.setMemory(
@@ -147,11 +147,11 @@ public class RestOrRegroup {
         }
 
         @Override
-        protected void stop(ServerLevel level, TermiteEntity termite, long gameTime) {
+        protected void stop(ServerLevel level, Termite termite, long gameTime) {
         }
 
         @Override
-        protected boolean canStillUse(ServerLevel level, TermiteEntity termite, long gameTime) {
+        protected boolean canStillUse(ServerLevel level, Termite termite, long gameTime) {
             return true;
         }
     }

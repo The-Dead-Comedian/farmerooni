@@ -1,7 +1,7 @@
 package com.dead_comedian.farmerooni.entities.ai.behaviour;
 
 import com.dead_comedian.farmerooni.Farmerooni;
-import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.Termite;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.Tree;
 import com.dead_comedian.farmerooni.helper.TermiteHelper;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
@@ -24,7 +24,7 @@ import net.minecraft.world.phys.Vec3;
     https://www.geeksforgeeks.org/dsa/depth-first-search-or-dfs-for-a-graph/
     https://www.geeksforgeeks.org/dsa/dfs-n-ary-tree-acyclic-graph-represented-adjacency-list/
 */
-public class InspectLumber extends Behavior<TermiteEntity> {
+public class InspectLumber extends Behavior<Termite> {
 
     public InspectLumber() {
         super(
@@ -38,8 +38,8 @@ public class InspectLumber extends Behavior<TermiteEntity> {
     }
 
     @Override
-    protected void start(ServerLevel serverLevel, TermiteEntity termite, long l) {
-        Brain<TermiteEntity> termbrain = termite.getBrain();
+    protected void start(ServerLevel serverLevel, Termite termite, long l) {
+        Brain<Termite> termbrain = termite.getBrain();
         BlockPos startingPoint = termbrain.getMemory(FarmerooniMemoryModules.LUMBER_CURSOR.get()).get();
 
         if (termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).isEmpty()) {
@@ -49,28 +49,28 @@ public class InspectLumber extends Behavior<TermiteEntity> {
     }
 
     @Override
-    protected boolean checkExtraStartConditions(ServerLevel serverLevel, TermiteEntity termite) {
+    protected boolean checkExtraStartConditions(ServerLevel serverLevel, Termite termite) {
         return true;
     }
 
     @Override
-    protected boolean canStillUse(ServerLevel serverLevel, TermiteEntity termite, long l) {
+    protected boolean canStillUse(ServerLevel serverLevel, Termite termite, long l) {
         return termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.LUMBER_CURSOR.get())
             && termite.getBrain().hasMemoryValue(FarmerooniMemoryModules.LUMBER.get());
     }
 
     @Override
-    protected void stop(ServerLevel serverLevel, TermiteEntity termite, long l) {
+    protected void stop(ServerLevel serverLevel, Termite termite, long l) {
     }
 
     @Override
-    protected void tick(ServerLevel serverLevel, TermiteEntity owner, long gameTime) {
+    protected void tick(ServerLevel serverLevel, Termite owner, long gameTime) {
         //dont be a sped
         if (owner.getNavigation().isInProgress()) {
             return;
         }
 
-        Brain<TermiteEntity> termbrain = owner.getBrain();
+        Brain<Termite> termbrain = owner.getBrain();
         BlockPos startingPoint = termbrain.getMemory(FarmerooniMemoryModules.LUMBER_CURSOR.get()).get();
 
         Tree woodStructure = termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).get();
@@ -167,7 +167,7 @@ public class InspectLumber extends Behavior<TermiteEntity> {
         }
     }
 
-    public static <E extends TermiteEntity> OneShot<E> InspectLumber(float speedModifier) {
+    public static <E extends Termite> OneShot<E> InspectLumber(float speedModifier) {
         return BehaviorBuilder
             .create(
                 (TermiteEntityInstance)
@@ -184,7 +184,7 @@ public class InspectLumber extends Behavior<TermiteEntity> {
                         lumberMemory
 
                     ) -> (serverLevel, TermiteEntity, l) -> {
-                        Brain<TermiteEntity> termbrain = TermiteEntity.getBrain();
+                        Brain<Termite> termbrain = TermiteEntity.getBrain();
                         BlockPos startingPoint = termbrain.getMemory(FarmerooniMemoryModules.LUMBER_CURSOR.get()).get();
 
                         if (termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).isEmpty()) {

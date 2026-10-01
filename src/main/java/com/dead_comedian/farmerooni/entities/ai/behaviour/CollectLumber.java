@@ -1,15 +1,11 @@
 package com.dead_comedian.farmerooni.entities.ai.behaviour;
 
-import com.dead_comedian.farmerooni.Farmerooni;
-import com.dead_comedian.farmerooni.entities.TermiteEntity;
-import com.dead_comedian.farmerooni.entities.ai.data_stuff.CustomInventory;
+import com.dead_comedian.farmerooni.entities.Termite;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.Tree;
 import com.dead_comedian.farmerooni.helper.TermiteHelper;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -21,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
     https://www.geeksforgeeks.org/dsa/depth-first-search-or-dfs-for-a-graph/
     https://www.geeksforgeeks.org/dsa/dfs-n-ary-tree-acyclic-graph-represented-adjacency-list/
 */
-public class CollectLumber extends Behavior<TermiteEntity> {
+public class CollectLumber extends Behavior<Termite> {
     int breakProgress;
     int breakTicks;
 
@@ -40,26 +36,26 @@ public class CollectLumber extends Behavior<TermiteEntity> {
     }
 
     @Override
-    protected void start(ServerLevel serverLevel, TermiteEntity termite, long l) {
+    protected void start(ServerLevel serverLevel, Termite termite, long l) {
     }
 
     @Override
-    protected boolean checkExtraStartConditions(ServerLevel serverLevel, TermiteEntity termite) {
+    protected boolean checkExtraStartConditions(ServerLevel serverLevel, Termite termite) {
         return true;
     }
 
     @Override
-    protected boolean canStillUse(ServerLevel serverLevel, TermiteEntity termite, long l) {
+    protected boolean canStillUse(ServerLevel serverLevel, Termite termite, long l) {
         return true;
     }
 
     @Override
-    protected void stop(ServerLevel serverLevel, TermiteEntity termite, long l) {
+    protected void stop(ServerLevel serverLevel, Termite termite, long l) {
     }
 
     @Override
-    protected void tick(ServerLevel serverLevel, TermiteEntity owner, long gameTime) {
-        Brain<TermiteEntity> termbrain = owner.getBrain();
+    protected void tick(ServerLevel serverLevel, Termite owner, long gameTime) {
+        Brain<Termite> termbrain = owner.getBrain();
         if(termbrain.getMemory(FarmerooniMemoryModules.LUMBER.get()).isEmpty()){
             termbrain.eraseMemory(FarmerooniMemoryModules.LUMBER.get());
             termbrain.eraseMemory(FarmerooniMemoryModules.LUMBER_CURSOR.get());
@@ -122,7 +118,7 @@ public class CollectLumber extends Behavior<TermiteEntity> {
     /*
         return means block was broken
      */
-    public boolean chipAway(Tree cursor, TermiteEntity trm){
+    public boolean chipAway(Tree cursor, Termite trm){
         //avoid being a pickaxe lmao
         if (!TermiteHelper.isWood(trm.level().getBlockState(cursor.pos).getBlock(), trm.level())) return true;
 

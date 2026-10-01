@@ -2,7 +2,7 @@ package com.dead_comedian.farmerooni.registries;
 
 
 import com.dead_comedian.farmerooni.Farmerooni;
-import com.dead_comedian.farmerooni.entities.TermiteEntity;
+import com.dead_comedian.farmerooni.entities.Termite;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.NestData;
 import com.dead_comedian.farmerooni.entities.ai.data_stuff.Tree;
 import com.mojang.serialization.Codec;
@@ -26,7 +26,7 @@ public class FarmerooniMemoryModules {
     public static final Supplier<MemoryModuleType<Integer>> GOON_TIME = register("goon_time", Codec.INT);
     public static final Supplier<MemoryModuleType<Boolean>> WANTS_REST = register("wants_rest", Codec.BOOL);
     public static final Supplier<MemoryModuleType<Boolean>> WANTS_DIGGING = register("wants_digging", Optional.empty());
-    public static final Supplier<MemoryModuleType<TermiteEntity>> DIG_LEADER = register("dig_leader", Optional.empty());
+    public static final Supplier<MemoryModuleType<Termite>> DIG_LEADER = register("dig_leader", Optional.empty());
 
 
     private static <T> Supplier<MemoryModuleType<T>> register(String name, Codec<T> codec) {
