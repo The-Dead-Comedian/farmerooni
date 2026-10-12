@@ -22,6 +22,7 @@ public class FarmerooniTags {
         public static final TagKey<Block> PUTRID_LOGS = create("putrid_logs");
         public static final TagKey<Block> NEST_INTERIOR_BLOCKS = create("nest_interior_blocks");
         public static final TagKey<Block> EXTRA_WOOD = create("extra_wood");
+        public static final TagKey<Block> TERMITE_AVOID = create("anti_wood");
 
         private static TagKey<Block> create(String name) {
             return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Farmerooni.MOD_ID, name));

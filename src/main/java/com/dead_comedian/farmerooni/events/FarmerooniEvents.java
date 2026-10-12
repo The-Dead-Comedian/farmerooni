@@ -38,7 +38,7 @@ public class FarmerooniEvents {
     public static void aaa(PlayerInteractEvent.RightClickBlock event) {
         Block pumpkin = event.getLevel().getBlockState(event.getPos()).getBlock();
         if (event.getLevel() instanceof ServerLevel serverLevel) {
-            System.out.println(TermiteHelper.isWood(pumpkin, serverLevel));
+            //System.out.println(TermiteHelper.isWood(pumpkin, serverLevel));
         }
     }
 

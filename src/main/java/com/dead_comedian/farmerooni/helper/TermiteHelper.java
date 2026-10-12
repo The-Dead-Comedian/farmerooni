@@ -4,6 +4,8 @@ import com.dead_comedian.farmerooni.Farmerooni;
 import com.dead_comedian.farmerooni.codecs.WoodData;
 import com.dead_comedian.farmerooni.registries.FarmerooniCodecs;
 import com.dead_comedian.farmerooni.registries.FarmerooniTags;
+
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -13,6 +15,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,6 +59,19 @@ public class TermiteHelper {
             Block block = bockinum.getBlock();
             verdict = TermiteHelper.isWood(block, (ServerLevel) level);
         }
+        return verdict;
+    }
+
+    public static boolean termiteAvoid(BlockPos pos, Level level) {
+        if (level.isClientSide()) return false;
+
+        boolean verdict = false;
+        BlockState state = level.getBlockState(pos);
+
+        if (!state.isAir()) {
+            verdict = state.is(FarmerooniTags.Blocks.TERMITE_AVOID); 
+        }
+
         return verdict;
     }
 
