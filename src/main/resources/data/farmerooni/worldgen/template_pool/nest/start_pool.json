@@ -6,8 +6,8 @@
       "weight": 3,
       "element": {
         "location": "farmerooni:termite_nest_wild",
-        "processors": "empty",
-        "projection": "rigid",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching",
         "element_type": "minecraft:single_pool_element"
       }
     },
@@ -16,7 +16,7 @@
       "element": {
         "location": "farmerooni:termite_nest_abandoned",
         "processors": "minecraft:empty",
-        "projection": "rigid",
+        "projection": "terrain_matching",
         "element_type": "minecraft:single_pool_element"
       }
     }

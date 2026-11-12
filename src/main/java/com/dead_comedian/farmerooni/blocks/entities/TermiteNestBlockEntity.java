@@ -223,6 +223,7 @@ public class TermiteNestBlockEntity extends RandomizableContainerBlockEntity imp
         super.loadAdditional(tag, registries);
 
         this.residents.clear();
+
         this.colony = tag.getUUID("Colony");
         ListTag uuidList = tag.getList("Residents", Tag.TAG_INT_ARRAY);
         ContainerHelper.loadAllItems(tag, this.items, registries);
