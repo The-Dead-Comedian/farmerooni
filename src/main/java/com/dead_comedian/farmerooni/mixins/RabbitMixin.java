@@ -8,6 +8,8 @@ import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
@@ -17,6 +19,8 @@ import net.minecraft.world.entity.animal.horse.ZombieHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -51,6 +55,15 @@ public abstract class RabbitMixin extends Animal implements VariantHolder<Varian
         RabbitAi.updateActivity(mob);
         this.level().getProfiler().pop();
 
+
+        Path path = this.navigation.getPath();
+        if (path != null && !path.isDone()) {
+            float speed = brain.getMemory(MemoryModuleType.WALK_TARGET)
+                    .map(WalkTarget::getSpeedModifier)
+                    .orElse(1.0F);
+            Vec3 next = path.getNextEntityPos(mob);
+            this.moveControl.setWantedPosition(next.x, next.y, next.z, speed);
+        }
     }
 
 

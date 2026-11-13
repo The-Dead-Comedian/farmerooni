@@ -24,7 +24,9 @@ public class RabbitAi {
 
     public static final List<MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(
             MemoryModuleType.WALK_TARGET,
-            MemoryModuleType.LOOK_TARGET
+            MemoryModuleType.LOOK_TARGET,
+            MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
+            MemoryModuleType.PATH
     );
 
     public static final ImmutableList<SensorType<? extends Sensor<? super Rabbit>>> SENSORS = ImmutableList.of(
@@ -55,7 +57,7 @@ public class RabbitAi {
                 ImmutableList.of(
                         new LookAtTargetSink(45, 90),
                         new MoveToTargetSink()
-                )
+                        )
         );
     }
 
@@ -64,6 +66,7 @@ public class RabbitAi {
                 Activity.IDLE,
                 0,
                 ImmutableList.of(
+                        RandomStroll.stroll(1),
                         new RandomLookAround(UniformInt.of(10, 15), 30, 30, 90)
                 )
         );
