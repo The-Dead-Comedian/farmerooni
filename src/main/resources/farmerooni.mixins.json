@@ -10,7 +10,9 @@
   "mixins": [
     "AbstractHorseMixin",
     "BlockBehaviourMixin",
+    "LivingEntityMixin",
     "MobMixin",
+    "RabbitMixin",
     "SkeletonHorseMixin",
     "TamableAnimalMixin",
     "ZombieHorseMixin",
