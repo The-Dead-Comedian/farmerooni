@@ -2,6 +2,7 @@ package com.dead_comedian.farmerooni.entities.ai;
 
 import com.dead_comedian.farmerooni.entities.Termite;
 import com.dead_comedian.farmerooni.entities.ai.behaviour.*;
+import com.dead_comedian.farmerooni.entities.ai.behaviour.Float;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.dead_comedian.farmerooni.registries.FarmerooniSensorTypes;
 import com.google.common.collect.ImmutableList;
@@ -26,15 +27,16 @@ public class RabbitAi {
             MemoryModuleType.WALK_TARGET,
             MemoryModuleType.LOOK_TARGET,
             MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
-            MemoryModuleType.PATH
-    );
+            MemoryModuleType.PATH,
+            FarmerooniMemoryModules.NEAREST_CROP.get());
 
     public static final ImmutableList<SensorType<? extends Sensor<? super Rabbit>>> SENSORS = ImmutableList.of(
-            SensorType.NEAREST_LIVING_ENTITIES
+            SensorType.NEAREST_LIVING_ENTITIES,
+            FarmerooniSensorTypes.FRESH_CROPS_IN_YOUR_AREA.get()
     );
 
     public static Brain<?> makeBrain(Rabbit rabbit, Brain<Rabbit> brain) {
-        initCoreActivity(brain);
+        initCoreActivity(rabbit, brain);
         initIdleActivity(brain);
 
 
@@ -50,14 +52,16 @@ public class RabbitAi {
         ));
     }
 
-    private static void initCoreActivity(Brain<Rabbit> brain) {
+    private static void initCoreActivity(Rabbit rabbit, Brain<Rabbit> brain) {
         brain.addActivity(
                 Activity.CORE,
                 0,
                 ImmutableList.of(
                         new LookAtTargetSink(45, 90),
-                        new MoveToTargetSink()
-                        )
+                        new MoveToTargetSink(),
+                        new Float(rabbit),
+                        new ClimbOnTopOfPowderSnow(rabbit)
+                )
         );
     }
 
@@ -66,6 +70,7 @@ public class RabbitAi {
                 Activity.IDLE,
                 0,
                 ImmutableList.of(
+                        new EatCrops(),
                         RandomStroll.stroll(1),
                         new RandomLookAround(UniformInt.of(10, 15), 30, 30, 90)
                 )

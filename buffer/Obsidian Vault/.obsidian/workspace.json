@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "a406a0ad03a732e1",
+        "id": "1fbb0ec7a154e910",
         "type": "tabs",
         "children": [
           {
-            "id": "a801164cef17d9ea",
+            "id": "2c7c0074d6581ad5",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "Crop Farms/Rabbit.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Rabbit"
             }
           }
         ]
@@ -184,20 +188,21 @@
       "bases:Create new base": false
     }
   },
-  "active": "a801164cef17d9ea",
+  "active": "c626a876f221e1ee",
   "lastOpenFiles": [
     "Crop Farms/Rabbit.md",
+    "Crop Farms/Bees.md",
+    "Untitled.base",
+    "Tree Farm/Termites.md",
     "Seagull/Seagull.md",
     "Crop Farms/Nitrogen fixing trees.md",
     "Seagull/Shinies tag.md",
     "Seagull/Seagull Nest.md",
     "Seagull",
-    "Crop Farms/Bees.md",
     "Tree Farm/Trees.md",
     "Crop Farms/Allays.md",
     "file:/home/dead-comedian/Desktop/SCHOOL/Hodder-As-A-Level-Computer-Science.pdf",
     "Shroom Farm/Shrooms.md",
-    "Tree Farm/Termites.md",
     "Shroom Farm",
     "Tree Farm",
     "Crop Farms/Seasons by moon.md",
