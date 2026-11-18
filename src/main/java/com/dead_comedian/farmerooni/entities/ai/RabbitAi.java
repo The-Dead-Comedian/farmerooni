@@ -6,6 +6,7 @@ import com.dead_comedian.farmerooni.entities.ai.behaviour.Float;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.dead_comedian.farmerooni.registries.FarmerooniSensorTypes;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -61,8 +62,8 @@ public class RabbitAi {
                         new MoveToTargetSink(),
                         new Float(rabbit),
                         new ClimbOnTopOfPowderSnow(rabbit),
-                        new Breed(1.2F)
-                )
+                        new Breed(1.2F),
+                        new Tempt(1.0F, (stack) -> stack.is(ItemTags.RABBIT_FOOD), false))
         );
     }
 
