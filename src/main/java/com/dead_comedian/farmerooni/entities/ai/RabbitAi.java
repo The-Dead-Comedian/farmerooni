@@ -60,7 +60,8 @@ public class RabbitAi {
                         new LookAtTargetSink(45, 90),
                         new MoveToTargetSink(),
                         new Float(rabbit),
-                        new ClimbOnTopOfPowderSnow(rabbit)
+                        new ClimbOnTopOfPowderSnow(rabbit),
+                        new Breed(1.2F)
                 )
         );
     }
