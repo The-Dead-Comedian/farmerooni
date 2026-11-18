@@ -6,6 +6,7 @@ import com.dead_comedian.farmerooni.entities.ai.behaviour.Float;
 import com.dead_comedian.farmerooni.registries.FarmerooniMemoryModules;
 import com.dead_comedian.farmerooni.registries.FarmerooniSensorTypes;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +17,10 @@ import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
+import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.animal.Rabbit;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 
 import java.util.List;
@@ -63,7 +67,27 @@ public class RabbitAi {
                         new Float(rabbit),
                         new ClimbOnTopOfPowderSnow(rabbit),
                         new Breed(1.2F),
-                        new Tempt(1.0F, (stack) -> stack.is(ItemTags.RABBIT_FOOD), false))
+                        new Tempt(1.0F, (stack) -> stack.is(ItemTags.RABBIT_FOOD), false),
+                        new AvoidEntity(rabbit, Player.class, 8.0F, 2.2f, 2.2) {
+                            @Override
+                            protected boolean checkExtraStartConditions(ServerLevel level, LivingEntity owner) {
+                                return rabbit.getVariant() != Rabbit.Variant.EVIL && super.checkExtraStartConditions(level, owner);
+                            }
+                        },
+                        new AvoidEntity(rabbit, Wolf.class, 8.0F, 2.2f, 2.2) {
+                            @Override
+                            protected boolean checkExtraStartConditions(ServerLevel level, LivingEntity owner) {
+                                return rabbit.getVariant() != Rabbit.Variant.EVIL && super.checkExtraStartConditions(level, owner);
+                            }
+                        },
+                        new AvoidEntity(rabbit, Fox.class, 8.0F, 2.2f, 2.2) {
+                            @Override
+                            protected boolean checkExtraStartConditions(ServerLevel level, LivingEntity owner) {
+                                return rabbit.getVariant() != Rabbit.Variant.EVIL && super.checkExtraStartConditions(level, owner);
+                            }
+                        }
+
+                )
         );
     }
 

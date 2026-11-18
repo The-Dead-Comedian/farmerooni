@@ -32,7 +32,7 @@ public class Tempt extends Behavior<Animal> {
     private final boolean canScare;
 
     public Tempt(float speedModifier, Predicate<ItemStack> items, boolean canScare) {
-        super(ImmutableMap.of());
+        super(ImmutableMap.of(),Integer.MAX_VALUE);
         this.speedModifier = speedModifier;
         this.items = items;
         this.canScare = canScare;
