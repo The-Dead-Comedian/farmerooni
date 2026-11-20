@@ -1,2 +1,2 @@
 
-[[Home Block]] of the termites.
+[[Home Block]] of the [[Termites]].

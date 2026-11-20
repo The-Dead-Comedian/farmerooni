@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "0c6d70c42b3fe17c",
+        "id": "4f97063ec2391bc6",
         "type": "tabs",
         "children": [
           {
-            "id": "10ab12a8eea971c8",
+            "id": "2a8b11308403eefb",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Home Block.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Home Block"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -188,32 +184,35 @@
       "bases:Create new base": false
     }
   },
-  "active": "c626a876f221e1ee",
+  "active": "2a8b11308403eefb",
   "lastOpenFiles": [
-    "Home Block.md",
+    "Crop Farms/Clovers.md",
+    "Crop Farms/Clover.png",
+    "Crop Farms/Crop graph.md",
+    "Animal traps.md",
+    "Crop Farms/Burrow.md",
+    "Crop Farms/Rabbit.md",
+    "Crop Farms/Pest.md",
+    "Crop Farms/Farming.md",
+    "Crop Farms/Farmland.md",
+    "Crop Farms/Bee.md",
+    "Crop Farms/Allay.md",
     "Tree Farm/Termite Nest.md",
+    "Home Block.md",
     "Tree Farm/Termites.md",
     "Seagull/Seagull Nest.md",
     "Untitled.base",
-    "Crop Farms/Rabbit.md",
-    "Crop Farms/Bees.md",
     "Seagull/Seagull.md",
-    "Crop Farms/Nitrogen fixing trees.md",
     "Seagull/Shinies tag.md",
     "Seagull",
     "Tree Farm/Trees.md",
-    "Crop Farms/Allays.md",
     "file:/home/dead-comedian/Desktop/SCHOOL/Hodder-As-A-Level-Computer-Science.pdf",
     "Shroom Farm/Shrooms.md",
     "Shroom Farm",
     "Tree Farm",
     "Crop Farms/Seasons by moon.md",
     "Crop Farms",
-    "Crop Farms/Farming.md",
-    "Crop Farms/Farmland.md",
     "Crop Farms/Greenhouse.md",
-    "Crop Farms/Pests.md",
-    "Crop Farms/Crop graph.md",
     "create a link.md"
   ]
 }
