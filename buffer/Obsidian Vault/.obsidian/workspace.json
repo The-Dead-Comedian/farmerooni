@@ -11,13 +11,32 @@
             "id": "2a8b11308403eefb",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "Crop Farms/Greenhouse.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Greenhouse"
+            }
+          },
+          {
+            "id": "550e429317b5a72a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Crop Farms/Weather.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Weather"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -184,8 +203,11 @@
       "bases:Create new base": false
     }
   },
-  "active": "2a8b11308403eefb",
+  "active": "550e429317b5a72a",
   "lastOpenFiles": [
+    "Shroom Farm/Shrooms.md",
+    "Crop Farms/Greenhouse.md",
+    "Crop Farms/Weather.md",
     "Crop Farms/Clovers.md",
     "Crop Farms/Clover.png",
     "Crop Farms/Crop graph.md",
@@ -207,12 +229,10 @@
     "Seagull",
     "Tree Farm/Trees.md",
     "file:/home/dead-comedian/Desktop/SCHOOL/Hodder-As-A-Level-Computer-Science.pdf",
-    "Shroom Farm/Shrooms.md",
     "Shroom Farm",
     "Tree Farm",
     "Crop Farms/Seasons by moon.md",
     "Crop Farms",
-    "Crop Farms/Greenhouse.md",
     "create a link.md"
   ]
 }
