@@ -30,6 +30,7 @@ public class FarmerooniMemoryModules {
     public static final Supplier<MemoryModuleType<Termite>> DIG_LEADER = register("dig_leader", Optional.empty());
 
     public static final Supplier<MemoryModuleType<BlockPos>> NEAREST_CROP = register("nearest_crop", BlockPos.CODEC);
+    public static final Supplier<MemoryModuleType<Integer>> HUNGER = register("hunger", Codec.INT);
 
 
     private static <T> Supplier<MemoryModuleType<T>> register(String name, Codec<T> codec) {
